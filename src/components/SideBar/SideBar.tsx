@@ -26,7 +26,7 @@ export default function SideBar() {
             <input
               type="text"
               className="bg-[#35363A] text-white placeholder:text-white outline-none text-sm w-full"
-              placeholder="Search for..."
+              placeholder="Procurar por..."
             />
           </fieldset>
         </section>
