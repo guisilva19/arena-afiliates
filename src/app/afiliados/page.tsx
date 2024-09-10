@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { BiSearch } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { FaHeart, FaUser } from "react-icons/fa";
