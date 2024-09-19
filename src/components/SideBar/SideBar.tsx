@@ -89,7 +89,11 @@ const NavigateOptions = () => {
         >
           <div className="w-full flex items-center gap-2">
             <figure className="min-w-[44px] flex justify-center rounded-full">
-              <Image src={avatar} alt="Avatar" className="min-w-[44px] h-[44px]" />
+              <Image
+                src={avatar}
+                alt="Avatar"
+                className="min-w-[44px] h-[44px]"
+              />
             </figure>
             <span className="flex flex-col w-full">
               <p className="font-medium">Cláudio</p>
@@ -109,7 +113,7 @@ const options = [
   {
     icon: <RiHomeFill size={22} />,
     title: "Painel de controle",
-    path: "/",
+    path: "/dashboard",
     chevron: false,
   },
   {

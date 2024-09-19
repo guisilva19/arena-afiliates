@@ -6,7 +6,6 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <NextUIProvider>
       <main className="flex">
-        <SideBar />
         {children}
       </main>
     </NextUIProvider>
