@@ -26,7 +26,7 @@ export default function CampaingsActives() {
                 id="select"
                 className="block w-full py-2 pl-3 pr-10 bg-[#474747] text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
-                <option value="">Tipo de campanha</option>
+                <option value="">Tipo de campanha     </option>
                 <option value="option1">Opção 1</option>
                 <option value="option2">Opção 2</option>
                 <option value="option3">Opção 3</option>
