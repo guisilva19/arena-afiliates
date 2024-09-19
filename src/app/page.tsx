@@ -3,9 +3,24 @@ import Image from "next/image";
 import logo from "@/assets/logo.svg";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schemaLogin } from "@/utils/schema";
 
 export default function Home() {
   const [viewPass, setViewPass] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schemaLogin),
+  });
+
+  const handle = (data: { email: string; senha: string }) => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -14,7 +29,10 @@ export default function Home() {
           <Image src={logo} alt="Arena" className="w-72" />
           <div className="w-11/12 flex flex-col">
             <h3 className="text-white font-semibold text-2xl">Login</h3>
-            <form className="flex flex-col gap-6 mt-10">
+            <form
+              onSubmit={handleSubmit(handle)}
+              className="flex flex-col gap-4 mt-10"
+            >
               <fieldset className="flex flex-col">
                 <label
                   htmlFor="E-mail"
@@ -26,7 +44,13 @@ export default function Home() {
                   type="text"
                   id="E-mail"
                   className="w-full px-4 py-3 outline-none rounded-xl"
+                  {...register("email")}
                 />
+                {errors.email && (
+                  <p className="text-[#ff1616] text-xs">
+                    {errors.email.message}
+                  </p>
+                )}
               </fieldset>
 
               <fieldset className="flex flex-col">
@@ -41,11 +65,17 @@ export default function Home() {
                     type={viewPass ? "text" : "password"}
                     id="Senha"
                     className="w-full outline-none py-3"
+                    {...register("senha")}
                   />
                   <button type="button" onClick={() => setViewPass(!viewPass)}>
                     {viewPass ? <FaRegEyeSlash /> : <FaRegEye />}
                   </button>
                 </div>
+                {errors.senha && (
+                  <p className="text-[#ff1616] text-xs">
+                    {errors.senha.message}
+                  </p>
+                )}
               </fieldset>
               <div className="w-full flex justify-end">
                 <button type="button" className="w-max">
@@ -57,7 +87,7 @@ export default function Home() {
 
               <button
                 type="submit"
-                className=" w-full bg-[#4CFF4C] py-4 rounded-xl mt-6"
+                className=" w-full bg-[#4CFF4C] py-4 rounded-xl mt-8"
               >
                 <p className="font-semibold">Log in</p>
               </button>
