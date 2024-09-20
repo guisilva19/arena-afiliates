@@ -26,7 +26,7 @@ export default function RootLayout({
   };
 
   if (!isAuthenticated) {
-    return <main className="w-screen h-screen"></main>;
+    return <main className="w-screen h-screen bg-black"></main>;
   }
 
   return (
