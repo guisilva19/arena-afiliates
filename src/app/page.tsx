@@ -6,9 +6,13 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaLogin } from "@/utils/schema";
+import useSignin from "@/hook/useSignin";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [viewPass, setViewPass] = useState(false);
+  const { signin } = useSignin();
+  const router = useRouter();
 
   const {
     register,
@@ -18,10 +22,6 @@ export default function Home() {
     resolver: yupResolver(schemaLogin),
   });
 
-  const handle = (data: { email: string; senha: string }) => {
-    console.log(data);
-  };
-
   return (
     <>
       <main className="w-screen h-screen bg-black flex justify-center items-center">
@@ -30,7 +30,7 @@ export default function Home() {
           <div className="w-11/12 flex flex-col">
             <h3 className="text-white font-semibold text-2xl">Login</h3>
             <form
-              onSubmit={handleSubmit(handle)}
+              onSubmit={handleSubmit(signin)}
               className="flex flex-col gap-4 mt-10"
             >
               <fieldset className="flex flex-col">
