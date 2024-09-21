@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaLogin } from "@/utils/schema";
 import useSignin from "@/hook/useSignin";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
   const [viewPass, setViewPass] = useState(false);
@@ -33,7 +34,7 @@ export default function Home() {
               onSubmit={handleSubmit(signin)}
               className="flex flex-col gap-4 mt-10"
             >
-              <fieldset className="flex flex-col">
+              <fieldset className="flex flex-col gap-2">
                 <label
                   htmlFor="E-mail"
                   className="text-white text-sm font-light"
@@ -53,7 +54,7 @@ export default function Home() {
                 )}
               </fieldset>
 
-              <fieldset className="flex flex-col">
+              <fieldset className="flex flex-col gap-2">
                 <label
                   htmlFor="Senha"
                   className="text-white text-sm font-light"
@@ -94,10 +95,10 @@ export default function Home() {
             </form>
 
             <span className="flex text-white text-sm font-light gap-2 mx-auto mt-5">
-              Nao tem uma conta?{" "}
-              <button type="button">
-                <p className="font-medium underline">Cadastrar</p>
-              </button>
+              Não tem uma conta?{" "}
+              <Link href={"/cadastrar"} className="font-medium underline">
+                Cadastrar
+              </Link>
             </span>
           </div>
         </div>
