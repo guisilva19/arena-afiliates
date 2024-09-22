@@ -70,7 +70,7 @@ const NavigateOptions = () => {
       <nav className="w-full flex flex-col items-center mt-8">
         <ul className="flex flex-col items-center w-full gap-3 border-b border-white/30 pb-8">
           <>
-            {user.tipo === 1 && (
+            {user?.tipo === 1 && (
               <Link
                 href={"/dashboard"}
                 className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white rounded-xl ${
@@ -106,7 +106,7 @@ const NavigateOptions = () => {
                 {item.chevron && <GoChevronRight size={14} color="#ffffff5e" />}
               </Link>
             ))}
-            {user.tipo === 1 && (
+            {user?.tipo === 1 && (
               <Link
                 href={"/afiliados"}
                 className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white rounded-xl ${
@@ -159,7 +159,7 @@ const NavigateOptions = () => {
               />
             </figure>
             <span className="flex flex-col w-full">
-              <p className="font-medium">{truncateText(user.nome, 20)}</p>
+              <p className="font-medium">{truncateText(user?.nome, 20)}</p>
               <span className="text-[#AEB9E1] text-xs flex w-full justify-between">
                 Configurações da conta
                 <GoChevronRight size={14} color="#AEB9E1" />

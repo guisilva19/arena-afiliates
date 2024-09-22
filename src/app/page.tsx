@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import logo from "@/assets/logo.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -22,6 +22,18 @@ export default function Home() {
   } = useForm({
     resolver: yupResolver(schemaLogin),
   });
+
+  useEffect(() => {
+    get();
+  }, []);
+
+  const get = async () => {
+    const user = localStorage.getItem("user");
+
+    if (user) {
+      router.push("/dashboard");
+    } 
+  };
 
   return (
     <>
