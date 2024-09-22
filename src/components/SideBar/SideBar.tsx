@@ -160,9 +160,9 @@ const NavigateOptions = () => {
             </figure>
             <span className="flex flex-col w-full">
               <p className="font-medium">{truncateText(user?.nome, 20)}</p>
-              <span className="text-[#AEB9E1] text-xs flex w-full justify-between">
+              <span className="text-[#FFFFFF] text-xs flex w-full justify-between">
                 Configurações da conta
-                <GoChevronRight size={14} color="#AEB9E1" />
+                <GoChevronRight size={14} color="#FFFFFF" />
               </span>
             </span>
           </div>
@@ -184,20 +184,20 @@ const options = [
   // },
   {
     icon: <FaStar size={22} />,
-    title: "Lista de campanhas",
+    title: "Solicitação de campanha",
     path: "/lista-de-campanhas",
     chevron: false,
   },
   user?.tipo === 1
     ? {
         icon: <HiPuzzlePiece size={22} />,
-        title: "Solicitações de campanhas",
+        title: "Campanhas ativas",
         path: "/solicitacoes-de-campanhas",
         chevron: false,
       }
     : {
         icon: <HiPuzzlePiece size={22} />,
-        title: "Campanhas ativas",
+        title: "Campanhas ativass",
         path: "/campanhas-ativas",
         chevron: false,
       },
