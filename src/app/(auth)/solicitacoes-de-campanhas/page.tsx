@@ -3,29 +3,24 @@
 import { useState } from "react";
 import { IoSearch, IoCheckmarkSharp } from "react-icons/io5";
 import { IoSettingsSharp } from "react-icons/io5";
-import { IoCopyOutline } from "react-icons/io5"; // Ícone para copiar
+import { IoCopyOutline } from "react-icons/io5";
 
 export default function ListCampaings() {
   const [pedidoSolicitado, setPedidoSolicitado] = useState(false);
 
-  // Estado para o modal de link
   const [isModalLinkOpen, setIsModalLinkOpen] = useState(false);
 
-  // Link de afiliação para copiar
   const [linkAfiliacao, setLinkAfiliacao] = useState("exemplo.com");
 
-  // Função para copiar o link
   const handleCopyLink = () => {
     navigator.clipboard.writeText(linkAfiliacao);
     alert("Link copiado!");
   };
 
-  // Função para abrir o modal de link
   const handleOpenLinkModal = () => {
     setIsModalLinkOpen(true);
   };
 
-  // Função para fechar o modal
   const handleCloseModal = () => {
     setIsModalLinkOpen(false);
   };

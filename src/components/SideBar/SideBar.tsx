@@ -12,17 +12,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { GoChevronRight } from "react-icons/go";
 import { IoStatsChartOutline } from "react-icons/io5";
 import { truncateText } from "@/utils/truncate";
-import { useEffect } from "react";
+import { useState } from "react";
 import { FiLogOut } from "react-icons/fi";
 
 export default function SideBar() {
   const router = useRouter();
-
-  useEffect(() => {
-    if (!localStorage.getItem("user")) {
-      router.push("/");
-    }
-  }, [router]);
 
   return (
     <>
@@ -63,8 +57,12 @@ export default function SideBar() {
 }
 
 const NavigateOptions = () => {
-  const storage = localStorage.getItem("user");
-  const user = JSON.parse(storage as string);
+  const [user, setUser] = useState<any>();
+
+  if (typeof window !== "undefined") {
+    const storage = localStorage.getItem("user");
+    setUser(JSON.parse(storage as string));
+  }
   const path = usePathname();
 
   return (
@@ -212,6 +210,3 @@ const NavigateOptions = () => {
     </>
   );
 };
-
-const storage = localStorage.getItem("user");
-const user = JSON.parse(storage as string);

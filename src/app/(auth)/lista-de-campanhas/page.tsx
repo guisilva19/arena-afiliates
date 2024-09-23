@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoSearch, IoCheckmarkSharp } from "react-icons/io5";
 import { IoSettingsSharp } from "react-icons/io5";
 
@@ -32,8 +32,16 @@ export default function ListCampaings() {
     setIsAddModalOpen(false);
   };
 
-  const storage: any = localStorage.getItem("user");
-  const user = JSON.parse(storage);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storage = localStorage.getItem("user");
+      if (storage) {
+        setUser(JSON.parse(storage));
+      }
+    }
+  }, []);
 
   return (
     <>

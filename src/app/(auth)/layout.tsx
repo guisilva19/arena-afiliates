@@ -9,32 +9,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    get();
-  }, []);
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
 
-  const get = async () => {
-    const user = localStorage.getItem("user");
-
-    if (!user) {
-      router.push("/");
-    } else {
-      setIsAuthenticated(true);
+      if (!user) {
+        router.push("/");
+      } else {
+        setIsAuthenticated(true);
+      }
     }
-  };
+  }, [router]);
+
+  if (isAuthenticated === null) {
+    return <main className="w-screen h-screen bg-black"></main>;
+  }
 
   if (!isAuthenticated) {
     return <main className="w-screen h-screen bg-black"></main>;
   }
 
   return (
-    <>
-      <main className="flex">
-        <SideBar />
-        {children}
-      </main>
-    </>
+    <main className="flex">
+      <SideBar />
+      {children}
+    </main>
   );
 }
