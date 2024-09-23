@@ -193,6 +193,7 @@ export default function Cadastrar() {
               <fieldset className="my-4 flex gap-2 items-center">
                 <input
                   type="checkbox"
+                  id="checkbox"
                   className="flex rounded-lg w-5 h-5"
                   checked={checkboxChecked}
                   onChange={() => setCheckboxChecked(!checkboxChecked)}
