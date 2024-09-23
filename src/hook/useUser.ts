@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export default function useSignin() {
+export default function useUser() {
   const router = useRouter();
 
   const getMyUser = async () => {
@@ -25,5 +25,25 @@ export default function useSignin() {
     }
   };
 
-  return { getMyUser };
+  const registerUser = async (body: any) => {
+    try {
+      const response = await fetch("api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+      if (response.ok) {
+        router.push("/");
+        toast.success("Cadastro feito com sucesso!");
+      } else {
+        toast.error("Falha ao cadastrar-se!");
+      }
+    } catch (err) {
+      toast.error("Falha ao cadastrar-se!");
+    }
+  };
+
+  return { getMyUser, registerUser };
 }

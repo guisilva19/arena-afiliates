@@ -7,11 +7,14 @@ import { schemaRegister } from "@/utils/schema";
 import { useState } from "react";
 import { FaCheck, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import Link from "next/link";
-import { li } from "framer-motion/client";
+import useUser from "@/hook/useUser";
 
 export default function Cadastrar() {
   const [viewPass, setViewPass] = useState(false);
   const [viewSelect, setViewSelect] = useState(false);
+  const [checkboxChecked, setCheckboxChecked] = useState(false);
+
+  const { registerUser } = useUser();
 
   const {
     register,
@@ -25,7 +28,7 @@ export default function Cadastrar() {
 
   return (
     <>
-      <main className="w-screen h-[110vh] bg-black flex justify-center items-center overflow-scroll register">
+      <main className="w-screen h-[120vh] bg-black flex justify-center items-center overflow-scroll register">
         <div className="w-[380px] flex flex-col items-center gap-4">
           <Image src={logo} alt="Arena" className="w-72" />
           <div className="w-11/12 flex flex-col">
@@ -33,7 +36,7 @@ export default function Cadastrar() {
               Crie sua conta
             </h3>
             <form
-              //   onSubmit={handleSubmit()}
+              onSubmit={handleSubmit(registerUser)}
               className="flex flex-col gap-2 mt-5"
             >
               <fieldset className="flex flex-col gap-2">
@@ -105,9 +108,11 @@ export default function Cadastrar() {
                 </label>
                 <input
                   type="text"
+                  placeholder=""
                   onClick={() => setViewSelect(!viewSelect)}
                   className="w-full px-4 py-3 outline-none rounded-xl"
                   value={selectedOptions.join(", ")}
+                  {...register("onde_vai_promover")}
                 />
                 {viewSelect && (
                   <ul className="absolute top-20 bg-white w-full">
@@ -150,11 +155,11 @@ export default function Cadastrar() {
                   id="url"
                   placeholder="Url ou Nome do canal"
                   className="w-full px-4 py-3 outline-none rounded-xl"
-                  {...register("url_do_canal")}
+                  {...register("url_ou_canal")}
                 />
-                {errors.url_do_canal && (
+                {errors.url_ou_canal && (
                   <p className="text-[#ff1616] text-xs">
-                    {errors.url_do_canal.message}
+                    {errors.url_ou_canal.message}
                   </p>
                 )}
               </fieldset>
@@ -170,6 +175,7 @@ export default function Cadastrar() {
                   <input
                     type={viewPass ? "text" : "password"}
                     id="Senha"
+                    placeholder="Sua senha"
                     className="w-full outline-none py-3"
                     {...register("senha")}
                   />
@@ -184,21 +190,32 @@ export default function Cadastrar() {
                 )}
               </fieldset>
 
-              <fieldset>
-                <label htmlFor="checkbox">
+              <fieldset className="my-4 flex gap-2 items-center">
+                <input
+                  type="checkbox"
+                  className="flex rounded-lg w-5 h-5"
+                  checked={checkboxChecked}
+                  onChange={() => setCheckboxChecked(!checkboxChecked)}
+                />
+                <label htmlFor="checkbox" className="text-white text-xs">
                   Aceito as condições e a política de privacidade
                 </label>
               </fieldset>
 
               <button
                 type="submit"
-                className=" w-full bg-[#4CFF4C] py-4 rounded-xl"
+                className={`w-full py-4 rounded-xl ${
+                  checkboxChecked
+                    ? "bg-[#4CFF4C]"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
+                disabled={!checkboxChecked}
               >
                 <p className="font-semibold">Cadastrar-se</p>
               </button>
             </form>
 
-            <span className="flex text-white text-sm font-light gap-2 mx-auto">
+            <span className="flex text-white text-sm font-light gap-2 mx-auto mt-8">
               Já tem uma conta?{" "}
               <Link href={"/"} className="font-medium underline">
                 Entrar
