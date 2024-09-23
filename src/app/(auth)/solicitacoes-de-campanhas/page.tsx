@@ -1,15 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { IoSearch, IoCheckmarkSharp } from "react-icons/io5";
-import { IoSettingsSharp } from "react-icons/io5";
-import { IoCopyOutline } from "react-icons/io5";
+import { IoSearch, IoCheckmarkSharp, IoSettingsSharp, IoCopyOutline } from "react-icons/io5";
+import { FiTag, FiFileText, FiGlobe, FiPercent, FiTool } from "react-icons/fi";
 
 export default function ListCampaings() {
   const [pedidoSolicitado, setPedidoSolicitado] = useState(false);
-
   const [isModalLinkOpen, setIsModalLinkOpen] = useState(false);
-
   const [linkAfiliacao, setLinkAfiliacao] = useState("exemplo.com");
 
   const handleCopyLink = () => {
@@ -29,9 +26,7 @@ export default function ListCampaings() {
     <>
       <main className="w-[calc(100vw-300px)] ml-[300px] px-8 pt-8 text-white h-screen">
         <div className="bg-[#2D2D2D] w-full h-32 px-4 py-5 flex flex-col justify-between rounded-[5px]">
-          <h3 className="text-white text-xl font-medium">
-            Solicitações de campanhas
-          </h3>
+          <h3 className="text-white text-xl font-medium">Solicitações de campanhas</h3>
           <form className="flex gap-6 items-center">
             <fieldset className="w-full">
               <select
@@ -74,12 +69,24 @@ export default function ListCampaings() {
         {/* Tabela de campanhas */}
         <div className="mt-8">
           <div className="grid grid-cols-12 gap-4 text-left text-gray-400 uppercase text-sm bg-[#2D2D2D] p-4 rounded-[5px]">
-            <div className="col-span-2">Marca</div>
-            <div className="col-span-2">Solicitação</div>
-            <div className="col-span-2">País</div>
-            <div className="col-span-3">Condições</div>
-            <div className="col-span-2">Comissão</div>
-            <div className="col-span-1 text-center">Ações</div>
+            <div className="col-span-2 flex items-center gap-2">
+              <FiTag size={16} /> Marca
+            </div>
+            <div className="col-span-2 flex items-center gap-2">
+              <FiFileText size={16} /> Solicitação
+            </div>
+            <div className="col-span-2 flex items-center gap-2">
+              <FiGlobe size={16} /> País
+            </div>
+            <div className="col-span-3 flex items-center gap-2">
+              <FiFileText size={16} /> Condições
+            </div>
+            <div className="col-span-2 flex items-center gap-2">
+              <FiPercent size={16} /> Comissão
+            </div>
+            <div className="col-span-1 flex items-center justify-center gap-2">
+              <FiTool size={16} /> Ações
+            </div>
           </div>
 
           {/* Exemplo de uma linha da tabela */}
@@ -141,8 +148,6 @@ export default function ListCampaings() {
             >
               Confirmar
             </button>
-
-            
           </div>
         </div>
       )}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { IoSearch, IoCheckmarkSharp } from "react-icons/io5";
 import { IoSettingsSharp } from "react-icons/io5";
+import { FiUser, FiPhone, FiMapPin, FiFileText, FiPercent, FiTool } from "react-icons/fi"; // Ícones
 
 export default function ListCampaings() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -103,12 +104,24 @@ export default function ListCampaings() {
 
         <div className="mt-2">
           <div className="grid grid-cols-12 gap-4 text-left text-gray-400 uppercase text-sm bg-[#2D2D2D] p-4 rounded-[5px]">
-            <div className="col-span-2">Marca</div>
-            <div className="col-span-2">Solicitação</div>
-            <div className="col-span-2">País</div>
-            <div className="col-span-3">Condições</div>
-            <div className="col-span-2">Comissão</div>
-            <div className="col-span-1 text-center">Ações</div>
+            <div className="col-span-2 flex items-center gap-2">
+              <FiUser size={16} /> Marca
+            </div>
+            <div className="col-span-2 flex items-center gap-2">
+              <FiFileText size={16} /> Solicitação
+            </div>
+            <div className="col-span-2 flex items-center gap-2">
+              <FiMapPin size={16} /> País
+            </div>
+            <div className="col-span-3 flex items-center gap-2">
+              <FiFileText size={16} /> Condições
+            </div>
+            <div className="col-span-2 flex items-center gap-2">
+              <FiPercent size={16} /> Comissão
+            </div>
+            <div className="col-span-1 flex items-center justify-center gap-2">
+              <FiTool size={16} /> Ações
+            </div>
           </div>
 
           {campanhas.map((campanha, idx) => (
