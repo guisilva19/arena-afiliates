@@ -5,11 +5,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaRegister } from "@/utils/schema";
 import { useState } from "react";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { FaCheck, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import Link from "next/link";
+import { li } from "framer-motion/client";
 
 export default function Cadastrar() {
   const [viewPass, setViewPass] = useState(false);
+  const [viewSelect, setViewSelect] = useState(false);
 
   const {
     register,
@@ -19,11 +21,11 @@ export default function Cadastrar() {
     resolver: yupResolver(schemaRegister),
   });
 
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
   return (
     <>
-      <main className="w-screen h-screen bg-black flex justify-center items-center">
+      <main className="w-screen h-[110vh] bg-black flex justify-center items-center overflow-scroll register">
         <div className="w-[380px] flex flex-col items-center gap-4">
           <Image src={logo} alt="Arena" className="w-72" />
           <div className="w-11/12 flex flex-col">
@@ -91,6 +93,51 @@ export default function Cadastrar() {
                   <p className="text-[#ff1616] text-xs">
                     {errors.telefone.message}
                   </p>
+                )}
+              </fieldset>
+
+              <fieldset className="flex flex-col gap-2 relative">
+                <label
+                  htmlFor="Telefone"
+                  className="text-white text-sm font-light"
+                >
+                  Onde você vai promover as campanhas?
+                </label>
+                <input
+                  type="text"
+                  onClick={() => setViewSelect(!viewSelect)}
+                  className="w-full px-4 py-3 outline-none rounded-xl"
+                  value={selectedOptions.join(", ")}
+                />
+                {viewSelect && (
+                  <ul className="absolute top-20 bg-white w-full">
+                    {data.map((item, index) => (
+                      <li
+                        onClick={() => {
+                          if (selectedOptions.includes(item)) {
+                            setSelectedOptions(
+                              selectedOptions.filter(
+                                (option) => option !== item
+                              )
+                            );
+                          } else {
+                            setSelectedOptions([...selectedOptions, item]);
+                          }
+                          setViewSelect(!viewSelect);
+                        }}
+                        key={index}
+                        className={`hover:bg-green-500 hover:text-white py-3 px-3 flex items-center justify-between ${
+                          selectedOptions.includes(item) &&
+                          "bg-green-500 text-white"
+                        }`}
+                      >
+                        <p>{item}</p>
+                        {selectedOptions.includes(item) && (
+                          <FaCheck color="#fff" />
+                        )}
+                      </li>
+                    ))}
+                  </ul>
                 )}
               </fieldset>
 
@@ -163,3 +210,5 @@ export default function Cadastrar() {
     </>
   );
 }
+
+const data = ["Instagram", "Facebook", "Website", "Youtube", "Outro"];
