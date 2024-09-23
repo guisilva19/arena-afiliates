@@ -110,7 +110,12 @@ const NavigateOptions = () => {
                   : "/campanhas-ativas"
               }
               className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white rounded-xl ${
-                path === "/faturamento-caixa"
+                path ===
+                `${
+                  user?.tipo === 1
+                    ? "/solicitacoes-de-campanhas"
+                    : "/campanhas-ativas"
+                }`
                   ? "text-green-primary bg-green-secondary"
                   : "text-white"
               }`}

@@ -1,121 +1,39 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { IoSearch, IoCheckmarkSharp } from "react-icons/io5";
 import { IoSettingsSharp } from "react-icons/io5";
 
 export default function ListCampaings() {
-  // Estado para os modais
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  // Estados para edição da campanha selecionada
   const [editCondicoes, setEditCondicoes] = useState("");
   const [editComissao, setEditComissao] = useState("");
-  const [editId, setEditId] = useState(null); // Para saber qual campanha estamos editando
-  const [editImagem, setEditImagem] = useState(null); // Imagem editada
+  const [editImagem, setEditImagem] = useState(null);
 
-  // Estado para as campanhas (tabela)
   const [campanhas, setCampanhas] = useState([
     {
-      id: 1,
-      imagem: "", // imagem inicial (vazia)
+      imagem: "",
       pais: "Brasil",
       condicoes: "Depositar R$ 80 / Apostar R$ 80",
       comissao: "R$ 40 + 20%",
-      pedidoSolicitado: false, // Estado específico para o pedido de cada campanha
+      pedidoSolicitado: false,
     },
   ]);
 
-  // Estado para os valores do modal "Adicionar Campanha"
-  const [novaImagem, setNovaImagem] = useState(null);
-  const [novoNome, setNovoNome] = useState(""); // Nome da campanha (registro interno)
-  const [novoPais, setNovoPais] = useState("");
-  const [novoCondicoes, setNovoCondicoes] = useState("");
-  const [novoComissao, setNovoComissao] = useState("");
-
-  // Função para abrir o modal de adicionar campanha
   const handleOpenAddModal = () => {
     setIsAddModalOpen(true);
   };
 
-  // Função para abrir o modal de edição de condições e comissão
-  const handleOpenEditModal = (id, condicoes, comissao, imagem) => {
-    setEditCondicoes(condicoes);
-    setEditComissao(comissao);
-    setEditImagem(imagem); // Carrega a imagem existente para edição
-    setEditId(id);
-    setIsModalOpen(true);
-  };
-
-  // Função para fechar os modais
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setIsAddModalOpen(false);
   };
 
-  // Função para adicionar uma nova campanha à tabela
-  const handleAdicionarCampanha = () => {
-    const novaCampanha = {
-      id: campanhas.length + 1, // Gera um novo ID baseado no tamanho da lista
-      imagem: novaImagem, // Armazena a imagem selecionada
-      pais: novoPais,
-      condicoes: novoCondicoes,
-      comissao: novoComissao,
-      pedidoSolicitado: false, // Inicia como false (nenhum pedido solicitado)
-    };
-
-    setCampanhas([...campanhas, novaCampanha]); // Adiciona a nova campanha à lista
-    handleCloseModal(); // Fecha o modal após adicionar
-  };
-
-  // Função para capturar a imagem do input
-  const handleImagemChange = (e) => {
-    const file = e.target.files[0];
-    setNovaImagem(URL.createObjectURL(file)); // Cria uma URL temporária para exibir a imagem
-  };
-
-  // Função para capturar a nova imagem no modal de edição
-  const handleEditImagemChange = (e) => {
-    const file = e.target.files[0];
-    setEditImagem(URL.createObjectURL(file)); // Atualiza a imagem temporária no modal de edição
-  };
-
-  // Função para atualizar as condições, comissão e imagem de uma campanha
-  const handleUpdateCampanha = () => {
-    setCampanhas((prevCampanhas) =>
-      prevCampanhas.map((campanha) =>
-        campanha.id === editId
-          ? {
-              ...campanha,
-              condicoes: editCondicoes,
-              comissao: editComissao,
-              imagem: editImagem, // Atualiza a imagem selecionada
-            }
-          : campanha
-      )
-    );
-    handleCloseModal(); // Fecha o modal após a edição
-  };
-
-  // Função para fazer o pedido para uma campanha específica
-  const handleFazerPedido = (id) => {
-    setCampanhas((prevCampanhas) =>
-      prevCampanhas.map((campanha) =>
-        campanha.id === id
-          ? { ...campanha, pedidoSolicitado: true } // Atualiza apenas a campanha selecionada
-          : campanha
-      )
-    );
-  };
-
-  // Função para excluir a campanha
-  const handleExcluirCampanha = () => {
-    setCampanhas((prevCampanhas) =>
-      prevCampanhas.filter((campanha) => campanha.id !== editId)
-    );
-    handleCloseModal(); // Fecha o modal após a exclusão
-  };
+  const storage: any = localStorage.getItem("user");
+  const user = JSON.parse(storage);
 
   return (
     <>
@@ -163,18 +81,18 @@ export default function ListCampaings() {
           </form>
         </div>
 
-        {/* Botão "Adicionar Campanha" posicionado à direita */}
-        <div className="flex justify-end mt-4">
-          <button
-            onClick={handleOpenAddModal}
-            className="bg-[#80F87E] bg-opacity-16 text-[#85FF4C] px-4 py-2 text-sm rounded-md transition-transform duration-300 ease-in-out hover:scale-105 "
-            style={{ backgroundColor: "rgba(128, 248, 126, 0.16)" }}
-          >
-            Adicionar Campanha
-          </button>
-        </div>
+        {user.tipo === 1 && (
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={handleOpenAddModal}
+              className="bg-[#80F87E] bg-opacity-16 text-[#85FF4C] px-4 py-2 text-sm rounded-md transition-transform duration-300 ease-in-out hover:scale-105 "
+              style={{ backgroundColor: "rgba(128, 248, 126, 0.16)" }}
+            >
+              Adicionar Campanha
+            </button>
+          </div>
+        )}
 
-        {/* Tabela de campanhas */}
         <div className="mt-2">
           <div className="grid grid-cols-12 gap-4 text-left text-gray-400 uppercase text-sm bg-[#2D2D2D] p-4 rounded-[5px]">
             <div className="col-span-2">Marca</div>
@@ -185,15 +103,14 @@ export default function ListCampaings() {
             <div className="col-span-1 text-center">Ações</div>
           </div>
 
-          {/* Renderizar as campanhas dinâmicas */}
-          {campanhas.map((campanha) => (
+          {campanhas.map((campanha, idx) => (
             <div
-              key={campanha.id}
+              key={idx}
               className="grid grid-cols-12 gap-4 items-center text-white text-sm bg-[#2D2D2D] p-4 rounded-[5px] mt-2 hover:bg-[#3A3A3A]"
             >
               <div className="col-span-2">
                 {campanha.imagem ? (
-                  <img
+                  <Image
                     src={campanha.imagem}
                     alt="Logo"
                     className="w-[70px] h-[35px] object-cover rounded-[3px]" // Borda arredondada
@@ -206,10 +123,7 @@ export default function ListCampaings() {
                 {campanha.pedidoSolicitado ? (
                   <span className="text-green-500">Campanha solicitada</span>
                 ) : (
-                  <button
-                    className="flex items-center gap-2 px-4 py-1 border border-green-500 text-green-500 rounded-full hover:bg-green-500 hover:text-white transition"
-                    onClick={() => handleFazerPedido(campanha.id)} // Chama a função com o ID da campanha
-                  >
+                  <button className="flex items-center gap-2 px-4 py-1 border border-green-500 text-green-500 rounded-full hover:bg-green-500 hover:text-white transition">
                     Pedido <IoCheckmarkSharp />
                   </button>
                 )}
@@ -218,17 +132,7 @@ export default function ListCampaings() {
               <div className="col-span-3">{campanha.condicoes}</div>
               <div className="col-span-2">{campanha.comissao}</div>
               <div className="col-span-1 text-center">
-                <button
-                  className="text-white"
-                  onClick={() =>
-                    handleOpenEditModal(
-                      campanha.id,
-                      campanha.condicoes,
-                      campanha.comissao,
-                      campanha.imagem
-                    )
-                  }
-                >
+                <button className="text-white">
                   <IoSettingsSharp size={20} />
                 </button>
               </div>
@@ -237,7 +141,6 @@ export default function ListCampaings() {
         </div>
       </main>
 
-      {/* Modal de Edição */}
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded-lg max-w-md w-full">
@@ -248,7 +151,6 @@ export default function ListCampaings() {
               Atualize as condições, comissão e a imagem da campanha.
             </p>
 
-            {/* Campo para alterar a imagem */}
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 Imagem da Campanha
@@ -256,14 +158,13 @@ export default function ListCampaings() {
               <input
                 type="file"
                 accept="image/png, image/jpeg, image/jpg"
-                onChange={handleEditImagemChange} // Função para trocar a imagem
                 className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
               />
               {editImagem && (
-                <img
+                <Image
                   src={editImagem}
                   alt="Preview"
-                  className="w-[70px] h-[35px] object-cover mt-2 rounded-[3px]" // Preview da imagem
+                  className="w-[70px] h-[35px] object-cover mt-2 rounded-[3px]"
                 />
               )}
             </div>
@@ -294,9 +195,12 @@ export default function ListCampaings() {
 
             <div className="text-center mt-2">
               <button
-                onClick={handleUpdateCampanha}
                 className="bg-green-500 text-white py-2 px-4 rounded-full w-full hover:bg-green-600 transition"
-                style={{boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", borderRadius: "80px", width: "160px" }} // Mantém o corner radius e largura
+                style={{
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  borderRadius: "80px",
+                  width: "160px",
+                }}
               >
                 Concluir
               </button>
@@ -304,14 +208,16 @@ export default function ListCampaings() {
 
             <div className="text-center mt-2">
               <button
-                onClick={handleExcluirCampanha}
                 className="bg-red-500 text-white py-2 px-6 rounded-full hover:bg-red-600 transition"
-                style={{ boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", borderRadius: "80px", width: "115px" }} // Mantém o corner radius e largura
+                style={{
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  borderRadius: "80px",
+                  width: "115px",
+                }}
               >
                 Excluir
               </button>
             </div>
-
 
             <button
               onClick={handleCloseModal}
@@ -323,7 +229,6 @@ export default function ListCampaings() {
         </div>
       )}
 
-      {/* Modal de Adicionar Campanha */}
       {isAddModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded-lg max-w-md w-full">
@@ -341,8 +246,6 @@ export default function ListCampaings() {
               </label>
               <input
                 type="text"
-                value={novoNome}
-                onChange={(e) => setNovoNome(e.target.value)}
                 className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
               />
             </div>
@@ -354,7 +257,6 @@ export default function ListCampaings() {
               <input
                 type="file"
                 accept="image/png, image/jpeg, image/jpg"
-                onChange={handleImagemChange}
                 className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
               />
             </div>
@@ -365,8 +267,6 @@ export default function ListCampaings() {
               </label>
               <input
                 type="text"
-                value={novoPais}
-                onChange={(e) => setNovoPais(e.target.value)}
                 className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
               />
             </div>
@@ -377,8 +277,6 @@ export default function ListCampaings() {
               </label>
               <input
                 type="text"
-                value={novoCondicoes}
-                onChange={(e) => setNovoCondicoes(e.target.value)}
                 className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
               />
             </div>
@@ -389,21 +287,17 @@ export default function ListCampaings() {
               </label>
               <input
                 type="text"
-                value={novoComissao}
-                onChange={(e) => setNovoComissao(e.target.value)}
                 className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
               />
             </div>
 
             <button
-              onClick={handleAdicionarCampanha}
-              className="bg-green-500 text-white py-3 px-8 rounded-full hover:shadow-lg transition-all hover:bg-green-600 transition"
+              className="bg-green-500 text-white py-3 px-8 rounded-full hover:shadow-lg transition-all hover:bg-green-600"
               style={{
-    
-                fontSize: "16px", // Tamanho de fonte similar ao print
-                fontWeight: "500", // Peso da fonte para ficar mais destacado
-                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Sombra leve para destaque
-                width: "fit-content", // Ajusta o tamanho ao conteúdo
+                fontSize: "16px",
+                fontWeight: "500",
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                width: "fit-content",
               }}
             >
               Adicionar Campanha
