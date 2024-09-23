@@ -49,6 +49,8 @@ export default function SideBar() {
           onClick={() => {
             localStorage.removeItem("user");
             router.push("/");
+            // setTimeout(() => )
+            // window.location.reload();
           }}
           className="flex h-12 w-10/12 items-center px-3 gap-2 text-white rounded-xl mx-auto mb-2 hover:bg-[#ffffff17] duration-400"
         >
@@ -87,25 +89,60 @@ const NavigateOptions = () => {
                 </div>
               </Link>
             )}
-            {options.map((item, idx: number) => (
-              <Link
-                key={idx}
-                href={item.path}
-                className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white rounded-xl ${
-                  path === item.path
-                    ? "text-green-primary bg-green-secondary"
-                    : "text-white"
-                }`}
-              >
-                <div className="w-full flex items-center gap-1">
-                  <figure className="w-8 flex justify-center">
-                    {item.icon}
-                  </figure>
-                  <p className="font-medium text-sm">{item.title}</p>
-                </div>
-                {item.chevron && <GoChevronRight size={14} color="#ffffff5e" />}
-              </Link>
-            ))}
+            <Link
+              href={"/lista-de-campanhas"}
+              className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white rounded-xl ${
+                path === "/lista-de-campanhas"
+                  ? "text-green-primary bg-green-secondary"
+                  : "text-white"
+              }`}
+            >
+              <div className="w-full flex items-center gap-1">
+                <figure className="w-8 flex justify-center">
+                  <FaStar size={22} />
+                </figure>
+                <p className="font-medium text-sm">Lista de campanhas</p>
+              </div>
+            </Link>
+            <Link
+              href={
+                user?.tipo === 1
+                  ? "/solicitacoes-de-campanhas"
+                  : "/campanhas-ativas"
+              }
+              className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white rounded-xl ${
+                path === "/faturamento-caixa"
+                  ? "text-green-primary bg-green-secondary"
+                  : "text-white"
+              }`}
+            >
+              <div className="w-full flex items-center gap-1">
+                <figure className="w-8 flex justify-center">
+                  <HiPuzzlePiece size={26} />
+                </figure>
+                <p className="font-medium text-sm">
+                  {user?.tipo === 1
+                    ? "Solicitações de campanhas"
+                    : "Campanhas ativas"}
+                </p>
+              </div>
+            </Link>
+
+            <Link
+              href={"/faturamento-caixa"}
+              className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white rounded-xl ${
+                path === "/faturamento-caixa"
+                  ? "text-green-primary bg-green-secondary"
+                  : "text-white"
+              }`}
+            >
+              <div className="w-full flex items-center gap-1">
+                <figure className="w-8 flex justify-center">
+                  <MdOutlineAttachMoney size={26} />
+                </figure>
+                <p className="font-medium text-sm">Faturamento e caixa</p>
+              </div>
+            </Link>
             {user?.tipo === 1 && (
               <Link
                 href={"/afiliados"}
@@ -160,9 +197,9 @@ const NavigateOptions = () => {
             </figure>
             <span className="flex flex-col w-full">
               <p className="font-medium">{truncateText(user?.nome, 20)}</p>
-              <span className="text-[#AEB9E1] text-xs flex w-full justify-between">
+              <span className="text-[#FFFFFF] text-xs flex w-full justify-between">
                 Configurações da conta
-                <GoChevronRight size={14} color="#AEB9E1" />
+                <GoChevronRight size={14} color="#FFFFFF" />
               </span>
             </span>
           </div>
@@ -174,37 +211,3 @@ const NavigateOptions = () => {
 
 const storage = localStorage.getItem("user");
 const user = JSON.parse(storage as string);
-
-const options = [
-  // user?.tipo === 1 && {
-  //   icon: <RiHomeFill size={22} />,
-  //   title: "Painel de controle",
-  //   path: "/dashboard",
-  //   chevron: false,
-  // },
-  {
-    icon: <FaStar size={22} />,
-    title: "Lista de campanhas",
-    path: "/lista-de-campanhas",
-    chevron: false,
-  },
-  user?.tipo === 1
-    ? {
-        icon: <HiPuzzlePiece size={22} />,
-        title: "Solicitações de campanhas",
-        path: "/solicitacoes-de-campanhas",
-        chevron: false,
-      }
-    : {
-        icon: <HiPuzzlePiece size={22} />,
-        title: "Campanhas ativas",
-        path: "/campanhas-ativas",
-        chevron: false,
-      },
-  {
-    icon: <MdOutlineAttachMoney size={26} />,
-    title: "Faturamento e caixa",
-    path: "/faturamento-caixa",
-    chevron: false,
-  },
-];
