@@ -72,23 +72,22 @@ const NavigateOptions = () => {
       <nav className="w-full flex flex-col items-center mt-8">
         <ul className="flex flex-col items-center w-full gap-3 border-b border-white/30 pb-8">
           <>
-            {user?.tipo === 1 && (
-              <Link
-                href={"/dashboard"}
-                className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white rounded-xl ${
-                  path === "/dashboard"
-                    ? "text-green-primary bg-green-secondary"
-                    : "text-white"
-                }`}
-              >
-                <div className="w-full flex items-center gap-1">
-                  <figure className="w-8 flex justify-center">
-                    <FaUser />
-                  </figure>
-                  <p className="font-medium text-sm">Painel de controle</p>
-                </div>
-              </Link>
-            )}
+            <Link
+              href={"/dashboard"}
+              className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white rounded-xl ${
+                path === "/dashboard"
+                  ? "text-green-primary bg-green-secondary"
+                  : "text-white"
+              }`}
+            >
+              <div className="w-full flex items-center gap-1">
+                <figure className="w-8 flex justify-center">
+                  <FaUser />
+                </figure>
+                <p className="font-medium text-sm">Painel de controle</p>
+              </div>
+            </Link>
+
             <Link
               href={"/lista-de-campanhas"}
               className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white rounded-xl ${
