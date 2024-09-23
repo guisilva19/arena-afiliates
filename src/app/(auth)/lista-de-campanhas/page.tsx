@@ -89,7 +89,7 @@ export default function ListCampaings() {
           </form>
         </div>
 
-        {user.tipo === 1 && (
+        {user?.tipo === 1 && (
           <div className="flex justify-end mt-4">
             <button
               onClick={handleOpenAddModal}
