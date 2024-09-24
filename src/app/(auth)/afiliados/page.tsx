@@ -65,7 +65,7 @@ export default function Afiliates() {
       <main className="w-[calc(100vw-300px)] ml-[300px] h-screen px-8 pt-8 text-white">
         <div className="bg-transparent w-full h-20 px-4 py-5 flex items-center mb-7 gap-10">
           <h3 className="text-white text-2xl font-medium">Afiliados</h3>
-          <form className="flex gap-6 items-center justify-between w-full">
+          <div className="flex gap-6 items-center justify-between w-full">
             <fieldset className="bg-[#2d2d2d] w-[350px] h-[44px] flex items-center text-white gap-2 pl-[12px] rounded-md">
               <BiSearch size={18} className="text-white" />
               <input
@@ -75,12 +75,13 @@ export default function Afiliates() {
               />
             </fieldset>
             <button
+              type="button"
               className="min-w-[220px] text-sm h-[38px] bg-green-secondary text-green-primary flex items-center justify-center rounded-md"
               onClick={handleAddAfiliado}
             >
               Adicionar afiliado
             </button>
-          </form>
+          </div>
         </div>
 
         <Cards handleOpenEditModal={handleOpenEditModal} />
