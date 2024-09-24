@@ -1,28 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { IoSearch, IoCheckmarkSharp } from "react-icons/io5";
 import { IoSettingsSharp } from "react-icons/io5";
-import { FiUser, FiPhone, FiMapPin, FiFileText, FiPercent, FiTool } from "react-icons/fi"; // Ícones
+import {
+  FiUser,
+  FiPhone,
+  FiMapPin,
+  FiFileText,
+  FiPercent,
+  FiTool,
+} from "react-icons/fi"; // Ícones
+import useCampaign from "@/hook/useCampaign";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schemaCampanha } from "@/utils/schema";
+import { toast } from "sonner";
 
 export default function ListCampaings() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const { list } = useCampaign();
 
-  const [editCondicoes, setEditCondicoes] = useState("");
-  const [editComissao, setEditComissao] = useState("");
-  const [editImagem, setEditImagem] = useState(null);
-
-  const [campanhas, setCampanhas] = useState([
-    {
-      imagem: "",
-      pais: "Brasil",
-      condicoes: "Depositar R$ 80 / Apostar R$ 80",
-      comissao: "R$ 40 + 20%",
-      pedidoSolicitado: false,
-    },
-  ]);
+  const [campanhas, setCampanhas] = useState<any>([]);
 
   const handleOpenAddModal = () => {
     setIsAddModalOpen(true);
@@ -42,7 +43,13 @@ export default function ListCampaings() {
         setUser(JSON.parse(storage));
       }
     }
+
+    get();
   }, []);
+
+  const get = async () => {
+    setCampanhas(await list());
+  };
 
   return (
     <>
@@ -103,15 +110,12 @@ export default function ListCampaings() {
         )}
 
         <div className="mt-2">
-          <div className="grid grid-cols-12 gap-4 text-left text-gray-400 uppercase text-sm bg-[#2D2D2D] p-4 rounded-[5px]">
+          <div className="grid grid-cols-10 gap-4 text-left text-gray-400 uppercase text-sm bg-[#2D2D2D] p-4 rounded-[5px]">
             <div className="col-span-2 flex items-center gap-2">
               <FiUser size={16} /> Marca
             </div>
             <div className="col-span-2 flex items-center gap-2">
-              <FiFileText size={16} /> Solicitação
-            </div>
-            <div className="col-span-2 flex items-center gap-2">
-              <FiMapPin size={16} /> País
+              <FiFileText size={16} /> Nome
             </div>
             <div className="col-span-3 flex items-center gap-2">
               <FiFileText size={16} /> Condições
@@ -124,23 +128,25 @@ export default function ListCampaings() {
             </div>
           </div>
 
-          {campanhas.map((campanha, idx) => (
+          {campanhas.map((campanha: any, idx: number) => (
             <div
               key={idx}
-              className="grid grid-cols-12 gap-4 items-center text-white text-sm bg-[#2D2D2D] p-4 rounded-[5px] mt-2 hover:bg-[#3A3A3A]"
+              className="grid grid-cols-10 gap-4 items-center text-white text-sm bg-[#2D2D2D] p-4 rounded-[5px] mt-2 hover:bg-[#3A3A3A]"
             >
               <div className="col-span-2">
-                {campanha.imagem ? (
+                {campanha?.logo ? (
                   <Image
-                    src={campanha.imagem}
+                    src={campanha.logo}
                     alt="Logo"
-                    className="w-[70px] h-[35px] object-cover rounded-[3px]" // Borda arredondada
+                    className="w-max h-[35px] object-cover rounded-[3px]"
+                    width={70}
+                    height={35}
                   />
                 ) : (
-                  "[Espaço para imagem]"
+                  "Imagem"
                 )}
               </div>
-              <div className="col-span-2">
+              {/* <div className="col-span-2">
                 {campanha.pedidoSolicitado ? (
                   <span className="text-green-500">Campanha solicitada</span>
                 ) : (
@@ -148,12 +154,15 @@ export default function ListCampaings() {
                     Pedido <IoCheckmarkSharp />
                   </button>
                 )}
-              </div>
-              <div className="col-span-2">{campanha.pais}</div>
-              <div className="col-span-3">{campanha.condicoes}</div>
-              <div className="col-span-2">{campanha.comissao}</div>
+              </div> */}
+              <p className="col-span-2">{campanha?.nome}</p>
+              <p className="col-span-3">{campanha?.condicao}</p>
+              <p className="col-span-2">{campanha?.comissao}</p>
               <div className="col-span-1 text-center">
-                <button className="text-white">
+                <button
+                  className="text-white"
+                  onClick={() => setIsModalOpen(true)}
+                >
                   <IoSettingsSharp size={20} />
                 </button>
               </div>
@@ -162,157 +171,127 @@ export default function ListCampaings() {
         </div>
       </main>
 
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg max-w-md w-full">
-            <h3 className="text-xl font-semibold text-center mb-4">
-              Editar Campanha
-            </h3>
-            <p className="text-gray-500 text-center mb-6">
-              Atualize as condições, comissão e a imagem da campanha.
-            </p>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Imagem da Campanha
-              </label>
-              <input
-                type="file"
-                accept="image/png, image/jpeg, image/jpg"
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-              {editImagem && (
-                <Image
-                  src={editImagem}
-                  alt="Preview"
-                  className="w-[70px] h-[35px] object-cover mt-2 rounded-[3px]"
-                />
-              )}
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Condições
-              </label>
-              <input
-                type="text"
-                value={editCondicoes}
-                onChange={(e) => setEditCondicoes(e.target.value)}
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
-
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700">
-                Comissão
-              </label>
-              <input
-                type="text"
-                value={editComissao}
-                onChange={(e) => setEditComissao(e.target.value)}
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
-
-            <div className="text-center mt-2">
-              <button
-                className="bg-green-500 text-white py-2 px-4 rounded-full w-full hover:bg-green-600 transition"
-                style={{
-                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                  borderRadius: "80px",
-                  width: "160px",
-                }}
-              >
-                Concluir
-              </button>
-            </div>
-
-            <div className="text-center mt-2">
-              <button
-                className="bg-red-500 text-white py-2 px-6 rounded-full hover:bg-red-600 transition"
-                style={{
-                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                  borderRadius: "80px",
-                  width: "115px",
-                }}
-              >
-                Excluir
-              </button>
-            </div>
-
-            <button
-              onClick={handleCloseModal}
-              className="mt-2 text-gray-500 text-center w-full"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      )}
+      {isModalOpen && <ModalEdit handleCloseModal={handleCloseModal} />}
 
       {isAddModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg max-w-md w-full">
-            <h3 className="text-xl font-semibold text-center mb-4">
-              Adicionar Nova Campanha
-            </h3>
-            <p className="text-gray-500 text-center mb-6">
-              Por favor, preencha os dados abaixo para adicionar uma nova
-              campanha.
-            </p>
+        <ModalAdd
+          handleCloseModal={handleCloseModal}
+          setCampanhas={setCampanhas}
+          campanhas={campanhas}
+        />
+      )}
+    </>
+  );
+}
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Nome da Marca
-              </label>
-              <input
-                type="text"
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
+const ModalAdd = ({
+  handleCloseModal,
+  setCampanhas,
+  campanhas,
+}: {
+  handleCloseModal: () => void;
+  setCampanhas: Dispatch<SetStateAction<any>>;
+  campanhas: any;
+}) => {
+  const [file, setFile] = useState<any>();
+  const { create } = useCampaign();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schemaCampanha),
+  });
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Imagem da Campanha
-              </label>
-              <input
-                type="file"
-                accept="image/png, image/jpeg, image/jpg"
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
+  const handle = async (data: any) => {
+    if (file) {
+      handleCloseModal();
+      const response = await create({ ...data, logo: file });
+      setCampanhas([...campanhas, response]);
+      reset();
+    } else {
+      toast.error("Insira a logo da marca");
+    }
+  };
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                País
-              </label>
-              <input
-                type="text"
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
+  return (
+    <>
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <form
+          onSubmit={handleSubmit(handle)}
+          className="bg-white p-8 rounded-lg max-w-md w-full"
+        >
+          <h3 className="text-xl font-semibold text-center mb-4">
+            Adicionar Nova Campanha
+          </h3>
+          <p className="text-gray-500 text-center mb-6">
+            Por favor, preencha os dados abaixo para adicionar uma nova
+            campanha.
+          </p>
 
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Condições
-              </label>
-              <input
-                type="text"
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Nome da Marca
+            </label>
+            <input
+              {...register("nome")}
+              type="text"
+              className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
+            />
+            {errors.nome && (
+              <p className="text-red-500 text-xs">{errors.nome.message}</p>
+            )}
+          </div>
 
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700">
-                Comissão
-              </label>
-              <input
-                type="text"
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Imagem da Campanha
+            </label>
+            <input
+              onChange={(e: any) => {
+                const file = e.target.files[0];
+                setFile(file);
+                return file;
+              }}
+              type="file"
+              accept="image/png, image/jpeg, image/jpg"
+              className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
+            />
+          </div>
 
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Condições
+            </label>
+            <input
+              {...register("condicao")}
+              type="text"
+              className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
+            />
+            {errors.condicao && (
+              <p className="text-red-500 text-xs">{errors.condicao.message}</p>
+            )}
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700">
+              Comissão
+            </label>
+            <input
+              {...register("comissao")}
+              type="text"
+              className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
+            />
+            {errors.comissao && (
+              <p className="text-red-500 text-xs">{errors.comissao.message}</p>
+            )}
+          </div>
+
+          <div className="flex w-full justify-between max-h-12">
             <button
+              // onClick={}
+              type="submit"
               className="bg-green-500 text-white py-3 px-8 rounded-full hover:shadow-lg transition-all hover:bg-green-600"
               style={{
                 fontSize: "16px",
@@ -326,13 +305,109 @@ export default function ListCampaings() {
 
             <button
               onClick={handleCloseModal}
-              className="mt-2 text-gray-500 text-center w-full"
+              className="text-gray-500 text-center px-6 hover:bg-red-500 hover:text-white rounded-full duration-400"
             >
               Cancelar
             </button>
           </div>
-        </div>
-      )}
+        </form>
+      </div>
     </>
   );
-}
+};
+
+const ModalEdit = ({ handleCloseModal }: { handleCloseModal: () => void }) => {
+  const [editCondicoes, setEditCondicoes] = useState("");
+  const [editComissao, setEditComissao] = useState("");
+  const [editImagem, setEditImagem] = useState(null);
+
+  return (
+    <>
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-white p-8 rounded-lg max-w-md w-full">
+          <h3 className="text-xl font-semibold text-center mb-4">
+            Editar Campanha
+          </h3>
+          <p className="text-gray-500 text-center mb-6">
+            Atualize as condições, comissão e a imagem da campanha.
+          </p>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Imagem da Campanha
+            </label>
+            <input
+              type="file"
+              accept="image/png, image/jpeg, image/jpg"
+              className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
+            />
+            {editImagem && (
+              <Image
+                src={editImagem}
+                alt="Preview"
+                className="w-[70px] h-[35px] object-cover mt-2 rounded-[3px]"
+              />
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Condições
+            </label>
+            <input
+              type="text"
+              value={editCondicoes}
+              onChange={(e) => setEditCondicoes(e.target.value)}
+              className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700">
+              Comissão
+            </label>
+            <input
+              type="text"
+              value={editComissao}
+              onChange={(e) => setEditComissao(e.target.value)}
+              className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
+            />
+          </div>
+
+          <div className="text-center mt-2">
+            <button
+              className="bg-green-500 text-white py-2 px-4 rounded-full w-full hover:bg-green-600 transition"
+              style={{
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                borderRadius: "80px",
+                width: "160px",
+              }}
+            >
+              Concluir
+            </button>
+          </div>
+
+          <div className="text-center mt-2">
+            <button
+              className="bg-red-500 text-white py-2 px-6 rounded-full hover:bg-red-600 transition"
+              style={{
+                boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                borderRadius: "80px",
+                width: "115px",
+              }}
+            >
+              Excluir
+            </button>
+          </div>
+
+          <button
+            onClick={handleCloseModal}
+            className="mt-2 text-gray-500 text-center w-full"
+          >
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
