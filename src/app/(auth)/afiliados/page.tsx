@@ -6,12 +6,19 @@ import { FaHeart, FaUser } from "react-icons/fa";
 import { HiDotsCircleHorizontal } from "react-icons/hi";
 import { HiUsers } from "react-icons/hi2";
 import { IoSettingsSharp } from "react-icons/io5";
-import { FiUser, FiPhone, FiMapPin, FiFileText, FiPercent, FiTool } from "react-icons/fi"; // Ícones
+import {
+  FiUser,
+  FiPhone,
+  FiMapPin,
+  FiFileText,
+  FiPercent,
+  FiTool,
+} from "react-icons/fi"; // Ícones
 
 export default function Afiliates() {
   const [isModalOpen, setIsModalOpen] = useState(false); // Controle do modal de adicionar afiliado
   const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Controle do modal de edição
-  const [selectedAfiliado, setSelectedAfiliado] = useState(null); // Afiliado selecionado para edição
+  const [selectedAfiliado, setSelectedAfiliado] = useState<any>(null); // Afiliado selecionado para edição
 
   // Estado dos campos do modal de adicionar e editar afiliado
   const [nome, setNome] = useState("");
@@ -30,7 +37,7 @@ export default function Afiliates() {
     setIsModalOpen(false);
   };
 
-  const handleOpenEditModal = (afiliado) => {
+  const handleOpenEditModal = (afiliado: any) => {
     // Preenche os campos do modal de edição com os dados do afiliado
     setSelectedAfiliado(afiliado);
     setNome(afiliado.nome);
@@ -144,7 +151,8 @@ export default function Afiliates() {
               Adicionar Novo Afiliado
             </h3>
             <p className="text-gray-500 text-center mb-6">
-              Por favor, preencha os dados abaixo para adicionar um novo afiliado.
+              Por favor, preencha os dados abaixo para adicionar um novo
+              afiliado.
             </p>
 
             <div className="mb-4">
@@ -370,7 +378,7 @@ export default function Afiliates() {
   );
 }
 
-const Cards = ({ handleOpenEditModal }) => {
+const Cards = ({ handleOpenEditModal }: any) => {
   // Dados fictícios dos afiliados
   const afiliados = [
     {
