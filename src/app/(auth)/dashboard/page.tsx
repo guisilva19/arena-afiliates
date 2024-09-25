@@ -60,7 +60,6 @@ export default function Dashboard() {
         {/* Adicionar Campo de Pesquisa e Filtros */}
         <div className="flex items-center space-x-4 mt-4">
           <div className="flex items-center bg-[#1E1E1E] text-white rounded-md w-[350px] h-[44px] px-4">
-            <ion-icon name="search-outline" class="text-lg"></ion-icon>
             <input
               type="text"
               placeholder="Procurar por afiliado..."
@@ -70,7 +69,6 @@ export default function Dashboard() {
             />
           </div>
           <div className="flex items-center bg-[#1E1E1E] text-white rounded-md w-[42px] h-[44px] justify-center">
-            <ion-icon name="calendar-outline" class="text-lg"></ion-icon>
           </div>
           <div className="flex items-center space-x-2">
             <select className="bg-[#1E1E1E] text-white rounded-md px-2 py-2.5">
