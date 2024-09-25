@@ -45,5 +45,47 @@ export default function useUser() {
     }
   };
 
-  return { getMyUser, registerUser };
+  const registerAfiliate = async (body: any) => {
+    try {
+      const response = await fetch("api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+      if (response.ok) {
+        toast.success("Afiliado cadastrado com sucesso!");
+        return await response.json()
+      } else {
+        toast.error("Falha ao cadastrar afiliado!");
+      }
+    } catch (err) {
+      toast.error("Falha ao cadastrar afiliado!");
+    }
+  };
+
+  const getUsers = async () => {
+    console.log(localStorage.getItem("token"));
+    try {
+      const response = await fetch("api/users", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user") as string).token
+          }`,
+        },
+      });
+
+      if (response.ok) {
+        const user = await response.json();
+        return user;
+      }
+    } catch (err) {
+      toast.error("Falha ao carregar afiliados!");
+    }
+  };
+
+  return { getMyUser, registerUser, registerAfiliate, getUsers };
 }

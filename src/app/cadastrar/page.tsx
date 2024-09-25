@@ -26,6 +26,11 @@ export default function Cadastrar() {
 
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
+  const handle = async (data: any) => {
+    await registerUser({ ...data, onde_vai_promover: selectedOptions.join(", ") });
+  };
+
+
   return (
     <>
       <main className="w-screen h-[120vh] bg-black flex justify-center items-center overflow-scroll register">
@@ -36,7 +41,7 @@ export default function Cadastrar() {
               Crie sua conta
             </h3>
             <form
-              onSubmit={handleSubmit(registerUser)}
+              onSubmit={handleSubmit(handle)}
               className="flex flex-col gap-2 mt-5"
             >
               <fieldset className="flex flex-col gap-2">
@@ -112,7 +117,6 @@ export default function Cadastrar() {
                   onClick={() => setViewSelect(!viewSelect)}
                   className="w-full px-4 py-3 outline-none rounded-xl"
                   value={selectedOptions.join(", ")}
-                  {...register("onde_vai_promover")}
                 />
                 {viewSelect && (
                   <ul className="absolute top-20 bg-white w-full">

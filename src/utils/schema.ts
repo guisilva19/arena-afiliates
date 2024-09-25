@@ -17,7 +17,10 @@ export const schemaRegister = yup.object().shape({
     .string()
     .required("Insira o e-mail")
     .email("Insira um e-mail válido"),
-  senha: yup.string().required("Insira a senha"),
+  senha: yup
+    .string()
+    .required("Insira a senha")
+    .min(6, "Requer no minimo 6 caracteres"),
 });
 
 export const schemaCampanha = yup.object().shape({
