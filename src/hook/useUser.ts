@@ -66,7 +66,6 @@ export default function useUser() {
   };
 
   const getUsers = async () => {
-    console.log(localStorage.getItem("token"));
     try {
       const response = await fetch("api/users", {
         method: "GET",

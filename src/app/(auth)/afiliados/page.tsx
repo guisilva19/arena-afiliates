@@ -145,7 +145,7 @@ export default function Afiliates() {
                       className="hover:underline"
                       target="_blank"
                       href={
-                        item.url_ou_canal.startsWith("http")
+                        item.url_ou_canal?.startsWith("http")
                           ? item.url_ou_canal
                           : `https://${item.url_ou_canal}`
                       }
