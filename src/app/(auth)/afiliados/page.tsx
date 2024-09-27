@@ -13,20 +13,20 @@ import {
   FiFileText,
   FiPercent,
   FiTool,
-} from "react-icons/fi"; // Ícones
+} from "react-icons/fi";
 import CreateAfiliate from "@/components/CreateAfiliate/CreateAfiliate";
 import useUser from "@/hook/useUser";
-import Link from "next/link";
+import Loading from "@/components/Loading/Loading";
 
 export default function Afiliates() {
-  const [isModalOpen, setIsModalOpen] = useState(false); // Controle do modal de adicionar afiliado
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Controle do modal de edição
-  const [selectedAfiliado, setSelectedAfiliado] = useState<any>(null); // Afiliado selecionado para edição
-  const [users, setUsers] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedAfiliado, setSelectedAfiliado] = useState<any>(null);
+  const [users, setUsers] = useState<any>();
 
   const { getUsers } = useUser();
 
-  // Estado dos campos do modal de adicionar e editar afiliado
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
@@ -44,7 +44,6 @@ export default function Afiliates() {
   };
 
   const handleOpenEditModal = (afiliado: any) => {
-    // Preenche os campos do modal de edição com os dados do afiliado
     setSelectedAfiliado(afiliado);
     setNome(afiliado.nome);
     setTelefone(afiliado.telefone);
@@ -61,17 +60,20 @@ export default function Afiliates() {
   };
 
   const handleExcluirAfiliado = () => {
-    // Lógica para excluir o afiliado
     alert(`Afiliado ${selectedAfiliado.nome} excluído!`);
     setIsEditModalOpen(false);
   };
 
   useEffect(() => {
     get();
-  }, []);
+  }, [loading]);
 
   const get = async () => {
-    setUsers(await getUsers());
+    try {
+      setUsers(await getUsers());
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -98,95 +100,101 @@ export default function Afiliates() {
           </div>
         </div>
 
-        <Cards handleOpenEditModal={handleOpenEditModal} />
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <Cards
+              afiliados={users.afiliados_quantidade}
+              novos={users.novos_afiliados}
+              removidos={users.afiliados_removidos}
+              top={users.top_afiliados}
+            />
 
-        {/* Tabela de campanhas */}
-        <div className="mt-8">
-          <div className="grid grid-cols-10 gap-4 text-left text-gray-400 uppercase text-sm bg-[#2D2D2D] p-4 rounded-[5px]">
-            <div className="col-span-2 flex items-center gap-2">
-              <FiUser size={16} /> Nome
-            </div>
-            <div className="col-span-2 flex items-center gap-2">
-              <FiPhone size={16} /> Telefone
-            </div>
-            <div className="col-span-3 flex items-center gap-2">
-              <FiFileText size={16} /> Onde vai promover as campanhas
-            </div>
-            <div className="col-span-2 flex items-center gap-2">
-              <FiPercent size={16} /> Url ou canal
-            </div>
-            <div className="col-span-1 flex items-center justify-center gap-2">
-              <FiTool size={16} /> Ações
-            </div>
-          </div>
+            <div className="mt-8">
+              <div className="grid grid-cols-10 gap-4 text-left text-gray-400 uppercase text-sm bg-[#2D2D2D] p-4 rounded-[5px]">
+                <div className="col-span-2 flex items-center gap-2">
+                  <FiUser size={16} /> Nome
+                </div>
+                <div className="col-span-2 flex items-center gap-2">
+                  <FiPhone size={16} /> Telefone
+                </div>
+                <div className="col-span-3 flex items-center gap-2">
+                  <FiFileText size={16} /> Onde vai promover as campanhas
+                </div>
+                <div className="col-span-2 flex items-center gap-2">
+                  <FiPercent size={16} /> Url ou canal
+                </div>
+                <div className="col-span-1 flex items-center justify-center gap-2">
+                  <FiTool size={16} /> Ações
+                </div>
+              </div>
 
-          {users.length === 0 ? (
-            <div className="w-full flex justify-center h-20 items-center">
-              <p>Não existe nenhum afiliado!</p>
+              {users?.afiliados?.length === 0 ? (
+                <div className="w-full flex justify-center h-20 items-center">
+                  <p>Não existe nenhum afiliado!</p>
+                </div>
+              ) : (
+                <ul>
+                  {users?.afiliados?.map((item: any, idx: number) => (
+                    <li
+                      key={idx}
+                      className="grid grid-cols-10 gap-4 items-center text-white text-sm bg-[#2D2D2D] p-4 rounded-[5px] mt-2 hover:bg-[#3A3A3A]"
+                    >
+                      <div className="col-span-2 flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-gray-500 flex-shrink-0"></div>
+                        <div>
+                          <p>{item.nome}</p>
+                          <p>{item.email}</p>
+                        </div>
+                      </div>
+                      <div className="col-span-2 pl-2">{item.telefone}</div>
+                      <div className="col-span-3">{item.onde_vai_promover}</div>
+                      <div className="col-span-2">
+                        <a
+                          className="hover:underline"
+                          target="_blank"
+                          href={
+                            item.url_ou_canal?.startsWith("http")
+                              ? item.url_ou_canal
+                              : `https://${item.url_ou_canal}`
+                          }
+                        >
+                          {item.url_ou_canal}
+                        </a>
+                      </div>
+                      <div className="col-span-1 text-center">
+                        <button
+                          onClick={() =>
+                            handleOpenEditModal({
+                              nome: "Carlos Henrique",
+                              telefone: "(21) 99193-4657",
+                              email: "carlos@google.com",
+                              estado: "Rio de Janeiro",
+                              condicoes: "Depositar R$ 80 / Apostar R$ 80",
+                              comissao: "R$ 40 + 20%",
+                              link: "http://exemplo.com",
+                            })
+                          }
+                          className="text-white"
+                        >
+                          <IoSettingsSharp size={20} />
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
-          ) : (
-            <ul>
-              {users?.map((item: any, idx: number) => (
-                <li
-                  key={idx}
-                  className="grid grid-cols-10 gap-4 items-center text-white text-sm bg-[#2D2D2D] p-4 rounded-[5px] mt-2 hover:bg-[#3A3A3A]"
-                >
-                  <div className="col-span-2 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gray-500 flex-shrink-0"></div>
-                    <div>
-                      <p>{item.nome}</p>
-                      <p>{item.email}</p>
-                    </div>
-                  </div>
-                  <div className="col-span-2 pl-2">{item.telefone}</div>
-                  <div className="col-span-3">{item.onde_vai_promover}</div>
-                  <div className="col-span-2">
-                    <a
-                      className="hover:underline"
-                      target="_blank"
-                      href={
-                        item.url_ou_canal?.startsWith("http")
-                          ? item.url_ou_canal
-                          : `https://${item.url_ou_canal}`
-                      }
-                    >
-                      {item.url_ou_canal}
-                    </a>
-                  </div>
-                  <div className="col-span-1 text-center">
-                    <button
-                      onClick={() =>
-                        handleOpenEditModal({
-                          nome: "Carlos Henrique",
-                          telefone: "(21) 99193-4657",
-                          email: "carlos@google.com",
-                          estado: "Rio de Janeiro",
-                          condicoes: "Depositar R$ 80 / Apostar R$ 80",
-                          comissao: "R$ 40 + 20%",
-                          link: "http://exemplo.com",
-                        })
-                      }
-                      className="text-white"
-                    >
-                      <IoSettingsSharp size={20} />
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+          </>
+        )}
       </main>
-
-      {/* Modal Adicionar Afiliado */}
       {isModalOpen && (
         <CreateAfiliate
           handleCloseModal={handleCloseModal}
-          setUsers={setUsers}
+          setLoading={setLoading}
         />
       )}
-
-      {/* Modal Editar Afiliado */}
       {isEditModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-8 rounded-lg max-w-md w-full">
@@ -308,20 +316,17 @@ export default function Afiliates() {
   );
 }
 
-const Cards = ({ handleOpenEditModal }: any) => {
-  // Dados fictícios dos afiliados
-  const afiliados = [
-    {
-      nome: "Carlos Henrique",
-      telefone: "(21) 99193-4657",
-      email: "carlos@google.com",
-      estado: "Rio de Janeiro",
-      condicoes: "Depositar R$ 80 / Apostar R$ 80",
-      comissao: "R$ 40 + 20%",
-      link: "http://exemplo.com",
-    },
-  ];
-
+const Cards = ({
+  afiliados,
+  novos,
+  removidos,
+  top,
+}: {
+  afiliados: number;
+  novos: number;
+  removidos: number;
+  top: number;
+}) => {
   return (
     <>
       <ul className="flex gap-5">
@@ -332,7 +337,7 @@ const Cards = ({ handleOpenEditModal }: any) => {
             </div>
             <section>
               <p className="text-sm font-medium">Afiliados</p>
-              <p>250</p>
+              <p>{afiliados}</p>
             </section>
           </div>
           <button>
@@ -346,7 +351,7 @@ const Cards = ({ handleOpenEditModal }: any) => {
             </div>
             <section>
               <p className="text-sm font-medium">Novos usuários</p>
-              <p>15</p>
+              <p>{novos}</p>
             </section>
           </div>
           <button>
@@ -360,7 +365,7 @@ const Cards = ({ handleOpenEditModal }: any) => {
             </div>
             <section>
               <p className="text-sm font-medium">Top afiliados</p>
-              <p>200</p>
+              <p>{top}</p>
             </section>
           </div>
           <button>
@@ -374,7 +379,7 @@ const Cards = ({ handleOpenEditModal }: any) => {
             </div>
             <section>
               <p className="text-sm font-medium">Removidos</p>
-              <p>35</p>
+              <p>{removidos}</p>
             </section>
           </div>
           <button>

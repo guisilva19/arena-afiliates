@@ -7,10 +7,10 @@ import { FaCheck, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 export default function CreateAfiliate({
   handleCloseModal,
-  setUsers,
+  setLoading,
 }: {
   handleCloseModal: () => void;
-  setUsers: any;
+  setLoading: any;
 }) {
   const [viewPass, setViewPass] = useState(false);
   const [viewSelect, setViewSelect] = useState(false);
@@ -32,7 +32,7 @@ export default function CreateAfiliate({
       ...data,
       onde_vai_promover: selectedOptions.join(", "),
     });
-    setUsers((prev: any) => [...prev, response]);
+    setLoading()
     reset();
     handleCloseModal();
   };

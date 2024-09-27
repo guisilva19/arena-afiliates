@@ -10,12 +10,13 @@ import { toast } from "sonner";
 export default function AddAfiliate({
   handleCloseModal,
   users,
+  setLoading,
 }: {
   handleCloseModal: () => void;
   users: any;
+  setLoading: any;
 }) {
   const { addDados } = useDados();
-
 
   const {
     register,
@@ -25,7 +26,6 @@ export default function AddAfiliate({
   } = useForm({
     resolver: yupResolver(schemaDados),
   });
-
 
   const [isOpenAfiliate, setIsOpenAfiliate] = useState(false);
   const [isOpenCampaign, setIsOpenCampaign] = useState(false);
@@ -73,6 +73,7 @@ export default function AddAfiliate({
         stakes: data.stakes === "" ? 0 : Number(data.stakes),
       };
       await addDados(newBody, selectedUser.id, selectedCampaign.id);
+      setLoading(true)
       handleCloseModal();
       reset();
     } else {
