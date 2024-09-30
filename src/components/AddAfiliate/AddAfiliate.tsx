@@ -1,9 +1,8 @@
 import useDados from "@/hook/useDados";
-import useUser from "@/hook/useUser";
 import { schemaDados } from "@/utils/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { get } from "http";
-import { useEffect, useState } from "react";
+import { DateRangePicker } from "@nextui-org/react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -31,6 +30,7 @@ export default function AddAfiliate({
   const [isOpenCampaign, setIsOpenCampaign] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any | null>(null);
   const [selectedCampaign, setSelectedCampaign] = useState<any | null>(null);
+  const [date, setDate] = useState<string>("");
 
   const handleSelectAfiliate = (user: any) => {
     setSelectedUser(user);
@@ -43,9 +43,9 @@ export default function AddAfiliate({
   };
 
   const handleRegisterDados = async (data: any) => {
-    if (selectedUser && selectedCampaign) {
+    if (selectedUser && selectedCampaign && date.length > 0) {
       const newBody = {
-        date: data.date,
+        date: date,
         chargebacks: data.chargebacks === "" ? 0 : Number(data.chargebacks),
         cliques: data.cliques === "" ? 0 : Number(data.cliques),
         comissao_cpa: data.comissao_cpa === "" ? 0 : Number(data.comissao_cpa),
@@ -73,11 +73,11 @@ export default function AddAfiliate({
         stakes: data.stakes === "" ? 0 : Number(data.stakes),
       };
       await addDados(newBody, selectedUser.id, selectedCampaign.id);
-      setLoading(true)
+      setLoading(true);
       handleCloseModal();
       reset();
     } else {
-      toast.error("Selecione o afiliado e a campanha");
+      toast.error("Selecione afiliado, campanha e a data");
     }
   };
 
@@ -174,10 +174,30 @@ export default function AddAfiliate({
               <label className="block text-sm font-medium text-gray-700">
                 Data
               </label>
-              <input
-                {...register("date")}
-                type="date"
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm text-sm"
+              <DateRangePicker
+                variant="bordered"
+                className="max-w-xs "
+                onChange={(e) => {
+                  if (e?.start && e?.end) {
+                    const startDate = new Date(
+                      `${e.start.year}-${String(e.start.month).padStart(
+                        2,
+                        "0"
+                      )}-${String(e.start.day).padStart(2, "0")}`
+                    ).toISOString();
+
+                    const endDate = new Date(
+                      `${e.end.year}-${String(e.end.month).padStart(
+                        2,
+                        "0"
+                      )}-${String(e.end.day).padStart(2, "0")}`
+                    ).toISOString();
+
+                    setDate(`${startDate} - ${endDate}`);
+                  } else {
+                    console.error("Invalid date range", e);
+                  }
+                }}
               />
             </div>
 

@@ -30,7 +30,7 @@ export const schemaCampanha = yup.object().shape({
 });
 
 export const schemaDados = yup.object().shape({
-  date: yup.string().required("Insira uma data"),
+  date: yup.string(),
   cliques: yup.string(),
   registros: yup.string(),
   contagem_ftd: yup.string(),
