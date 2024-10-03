@@ -30,7 +30,8 @@ export default function AddAfiliate({
   const [isOpenCampaign, setIsOpenCampaign] = useState(false);
   const [selectedUser, setSelectedUser] = useState<any | null>(null);
   const [selectedCampaign, setSelectedCampaign] = useState<any | null>(null);
-  const [date, setDate] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
 
   const handleSelectAfiliate = (user: any) => {
     setSelectedUser(user);
@@ -43,9 +44,10 @@ export default function AddAfiliate({
   };
 
   const handleRegisterDados = async (data: any) => {
-    if (selectedUser && selectedCampaign && date.length > 0) {
+    if (selectedUser && selectedCampaign && startDate.length > 0 && endDate.length > 0) {
       const newBody = {
-        date: date,
+        start_date: startDate,
+        end_date: endDate,
         chargebacks: data.chargebacks === "" ? 0 : Number(data.chargebacks),
         cliques: data.cliques === "" ? 0 : Number(data.cliques),
         comissao_cpa: data.comissao_cpa === "" ? 0 : Number(data.comissao_cpa),
@@ -192,8 +194,8 @@ export default function AddAfiliate({
                         "0"
                       )}-${String(e.end.day).padStart(2, "0")}`
                     ).toISOString();
-
-                    setDate(`${startDate} - ${endDate}`);
+                    setStartDate(startDate);
+                    setEndDate(endDate);
                   } else {
                     console.error("Invalid date range", e);
                   }

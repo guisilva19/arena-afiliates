@@ -20,7 +20,7 @@ export const schemaRegister = yup.object().shape({
   senha: yup
     .string()
     .required("Insira a senha")
-    .min(6, "Requer no minimo 6 caracteres"),
+    .min(8, "Requer no minimo 8 caracteres"),
 });
 
 export const schemaCampanha = yup.object().shape({
@@ -30,7 +30,6 @@ export const schemaCampanha = yup.object().shape({
 });
 
 export const schemaDados = yup.object().shape({
-  date: yup.string(),
   cliques: yup.string(),
   registros: yup.string(),
   contagem_ftd: yup.string(),

@@ -18,7 +18,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
             </button>
           </section>
           <span>
-            <p className="text-3xl font-semibold">{dados.cliques}</p>
+            <p className="text-3xl font-semibold">{dados?.cliques}</p>
           </span>
         </li>
         <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
@@ -32,7 +32,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
             </button>
           </section>
           <span>
-            <p className="text-3xl font-semibold">{dados.registros}</p>
+            <p className="text-3xl font-semibold">{dados?.registros}</p>
           </span>
         </li>
         <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
@@ -46,7 +46,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
             </button>
           </section>
           <span>
-            <p className="text-3xl font-semibold">{dados.afiliados}</p>
+            <p className="text-3xl font-semibold">{dados?.afiliados}</p>
           </span>
         </li>
         <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
@@ -61,7 +61,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados.contas_depositantes}
+              {dados?.contas_depositantes}
             </p>
           </span>
         </li>
