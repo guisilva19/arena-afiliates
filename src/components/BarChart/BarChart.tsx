@@ -14,6 +14,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { IData } from "../Graphic/Graphic";
 
 export const description = "A multiple bar chart";
 
@@ -37,7 +38,8 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function BarChartGraphic() {
+export function BarChartGraphic({ data }: { data: IData }) {
+
   return (
     <Card
       style={{ backgroundColor: "#202020", color: "white", border: "none" }}
@@ -47,15 +49,19 @@ export function BarChartGraphic() {
         <CardDescription>
           <span className="flex gap-1 items-center">
             <div className="w-2 h-2 rounded-full bg-[#85FF4C]" />
-            R$ 30.000
+             
+            {data.total_receita_liquida.toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}
           </span>
         </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart accessibilityLayer data={data.data}>
             <XAxis
-              dataKey="month"
+              dataKey="monthName"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
@@ -65,7 +71,7 @@ export function BarChartGraphic() {
               cursor={false}
               content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Bar dataKey="faturamento" fill="#85FF4C" radius={4} />
+            <Bar dataKey="data.receita_liquida" fill="#85FF4C" radius={4} />
           </BarChart>
         </ChartContainer>
       </CardContent>

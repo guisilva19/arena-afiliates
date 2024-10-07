@@ -1,11 +1,9 @@
 "use client";
-import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, XAxis } from "recharts";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,9 +13,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-export const description = "A stacked area chart";
+import { IData } from "../Graphic/Graphic";
 
-export default function AreaChartGraphic() {
+export default function AreaChartGraphic({ data }: { data: IData }) {
   return (
     <>
       <Card
@@ -46,14 +44,14 @@ export default function AreaChartGraphic() {
           >
             <AreaChart
               accessibilityLayer
-              data={chartData}
+              data={data.data}
               margin={{
                 left: 12,
                 right: 12,
               }}
             >
               <XAxis
-                dataKey="month"
+                dataKey="monthName"
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
@@ -66,20 +64,20 @@ export default function AreaChartGraphic() {
                 content={<ChartTooltipContent indicator="dot" />}
               />
               <Area
-                dataKey="depositantes"
-                type="natural"
-                fill="#85ff4c7a"
-                fillOpacity={0.4}
-                stroke="#85FF4C"
-                stackId="a"
-              />
-              <Area
-                dataKey="registros"
+                dataKey="data.registros"
                 type="natural"
                 fill="#3a7fff8b"
                 fillOpacity={0.4}
                 stroke="#3a7fff"
-                stackId="a"
+                stackId="1"
+              />
+              <Area
+                dataKey="data.contas_depositantes"
+                type="natural"
+                fill="#85ff4c7a"
+                fillOpacity={0.4}
+                stroke="#85FF4C"
+                stackId="1"
               />
             </AreaChart>
           </ChartContainer>
@@ -89,14 +87,6 @@ export default function AreaChartGraphic() {
   );
 }
 
-const chartData = [
-  { month: "Abril", registros: 43, depositantes: 20 },
-  { month: "Maio", registros: 9, depositantes: 30 },
-  { month: "Junho", registros: 14, depositantes: 40 },
-  { month: "Julho", registros: 14, depositantes: 40 },
-  { month: "Agosto", registros: 14, depositantes: 40 },
-  { month: "Setembro", registros: 14, depositantes: 40 },
-];
 const chartConfig = {
   desktop: {
     label: "Desktop",

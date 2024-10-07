@@ -1,9 +1,9 @@
 "use client";
 import AddAfiliate from "@/components/AddAfiliate/AddAfiliate";
 import CardsStatistics from "@/components/CardsStatistics/CardsStatistics";
-import Graphic from "@/components/Graphic/Graphic";
+import Graphic, { IData } from "@/components/Graphic/Graphic";
 import Loading from "@/components/Loading/Loading";
-import useDados from "@/hook/useDados";
+import useData from "@/hook/useDados";
 import useUser from "@/hook/useUser";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -15,7 +15,8 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [afiliado, setAfiliado] = useState("");
   const [dados, setDados] = useState<any>([]);
-  const { allDados } = useDados();
+  const [data, setData] = useState<IData[]>({} as IData[]);
+  const { allData } = useData();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -42,11 +43,14 @@ export default function Dashboard() {
 
   const get = async () => {
     try {
-      setDados(await allDados());
+      setDados(await allData());
+      setData(await allDataGraphics());
     } finally {
       setLoading(false);
     }
   };
+
+  const { allDataGraphics } = useData();
 
   useEffect(() => {
     getUsersAll();
@@ -116,7 +120,7 @@ export default function Dashboard() {
         ) : (
           <>
             <CardsStatistics dados={dados} />
-            <Graphic />
+            <Graphic data={data} />
           </>
         )}
       </main>

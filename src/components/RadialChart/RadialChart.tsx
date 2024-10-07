@@ -9,6 +9,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { IData } from "../Graphic/Graphic";
 
 export const description = "A radial chart with stacked sections";
 
@@ -25,7 +26,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function RadialChartGraphic() {
+export function RadialChartGraphic({ data }: { data: IData }) {
   const totalVisitors = chartData[0].desktop + chartData[0].mobile;
 
   return (

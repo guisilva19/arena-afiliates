@@ -17,6 +17,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { IData } from "../Graphic/Graphic";
 
 export const description = "A linear line chart";
 
@@ -36,7 +37,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function LineChartGraphic() {
+export function LineChartGraphic({ data }: { data: IData }) {
   return (
     <Card
       style={{ backgroundColor: "#202020", color: "white", border: "none" }}
@@ -46,7 +47,7 @@ export function LineChartGraphic() {
         <CardDescription>
           <span className="flex gap-1 items-center">
             <div className="w-2 h-2 rounded-full bg-[#85FF4C]" />
-            1200
+            {data.total_count_cpa}
           </span>
         </CardDescription>
       </CardHeader>
@@ -54,7 +55,7 @@ export function LineChartGraphic() {
         <ChartContainer config={chartConfig}>
           <LineChart
             accessibilityLayer
-            data={chartData}
+            data={data.data}
             margin={{
               left: 12,
               right: 12,
@@ -62,7 +63,7 @@ export function LineChartGraphic() {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="monthName"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
@@ -73,7 +74,7 @@ export function LineChartGraphic() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Line
-              dataKey="desktop"
+              dataKey="data.contagem_cpa"
               type="linear"
               stroke="#85FF4C"
               strokeWidth={2}

@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 
-export default function useDados() {
-  const addDados = async (body: any, idUser: string, idCampaign: string) => {
+export default function useData() {
+  const addData = async (body: any, idUser: string, idCampaign: string) => {
     try {
       const response = await fetch(`api/users/${idUser}/dados/${idCampaign}`, {
         method: "POST",
@@ -27,7 +27,7 @@ export default function useDados() {
     }
   };
 
-  const allDados = async () => {
+  const allData = async () => {
     try {
       const response = await fetch(`api/users/dados`, {
         headers: {
@@ -46,5 +46,24 @@ export default function useDados() {
     }
   };
 
-  return { addDados, allDados };
+  const allDataGraphics = async () => {
+    try {
+      const response = await fetch(`api/users/dados/grafico`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user") as string).token
+          }`,
+        },
+      });
+
+      if (response.ok) {
+        return await response.json();
+      }
+    } catch (err) {
+      toast.error("Falha ao buscar dados!");
+    }
+  };
+
+  return { addData, allData, allDataGraphics };
 }

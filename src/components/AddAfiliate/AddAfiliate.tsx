@@ -1,4 +1,4 @@
-import useDados from "@/hook/useDados";
+import useData from "@/hook/useDados";
 import { schemaDados } from "@/utils/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DateRangePicker } from "@nextui-org/react";
@@ -15,7 +15,7 @@ export default function AddAfiliate({
   users: any;
   setLoading: any;
 }) {
-  const { addDados } = useDados();
+  const { addData } = useData();
 
   const {
     register,
@@ -74,7 +74,7 @@ export default function AddAfiliate({
         registros: data.registros === "" ? 0 : Number(data.registros),
         stakes: data.stakes === "" ? 0 : Number(data.stakes),
       };
-      await addDados(newBody, selectedUser.id, selectedCampaign.id);
+      await addData(newBody, selectedUser.id, selectedCampaign.id);
       setLoading(true);
       handleCloseModal();
       reset();
