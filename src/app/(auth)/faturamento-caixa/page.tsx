@@ -8,7 +8,7 @@ import { FiTag } from "react-icons/fi"; // Ícone para Marca
 export default function ListCampaings() {
   const [selectedRange, setSelectedRange] = useState(null);
 
-  const handleRangeChange = (range) => {
+  const handleRangeChange = (range: any) => {
     setSelectedRange(range);
   };
 
@@ -23,11 +23,11 @@ export default function ListCampaings() {
               <DateRangePicker
                 value={selectedRange}
                 onChange={handleRangeChange}
-                css={{
-                  '& .nextui-dp-range-cell--selected': {
-                    backgroundColor: 'rgba(133, 255, 76, 0.3)', // Cor personalizada
-                  },
-                }}
+                // css={{
+                //   '& .nextui-dp-range-cell--selected': {
+                //     backgroundColor: 'rgba(133, 255, 76, 0.3)', // Cor personalizada
+                //   },
+                // }}
               />
             </fieldset>
             {/* Botão modificado */}
