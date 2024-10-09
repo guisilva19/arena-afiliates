@@ -32,7 +32,7 @@ export interface IData {
   data: IDataObj[];
 }
 
-export default function Graphic({ data }: { data: IData }) {
+export default function Graphic({ data }: { data: any }) {
 
   console.log(data)
   return (
