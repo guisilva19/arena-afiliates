@@ -4,19 +4,15 @@ import Image from "next/image";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { IoSearch, IoCheckmarkSharp } from "react-icons/io5";
 import { IoSettingsSharp } from "react-icons/io5";
-import {
-  FiUser,
-  FiPhone,
-  FiMapPin,
-  FiFileText,
-  FiPercent,
-  FiTool,
-} from "react-icons/fi"; // Ícones
-import useCampaign from "@/hook/useCampaign";
+import { FiUser, FiFileText, FiPercent, FiTool } from "react-icons/fi";
+import { FaCodePullRequest } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaCampanha } from "@/utils/schema";
 import { toast } from "sonner";
+import useCampaign from "@/hook/useCampaign";
+import { MdOutlineFormatColorText } from "react-icons/md";
+import CampaignItem from "@/components/CampaignItem/CampaignItem";
 
 export default function ListCampaings() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,6 +20,7 @@ export default function ListCampaings() {
   const { list } = useCampaign();
 
   const [campanhas, setCampanhas] = useState<any>([]);
+  const [requests, setRequests] = useState<string[]>([]);
 
   const handleOpenAddModal = () => {
     setIsAddModalOpen(true);
@@ -110,12 +107,21 @@ export default function ListCampaings() {
         )}
 
         <div className="mt-2">
-          <div className="grid grid-cols-10 gap-4 text-left text-gray-400 uppercase text-sm bg-[#2D2D2D] p-4 rounded-[5px]">
+          <div
+            className={`grid  ${
+              user?.tipo === 1 ? "grid-cols-10" : "grid-cols-11"
+            }  gap-4 text-left text-gray-400 uppercase text-sm bg-[#2D2D2D] p-4 rounded-[5px]`}
+          >
             <div className="col-span-2 flex items-center gap-2">
               <FiUser size={16} /> Marca
             </div>
+            {user?.tipo === 2 && (
+              <div className="col-span-2 flex items-center gap-2">
+                <FaCodePullRequest size={16} /> Solicitação
+              </div>
+            )}
             <div className="col-span-2 flex items-center gap-2">
-              <FiFileText size={16} /> Nome
+              <MdOutlineFormatColorText size={16} /> Nome
             </div>
             <div className="col-span-3 flex items-center gap-2">
               <FiFileText size={16} /> Condições
@@ -123,50 +129,22 @@ export default function ListCampaings() {
             <div className="col-span-2 flex items-center gap-2">
               <FiPercent size={16} /> Comissão
             </div>
-            <div className="col-span-1 flex items-center justify-center gap-2">
-              <FiTool size={16} /> Ações
-            </div>
+            {user?.tipo === 1 && (
+              <div className="col-span-1 flex items-center justify-center gap-2">
+                <FiTool size={16} /> Ações
+              </div>
+            )}
           </div>
 
           {campanhas.map((campanha: any, idx: number) => (
-            <div
+            <CampaignItem
+              campanha={campanha}
               key={idx}
-              className="grid grid-cols-10 gap-4 items-center text-white text-sm bg-[#2D2D2D] p-4 rounded-[5px] mt-2 hover:bg-[#3A3A3A]"
-            >
-              <div className="col-span-2">
-                {campanha?.logo ? (
-                  <Image
-                    src={campanha.logo}
-                    alt="Logo"
-                    className="w-max h-[35px] object-cover rounded-[3px]"
-                    width={70}
-                    height={35}
-                  />
-                ) : (
-                  "Imagem"
-                )}
-              </div>
-              {/* <div className="col-span-2">
-                {campanha.pedidoSolicitado ? (
-                  <span className="text-green-500">Campanha solicitada</span>
-                ) : (
-                  <button className="flex items-center gap-2 px-4 py-1 border border-green-500 text-green-500 rounded-full hover:bg-green-500 hover:text-white transition">
-                    Pedido <IoCheckmarkSharp />
-                  </button>
-                )}
-              </div> */}
-              <p className="col-span-2">{campanha?.nome}</p>
-              <p className="col-span-3">{campanha?.condicao}</p>
-              <p className="col-span-2">{campanha?.comissao}</p>
-              <div className="col-span-1 text-center">
-                <button
-                  className="text-white"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  <IoSettingsSharp size={20} />
-                </button>
-              </div>
-            </div>
+              setIsModalOpen={setIsModalOpen}
+              user={user}
+              setRequests={setRequests}
+              requests={requests}
+            />
           ))}
         </div>
       </main>

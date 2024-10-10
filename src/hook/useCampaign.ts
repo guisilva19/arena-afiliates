@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 export default function useCampaign() {
   const create = async (body: {
     nome: string;
@@ -69,8 +71,40 @@ export default function useCampaign() {
     }
   };
 
+  const requestAfiliate = async (id: string) => {
+    try {
+      const user = localStorage.getItem("user");
+
+      if (!user) {
+        throw new Error("Usuário não autenticado");
+      }
+
+      const token = JSON.parse(user).token;
+
+      const response = await fetch(`/api/campanha-ativa/${id}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        toast.success("Solicitação feita com sucesso!");
+        return await response.json();
+      } else {
+        const error = await response.text();
+        throw new Error(error);
+      }
+    } catch (err) {
+      toast.error("Falha ao solicitar afiliação a está campanha");
+      throw err;
+    }
+  };
+
   return {
     create,
     list,
+    requestAfiliate,
   };
 }

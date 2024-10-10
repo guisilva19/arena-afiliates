@@ -77,43 +77,47 @@ export default function Dashboard() {
           <p className="text-[13px]">Acompanhe de perto as métricas.</p>
         </span>
 
-        <div className="flex items-center space-x-4 mt-4 justify-between">
-          <div className="flex items-center bg-[#1E1E1E] text-white rounded-md w-[350px] h-[44px]">
-            <div className="relative w-full">
-              <div
-                className="mt-1 p-2 block w-full rounded-lg shadow-sm text-sm cursor-pointer"
-                onClick={() => setIsOpenAfiliate(!isOpenAfiliate)}
-              >
-                <span className="text-gray-500">Ver afiliado</span>
+        {user?.tipo === 1 && (
+          <>
+            <div className="flex items-center space-x-4 mt-4 justify-between">
+              <div className="flex items-center bg-[#1E1E1E] text-white rounded-md w-[350px] h-[44px]">
+                <div className="relative w-full">
+                  <div
+                    className="mt-1 p-2 block w-full rounded-lg shadow-sm text-sm cursor-pointer"
+                    onClick={() => setIsOpenAfiliate(!isOpenAfiliate)}
+                  >
+                    <span className="text-gray-500">Ver afiliado</span>
+                  </div>
+
+                  {isOpenAfiliate && (
+                    <div className="absolute bg-white w-full left-0 border border-slate-200 rounded-lg max-h-80 overflow-y-auto mt-1 z-10">
+                      <ul className="flex flex-col">
+                        {users.map((user: any) => (
+                          <Link
+                            href={`/afiliado/${user.id}`}
+                            key={user.id}
+                            className="text-black p-2 hover:bg-gray-200 text-[11px] cursor-pointer"
+                          >
+                            {user.nome} - {user.email}
+                          </Link>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {isOpenAfiliate && (
-                <div className="absolute bg-white w-full left-0 border border-slate-200 rounded-lg max-h-80 overflow-y-auto mt-1 z-10">
-                  <ul className="flex flex-col">
-                    {users.map((user: any) => (
-                      <Link
-                        href={`/afiliado/${user.id}`}
-                        key={user.id}
-                        className="text-black p-2 hover:bg-gray-200 text-[11px] cursor-pointer"
-                      >
-                        {user.nome} - {user.email}
-                      </Link>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <div className="flex justify-end">
+                <button
+                  onClick={handleAddData}
+                  className="bg-[rgba(128,248,126,0.16)] text-[#85FF4C] px-4 py-2 rounded-md hover:bg-[rgba(128,248,126,0.3)] hover:scale-105 transition-transform duration-300 ease-in-out"
+                >
+                  Adicionar Dados
+                </button>
+              </div>
             </div>
-          </div>
-
-          <div className="flex justify-end">
-            <button
-              onClick={handleAddData}
-              className="bg-[rgba(128,248,126,0.16)] text-[#85FF4C] px-4 py-2 rounded-md hover:bg-[rgba(128,248,126,0.3)] hover:scale-105 transition-transform duration-300 ease-in-out"
-            >
-              Adicionar Dados
-            </button>
-          </div>
-        </div>
+          </>
+        )}
 
         {loading ? (
           <Loading />
