@@ -170,6 +170,8 @@ export default function ListCampaings() {
           campanhaSelected={campanhaSelected}
           setCampanhaSelected={setCampanhaSelected}
           setIsModalDeleteOpen={setIsModalDeleteOpen}
+          campanhas={campanhas}
+          setCampanhas={setCampanhas}
         />
       )}
 
@@ -181,7 +183,14 @@ export default function ListCampaings() {
         />
       )}
 
-      {isModalDeleteOpen && <ModalConfirmDelete campanha={campanhaSelected} setIsModalDeleteOpen={setIsModalDeleteOpen} setCampanhas={setCampanhas} campanhas={campanhas} />}
+      {isModalDeleteOpen && (
+        <ModalConfirmDelete
+          campanha={campanhaSelected}
+          setIsModalDeleteOpen={setIsModalDeleteOpen}
+          setCampanhas={setCampanhas}
+          campanhas={campanhas}
+        />
+      )}
     </>
   );
 }

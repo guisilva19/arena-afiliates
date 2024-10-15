@@ -1,29 +1,62 @@
+import useCampaign from "@/hook/useCampaign";
+import { fileToBase64 } from "@/utils/utils";
 import Image from "next/image";
 import { useState } from "react";
 
 const ModalEditCampaign = ({
   handleCloseModal,
-  setCampanhaSelected,
   campanhaSelected,
   setIsModalDeleteOpen,
+  campanhas,
+  setCampanhas,
 }: {
   handleCloseModal: () => void;
   setCampanhaSelected: any;
   campanhaSelected: any;
   setIsModalDeleteOpen: any;
+  campanhas: any;
+  setCampanhas: any;
 }) => {
   const [editCondicoes, setEditCondicoes] = useState(campanhaSelected.condicao);
   const [editComissao, setEditComissao] = useState(campanhaSelected.comissao);
   const [editImagem, setEditImagem] = useState(campanhaSelected.logo);
   const [newImagePreview, setNewImagePreview] = useState<string | null>(null);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setNewImagePreview(imageUrl);
-      setEditImagem(file);
+
+      await fileToBase64(file).then((base64String) => {
+        setEditImagem(base64String);
+      });
     }
+  };
+
+  const filtered = campanhas.filter(
+    (item: any) => item.id !== campanhaSelected.id
+  );
+
+  const { updateCampaign } = useCampaign();
+
+  const handleUpdate = async () => {
+    const body = {
+      ...campanhaSelected,
+      logo: editImagem,
+      condicao: editCondicoes,
+      comissao: editComissao,
+    };
+
+    await updateCampaign(campanhaSelected.id, {
+      logo: editImagem,
+      condicao: editCondicoes,
+      comissao: editComissao,
+    });
+
+    setCampanhas([...filtered, body]);
+
+    handleCloseModal();
   };
 
   return (
@@ -88,6 +121,7 @@ const ModalEditCampaign = ({
 
           <div className="text-center mt-2">
             <button
+              onClick={() => handleUpdate()}
               className="bg-green-500 text-white py-2 px-4 rounded-full w-full hover:bg-green-600 transition"
               style={{
                 boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",

@@ -200,6 +200,37 @@ export default function useCampaign() {
     }
   };
 
+  const updateCampaign = async (id: string, body: any) => {
+    try {
+      const user = localStorage.getItem("user");
+
+      if (!user) {
+        throw new Error("Usuário não autenticado");
+      }
+
+      const token = JSON.parse(user).token;
+
+      const response = await fetch(`/api/campanha/${id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        toast.success("Campanha atualizada!");
+      } else {
+        const error = await response.text();
+        throw new Error(error);
+      }
+    } catch (err) {
+      toast.error("Falha ao atualizar está campanha");
+      throw err;
+    }
+  };
+
   return {
     create,
     list,
@@ -207,5 +238,6 @@ export default function useCampaign() {
     requestAfiliate,
     linkAfiliate,
     deleteCampaign,
+    updateCampaign,
   };
 }
