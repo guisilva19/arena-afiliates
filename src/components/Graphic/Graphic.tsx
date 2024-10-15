@@ -33,8 +33,6 @@ export interface IData {
 }
 
 export default function Graphic({ data }: { data: any }) {
-
-  console.log(data)
   return (
     <>
       <main>

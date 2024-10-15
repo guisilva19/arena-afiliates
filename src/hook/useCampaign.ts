@@ -71,6 +71,74 @@ export default function useCampaign() {
     }
   };
 
+  const listRequests = async () => {
+    try {
+      const user = localStorage.getItem("user");
+
+      if (!user) {
+        throw new Error("Usuário não autenticado");
+      }
+
+      const token = JSON.parse(user).token;
+
+      const response = await fetch("/api/users/solicitacoes", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        return await response.json();
+      } else {
+        const error = await response.text();
+        throw new Error(error);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const linkAfiliate = async (
+    id: string,
+    body: {
+      condicao: string;
+      comissao: string;
+      link: string;
+      status: boolean;
+    }
+  ) => {
+    try {
+      const user = localStorage.getItem("user");
+
+      if (!user) {
+        throw new Error("Usuário não autenticado");
+      }
+
+      const token = JSON.parse(user).token;
+
+      const response = await fetch(`/api/campanha-ativa/${id}`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        toast.success("Afiliado associado a campanha com sucesso!");
+        return true;
+      } else {
+        const error = await response.text();
+        throw new Error(error);
+      }
+    } catch (err) {
+      toast.error("Falha ao associar afiliado a campanha!");
+      throw err;
+    }
+  };
+
   const requestAfiliate = async (id: string) => {
     try {
       const user = localStorage.getItem("user");
@@ -102,9 +170,42 @@ export default function useCampaign() {
     }
   };
 
+  const deleteCampaign = async (id: string) => {
+    try {
+      const user = localStorage.getItem("user");
+
+      if (!user) {
+        throw new Error("Usuário não autenticado");
+      }
+
+      const token = JSON.parse(user).token;
+
+      const response = await fetch(`/api/campanha/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        toast.success("Campanha excluida!");
+      } else {
+        const error = await response.text();
+        throw new Error(error);
+      }
+    } catch (err) {
+      toast.error("Falha ao excluir está campanha");
+      throw err;
+    }
+  };
+
   return {
     create,
     list,
+    listRequests,
     requestAfiliate,
+    linkAfiliate,
+    deleteCampaign,
   };
 }

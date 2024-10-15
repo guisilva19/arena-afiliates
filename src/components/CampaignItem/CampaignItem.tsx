@@ -9,12 +9,14 @@ import {
 
 export default function CampaignItem({
   campanha,
+  setCampanha,
   user,
   setIsModalOpen,
   requests,
   setRequests,
 }: {
   campanha: any;
+  setCampanha: any;
   user: any;
   setIsModalOpen: any;
   requests: any;
@@ -67,7 +69,13 @@ export default function CampaignItem({
         <p className="col-span-2">{campanha?.comissao}</p>
         {user?.tipo === 1 && (
           <div className="col-span-1 text-center">
-            <button className="text-white" onClick={() => setIsModalOpen(true)}>
+            <button
+              className="text-white"
+              onClick={() => {
+                setIsModalOpen(true);
+                setCampanha(campanha);
+              }}
+            >
               <IoSettingsSharp size={20} />
             </button>
           </div>
