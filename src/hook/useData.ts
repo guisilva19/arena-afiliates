@@ -109,9 +109,33 @@ export default function useData() {
     }
   };
 
-  const dadosByUser = async () => {
+  const dadosByMyUser = async () => {
     try {
-      const response = await fetch(`api/users/${JSON.parse(localStorage.getItem("user") as string).id}/dados`, {
+      const response = await fetch(
+        `api/users/${
+          JSON.parse(localStorage.getItem("user") as string).id
+        }/dados`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("user") as string).token
+            }`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        return await response.json();
+      }
+    } catch (err) {
+      toast.error("Falha ao buscar dados!");
+    }
+  };
+
+  const dadosByUser = async (id: string) => {
+    try {
+      const response = await fetch(`api/users/${id}/dados`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
@@ -134,6 +158,7 @@ export default function useData() {
     allDataGraphics,
     allInvoice,
     myInvoice,
+    dadosByMyUser,
     dadosByUser,
   };
 }

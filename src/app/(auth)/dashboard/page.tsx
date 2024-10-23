@@ -8,12 +8,8 @@ import useUser from "@/hook/useUser";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { IoTimeOutline } from "react-icons/io5";
-import { FaHeart } from "react-icons/fa";
-import { BsFillBagFill, BsThreeDots } from "react-icons/bs";
-import { GiShoppingBag } from "react-icons/gi";
-import { MdOutlineAttachMoney } from "react-icons/md";
-import { HiDownload } from "react-icons/hi";
 import "react-datepicker/dist/react-datepicker.css";
+import { Cards } from "../afiliado/[id]/page";
 
 export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
@@ -23,7 +19,7 @@ export default function Dashboard() {
   const [dados, setDados] = useState<any>([]);
   const [data, setData] = useState<IData[]>({} as IData[]);
   const [dataUnique, setDataUnique] = useState<IDataUnique>({} as IDataUnique);
-  const { allData, dadosByUser } = useData();
+  const { allData, dadosByMyUser } = useData();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -51,12 +47,12 @@ export default function Dashboard() {
   const get = async () => {
     if (typeof window !== "undefined") {
       try {
-        const storage = await localStorage.getItem("user") as string;
+        const storage = (await localStorage.getItem("user")) as string;
         if (JSON.parse(storage)?.tipo === 1) {
           setDados(await allData());
           setData(await allDataGraphics());
         } else {
-          setDataUnique(await dadosByUser());
+          setDataUnique(await dadosByMyUser());
         }
       } finally {
         setLoading(false);
@@ -72,7 +68,7 @@ export default function Dashboard() {
 
   const getUsersAll = async () => {
     if (typeof window !== "undefined") {
-      const storage = await localStorage.getItem("user") as string;
+      const storage = (await localStorage.getItem("user")) as string;
 
       if (JSON.parse(storage)?.tipo === 1) {
         const { afiliados } = await getUsers();
@@ -209,74 +205,3 @@ export default function Dashboard() {
     </>
   );
 }
-
-const Cards = ({ data }: { data: IDataUnique }) => {
-  return (
-    <>
-      <ul className="flex gap-5 relative">
-        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
-          <section className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <FaHeart size={18} className="text-green-primary" />
-              <p className="text-sm font-">Registros</p>
-            </div>
-            <button>
-              <BsThreeDots />
-            </button>
-          </section>
-          <span>
-            <p className="text-3xl font-semibold">{data?.registros}</p>
-          </span>
-        </li>
-        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
-          <section className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <GiShoppingBag size={18} className="text-green-primary" />
-              <p className="text-sm font-">Depositantes</p>
-            </div>
-            <button>
-              <BsThreeDots />
-            </button>
-          </section>
-          <span>
-            <p className="text-3xl font-semibold">
-              {data?.contas_depositantes}
-            </p>
-          </span>
-        </li>
-        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
-          <section className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <BsFillBagFill size={18} className="text-green-primary" />
-              <p className="text-sm font-">Interação com links</p>
-            </div>
-            <button>
-              <BsThreeDots />
-            </button>
-          </section>
-          <span>
-            <p className="text-3xl font-semibold">{data?.cliques}</p>
-          </span>
-        </li>
-        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
-          <section className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <MdOutlineAttachMoney size={20} className="text-green-primary" />
-              <p className="text-sm font-">Receita gerada</p>
-            </div>
-            <button>
-              <BsThreeDots />
-            </button>
-          </section>
-          <span>
-            <p className="text-3xl font-semibold">{data?.receita_liquida}</p>
-          </span>
-        </li>
-        <button className="absolute top-[-50px] right-0 px-3 py-2 flex text-sm text-white bg-[#212121] rounded-md gap-2 items-center">
-          <p>Exportar dados</p>
-          <HiDownload size={20} />
-        </button>
-      </ul>
-    </>
-  );
-};
