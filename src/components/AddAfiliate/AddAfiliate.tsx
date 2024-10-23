@@ -1,4 +1,4 @@
-import useData from "@/hook/useDados";
+import useData from "@/hook/useData";
 import { schemaDados } from "@/utils/schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { DateRangePicker } from "@nextui-org/react";

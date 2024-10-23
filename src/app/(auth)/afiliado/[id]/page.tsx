@@ -1,11 +1,9 @@
 import { BsFillBagFill, BsThreeDots } from "react-icons/bs";
-import { FaHeart, FaStar, FaUser } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import { GiShoppingBag } from "react-icons/gi";
 import { HiDownload } from "react-icons/hi";
-import { IoIosAddCircle } from "react-icons/io";
 import { IoTimeOutline } from "react-icons/io5";
 import { MdOutlineAttachMoney } from "react-icons/md";
-import { PiEyeFill } from "react-icons/pi";
 
 export default function Afiliate() {
   return (

@@ -1,12 +1,18 @@
 "use client";
 import AddAfiliate from "@/components/AddAfiliate/AddAfiliate";
 import CardsStatistics from "@/components/CardsStatistics/CardsStatistics";
-import Graphic, { IData } from "@/components/Graphic/Graphic";
+import Graphic, { IData, IDataUnique } from "@/components/Graphic/Graphic";
 import Loading from "@/components/Loading/Loading";
-import useData from "@/hook/useDados";
+import useData from "@/hook/useData";
 import useUser from "@/hook/useUser";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { IoTimeOutline } from "react-icons/io5";
+import { FaHeart } from "react-icons/fa";
+import { BsFillBagFill, BsThreeDots } from "react-icons/bs";
+import { GiShoppingBag } from "react-icons/gi";
+import { MdOutlineAttachMoney } from "react-icons/md";
+import { HiDownload } from "react-icons/hi";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function Dashboard() {
@@ -16,7 +22,8 @@ export default function Dashboard() {
   const [afiliado, setAfiliado] = useState("");
   const [dados, setDados] = useState<any>([]);
   const [data, setData] = useState<IData[]>({} as IData[]);
-  const { allData } = useData();
+  const [dataUnique, setDataUnique] = useState<IDataUnique>({} as IDataUnique);
+  const { allData, dadosByUser } = useData();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -42,11 +49,18 @@ export default function Dashboard() {
   }, [loading]);
 
   const get = async () => {
-    try {
-      setDados(await allData());
-      setData(await allDataGraphics());
-    } finally {
-      setLoading(false);
+    if (typeof window !== "undefined") {
+      try {
+        const storage = await localStorage.getItem("user") as string;
+        if (JSON.parse(storage)?.tipo === 1) {
+          setDados(await allData());
+          setData(await allDataGraphics());
+        } else {
+          setDataUnique(await dadosByUser());
+        }
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -57,8 +71,14 @@ export default function Dashboard() {
   }, []);
 
   const getUsersAll = async () => {
-    const { afiliados } = await getUsers();
-    setUsers(afiliados);
+    if (typeof window !== "undefined") {
+      const storage = await localStorage.getItem("user") as string;
+
+      if (JSON.parse(storage)?.tipo === 1) {
+        const { afiliados } = await getUsers();
+        setUsers(afiliados);
+      }
+    }
   };
 
   const { getUsers } = useUser();
@@ -71,7 +91,11 @@ export default function Dashboard() {
 
   return (
     <>
-      <main className="w-[calc(100vw-300px)] h-max ml-[300px] bg-black  px-8 py-8 text-white flex flex-col gap-10">
+      <main
+        className={`w-[calc(100vw-300px)] h-max ml-[300px] bg-black  px-8 py-8 text-white flex flex-col ${
+          user?.tipo === 1 ? "gap-10" : "gap-4"
+        }`}
+      >
         <span className="flex flex-col font-medium">
           <h1 className="text-2xl">Bem vindo de volta, {user?.nome}</h1>
           <p className="text-[13px]">Acompanhe de perto as métricas.</p>
@@ -123,8 +147,54 @@ export default function Dashboard() {
           <Loading />
         ) : (
           <>
-            <CardsStatistics dados={dados} />
-            <Graphic data={data} />
+            {user?.tipo === 1 ? (
+              <>
+                <CardsStatistics dados={dados} />
+                <Graphic data={data} />
+              </>
+            ) : (
+              <>
+                <fieldset className="w-[380px]">
+                  <select
+                    id="select"
+                    className="block w-full py-3 pl-6 pr-10 bg-[#202020] text-white rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
+                  >
+                    <option value="option1">Últimas 24 horas</option>
+                    <option value="option2">Últimos 7 dias</option>
+                    <option value="option2">Últimos 15 dias</option>
+                    <option value="option2">Últimos 30 dias</option>
+                  </select>
+                </fieldset>
+                <div className="flex gap-4">
+                  <section className="w-[380px] h-24 bg-[#202020] px-6 flex items-center justify-between rounded-xl ">
+                    <h4 className="text-xl font-medium">{user?.nome}</h4>
+                    <p className="text-xs text-white/60">
+                      {new Date(user?.criado_em).toLocaleDateString("pt-BR", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </section>
+                  <section className="w-[340px] h-24 bg-[#202020] px-6 flex items-center justify-between rounded-xl ">
+                    <span className="flex flex-col gap-3">
+                      <p className="text-sm text-white/80">Saldo disponível</p>
+                      <h4 className="text-2xl font-medium">685,156</h4>
+                    </span>
+                    <span className="">
+                      <button className="border-b border-white w-20 text-xs flex items-center justify-center h-10">
+                        Enviar
+                      </button>
+                      <button className="w-20 text-xs h-10 text-center flex gap-1 items-center ">
+                        <IoTimeOutline size={16} />
+                        Histórico
+                      </button>
+                    </span>
+                  </section>
+                </div>
+                <Cards data={dataUnique} />
+              </>
+            )}
           </>
         )}
       </main>
@@ -139,3 +209,74 @@ export default function Dashboard() {
     </>
   );
 }
+
+const Cards = ({ data }: { data: IDataUnique }) => {
+  return (
+    <>
+      <ul className="flex gap-5 relative">
+        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
+          <section className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <FaHeart size={18} className="text-green-primary" />
+              <p className="text-sm font-">Registros</p>
+            </div>
+            <button>
+              <BsThreeDots />
+            </button>
+          </section>
+          <span>
+            <p className="text-3xl font-semibold">{data?.registros}</p>
+          </span>
+        </li>
+        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
+          <section className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <GiShoppingBag size={18} className="text-green-primary" />
+              <p className="text-sm font-">Depositantes</p>
+            </div>
+            <button>
+              <BsThreeDots />
+            </button>
+          </section>
+          <span>
+            <p className="text-3xl font-semibold">
+              {data?.contas_depositantes}
+            </p>
+          </span>
+        </li>
+        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
+          <section className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <BsFillBagFill size={18} className="text-green-primary" />
+              <p className="text-sm font-">Interação com links</p>
+            </div>
+            <button>
+              <BsThreeDots />
+            </button>
+          </section>
+          <span>
+            <p className="text-3xl font-semibold">{data?.cliques}</p>
+          </span>
+        </li>
+        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
+          <section className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <MdOutlineAttachMoney size={20} className="text-green-primary" />
+              <p className="text-sm font-">Receita gerada</p>
+            </div>
+            <button>
+              <BsThreeDots />
+            </button>
+          </section>
+          <span>
+            <p className="text-3xl font-semibold">{data?.receita_liquida}</p>
+          </span>
+        </li>
+        <button className="absolute top-[-50px] right-0 px-3 py-2 flex text-sm text-white bg-[#212121] rounded-md gap-2 items-center">
+          <p>Exportar dados</p>
+          <HiDownload size={20} />
+        </button>
+      </ul>
+    </>
+  );
+};

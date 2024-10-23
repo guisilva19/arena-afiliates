@@ -32,6 +32,25 @@ export interface IData {
   data: IDataObj[];
 }
 
+export interface IDataUnique {
+  stakes: number;
+  chargebacks: number;
+  cliques: number;
+  comissao_cpa: number;
+  comissao_revshare: number;
+  comissao_total: number;
+  contagem_cpa: number;
+  contagem_ftd: number;
+  contas_ativas: number;
+  contas_de_aposta: number;
+  contas_depositantes: number;
+  net_player: number;
+  novos_depositantes: number;
+  receita_liquida: number;
+  registros: number;
+  depositos: number;
+}
+
 export default function Graphic({ data }: { data: any }) {
   return (
     <>

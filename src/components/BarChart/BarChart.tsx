@@ -50,7 +50,7 @@ export function BarChartGraphic({ data }: { data: IData }) {
           <span className="flex gap-1 items-center">
             <div className="w-2 h-2 rounded-full bg-[#85FF4C]" />
              
-            {data.total_receita_liquida.toLocaleString("pt-BR", {
+            {data?.total_receita_liquida?.toLocaleString("pt-BR", {
               style: "currency",
               currency: "BRL",
             })}
