@@ -90,10 +90,11 @@ export default function Afiliate() {
   );
 }
 
-export const Cards = ({ data }: { data: IDataUnique }) => {
+const Cards = ({ data }: { data: IDataUnique }) => {
   return (
     <>
       <ul className="flex gap-5 relative">
+        {/* Registros */}
         <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -108,6 +109,7 @@ export const Cards = ({ data }: { data: IDataUnique }) => {
             <p className="text-3xl font-semibold">{data?.registros}</p>
           </span>
         </li>
+        {/* Depositantes */}
         <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -124,6 +126,7 @@ export const Cards = ({ data }: { data: IDataUnique }) => {
             </p>
           </span>
         </li>
+        {/* Interação com links */}
         <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -138,6 +141,7 @@ export const Cards = ({ data }: { data: IDataUnique }) => {
             <p className="text-3xl font-semibold">{data?.cliques}</p>
           </span>
         </li>
+        {/* Receita gerada */}
         <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-2">
