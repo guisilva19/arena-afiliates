@@ -2,7 +2,7 @@
 import { IDataUnique } from "@/components/Graphic/Graphic";
 import Loading from "@/components/Loading/Loading";
 import useData from "@/hook/useData";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsFillBagFill, BsThreeDots } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa";

@@ -4,7 +4,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: `${process.env.API_KEY}/:path*`,
+        destination: `https://backend-production-8a06.up.railway.app/:path*`,
       },
     ];
   },
