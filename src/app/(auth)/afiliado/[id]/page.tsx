@@ -1,5 +1,5 @@
 "use client";
-import { IDataUnique } from "@/components/Graphic/Graphic";
+import Graphic, { IData, IDataUnique } from "@/components/Graphic/Graphic";
 import Loading from "@/components/Loading/Loading";
 import useData from "@/hook/useData";
 import { useParams, useRouter } from "next/navigation";
@@ -16,10 +16,12 @@ export default function Afiliate() {
   const router = useRouter();
   const { id } = params;
 
-  const { dadosByUser } = useData();
+  const { dadosByUser, dataGraphicsByUser } = useData();
 
   const [loading, setLoading] = useState(true);
   const [dataUnique, setDataUnique] = useState<IDataUnique>({} as IDataUnique);
+  const [data, setData] = useState<IData[]>({} as IData[]);
+  const [user, setUser] = useState<any>({});
 
   useEffect(() => {
     if (!id || typeof id === "undefined") {
@@ -32,12 +34,11 @@ export default function Afiliate() {
   const getDados = async () => {
     try {
       setLoading(true);
-      console.log("Fetching data for ID:", id); // Log para verificar se o ID está correto
       const result = await dadosByUser(String(id));
-      console.log("Data fetched:", result); // Log para verificar o resultado
-      setDataUnique(result);
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
+      const responseGrafic = await dataGraphicsByUser(String(id));
+      setDataUnique(result.dados);
+      setUser(result.usuario);
+      setData(responseGrafic);
     } finally {
       setLoading(false);
     }
@@ -45,7 +46,7 @@ export default function Afiliate() {
 
   return (
     <>
-      <main className="w-[calc(100vw-300px)] ml-[300px] h-screen px-8 pt-8 text-white flex flex-col gap-4">
+      <main className="w-[calc(100vw-300px)] ml-[300px] h-max min-h-screen px-8 pt-8 text-white flex flex-col gap-4 bg-black">
         <fieldset className="w-[380px]">
           <select
             id="select"
@@ -63,8 +64,14 @@ export default function Afiliate() {
           <>
             <div className="flex gap-4">
               <section className="w-[380px] h-24 bg-[#202020] px-6 flex items-center justify-between rounded-xl ">
-                <h4 className="text-xl font-medium">Carlos Henrique</h4>
-                <p className="text-xs text-white/60">18/01/2025</p>
+                <h4 className="text-xl font-medium">{user?.nome}</h4>
+                <p className="text-xs text-white/60">
+                  {new Date(user?.criado_em).toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  })}
+                </p>
               </section>
               <section className="w-[340px] h-24 bg-[#202020] px-6 flex items-center justify-between rounded-xl ">
                 <span className="flex flex-col gap-3">
@@ -83,6 +90,7 @@ export default function Afiliate() {
               </section>
             </div>
             <Cards data={dataUnique} />
+            <Graphic data={data} />
           </>
         )}
       </main>

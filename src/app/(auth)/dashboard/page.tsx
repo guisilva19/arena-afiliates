@@ -23,7 +23,7 @@ export default function Dashboard() {
   const [dados, setDados] = useState<any>([]);
   const [data, setData] = useState<IData[]>({} as IData[]);
   const [dataUnique, setDataUnique] = useState<IDataUnique>({} as IDataUnique);
-  const { allData, dadosByMyUser } = useData();
+  const { allData, dadosByMyUser, dataGraphicsByUser } = useData();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -56,7 +56,12 @@ export default function Dashboard() {
           setDados(await allData());
           setData(await allDataGraphics());
         } else {
-          setDataUnique(await dadosByMyUser());
+          const result = await dadosByMyUser();
+          const responseGrafic = await dataGraphicsByUser(
+            JSON.parse(storage)?.id
+          );
+          setData(responseGrafic);
+          setDataUnique(result.dados);
         }
       } finally {
         setLoading(false);
@@ -193,6 +198,7 @@ export default function Dashboard() {
                   </section>
                 </div>
                 <Cards data={dataUnique} />
+                <Graphic data={data} />
               </>
             )}
           </>
@@ -209,7 +215,6 @@ export default function Dashboard() {
     </>
   );
 }
-
 
 const Cards = ({ data }: { data: IDataUnique }) => {
   return (

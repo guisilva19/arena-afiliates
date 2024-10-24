@@ -65,6 +65,25 @@ export default function useData() {
     }
   };
 
+  const dataGraphicsByUser = async (id: string) => {
+    try {
+      const response = await fetch(`/api/users/${id}/dados/grafico`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user") as string).token
+          }`,
+        },
+      });
+
+      if (response.ok) {
+        return await response.json();
+      }
+    } catch (err) {
+      toast.error("Falha ao buscar dados!");
+    }
+  };
+
   const allInvoice = async (startDate: string, endDate: string) => {
     try {
       const response = await fetch(
@@ -135,7 +154,7 @@ export default function useData() {
 
   const dadosByUser = async (id: string) => {
     try {
-      const response = await fetch(`api/users/${id}/dados`, {
+      const response = await fetch(`/api/users/${id}/dados`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
@@ -156,6 +175,7 @@ export default function useData() {
     addData,
     allData,
     allDataGraphics,
+    dataGraphicsByUser,
     allInvoice,
     myInvoice,
     dadosByMyUser,
