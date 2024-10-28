@@ -14,6 +14,7 @@ import { IoStatsChartOutline } from "react-icons/io5";
 import { truncateText } from "@/utils/truncate";
 import { useEffect, useState } from "react";
 import { FiLogOut } from "react-icons/fi";
+import { Avatar } from "@nextui-org/react";
 
 export default function SideBar() {
   const router = useRouter();
@@ -167,22 +168,6 @@ const NavigateOptions = ({ user }: { user: any }) => {
       </ul>
 
       <Link
-        href="/estatisticas"
-        className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white mt-6 rounded-xl ${
-          path === "configuracoes"
-            ? "text-green-primary bg-green-secondary"
-            : "text-white"
-        }`}
-      >
-        <div className="w-full flex items-center gap-1">
-          <figure className="w-8 flex justify-center">
-            <IoStatsChartOutline size={22} />
-          </figure>
-          <p className="font-medium text-sm">Estatísticas</p>
-        </div>
-      </Link>
-
-      <Link
         href="/configuracoes"
         className={`flex h-10 w-11/12 items-center px-3 gap-2 text-white mt-6 rounded-xl ${
           path === "configuracoes"
@@ -192,11 +177,12 @@ const NavigateOptions = ({ user }: { user: any }) => {
       >
         <div className="w-full flex items-center gap-2">
           <figure className="min-w-[44px] flex justify-center rounded-full">
-            <Image
+            {/* <Image
               src={avatar}
               alt="Avatar"
               className="min-w-[44px] h-[44px]"
-            />
+            /> */}
+            <Avatar name={user?.nome} />
           </figure>
           <span className="flex flex-col w-full">
             <p className="font-medium">{truncateText(user?.nome, 20)}</p>

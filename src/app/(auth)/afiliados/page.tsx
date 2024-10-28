@@ -6,19 +6,17 @@ import { FaHeart, FaUser } from "react-icons/fa";
 import { HiDotsCircleHorizontal } from "react-icons/hi";
 import { HiUsers } from "react-icons/hi2";
 import { IoSettingsSharp } from "react-icons/io5";
-import {
-  FiUser,
-  FiPhone,
-  FiMapPin,
-  FiFileText,
-  FiPercent,
-  FiTool,
-} from "react-icons/fi";
+import { FiUser, FiPhone, FiFileText, FiPercent, FiTool } from "react-icons/fi";
 import CreateAfiliate from "@/components/CreateAfiliate/CreateAfiliate";
 import useUser from "@/hook/useUser";
 import Loading from "@/components/Loading/Loading";
+import EditAfiliate from "@/components/EditAfiliate/EditAfiliate";
+import { Avatar } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
 
 export default function Afiliates() {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -26,14 +24,6 @@ export default function Afiliates() {
   const [users, setUsers] = useState<any>();
 
   const { getUsers } = useUser();
-
-  const [nome, setNome] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [email, setEmail] = useState("");
-  const [estado, setEstado] = useState("");
-  const [condicoes, setCondicoes] = useState("");
-  const [comissao, setComissao] = useState("");
-  const [link, setLink] = useState("");
 
   const handleAddAfiliado = () => {
     setIsModalOpen(true);
@@ -43,24 +33,18 @@ export default function Afiliates() {
     setIsModalOpen(false);
   };
 
-  const handleOpenEditModal = (afiliado: any) => {
-    setSelectedAfiliado(afiliado);
-    setNome(afiliado.nome);
-    setTelefone(afiliado.telefone);
-    setEmail(afiliado.email);
-    setEstado(afiliado.estado);
-    setCondicoes(afiliado.condicoes);
-    setComissao(afiliado.comissao);
-    setLink(afiliado.link);
-    setIsEditModalOpen(true);
-  };
-
   const handleCloseEditModal = () => {
+    setSelectedAfiliado(null);
     setIsEditModalOpen(false);
   };
 
   const handleExcluirAfiliado = () => {
-    alert(`Afiliado ${selectedAfiliado.nome} excluído!`);
+    const filtered = users.afiliados.filter(
+      (user: any) => user.id !== selectedAfiliado.id
+    );
+
+    setUsers({ ...users, afiliados: filtered });
+
     setIsEditModalOpen(false);
   };
 
@@ -142,8 +126,16 @@ export default function Afiliates() {
                       className="grid grid-cols-10 gap-4 items-center text-white text-sm bg-[#2D2D2D] p-4 rounded-[5px] mt-2 hover:bg-[#3A3A3A]"
                     >
                       <div className="col-span-2 flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gray-500 flex-shrink-0"></div>
-                        <div>
+                        <div
+                          className="w-10 h-10 rounded-full bg-gray-500 flex-shrink-0 cursor-pointer"
+                          onClick={() => router.push(`/afiliado/${item.id}`)}
+                        >
+                          <Avatar name={item.nome} />
+                        </div>
+                        <div
+                          onClick={() => router.push(`/afiliado/${item.id}`)}
+                          className="cursor-pointer"
+                        >
                           <p>{item.nome}</p>
                           <p>{item.email}</p>
                         </div>
@@ -165,17 +157,10 @@ export default function Afiliates() {
                       </div>
                       <div className="col-span-1 text-center">
                         <button
-                          onClick={() =>
-                            handleOpenEditModal({
-                              nome: "Carlos Henrique",
-                              telefone: "(21) 99193-4657",
-                              email: "carlos@google.com",
-                              estado: "Rio de Janeiro",
-                              condicoes: "Depositar R$ 80 / Apostar R$ 80",
-                              comissao: "R$ 40 + 20%",
-                              link: "http://exemplo.com",
-                            })
-                          }
+                          onClick={() => {
+                            setSelectedAfiliado(item);
+                            setIsEditModalOpen(true);
+                          }}
                           className="text-white"
                         >
                           <IoSettingsSharp size={20} />
@@ -196,121 +181,14 @@ export default function Afiliates() {
         />
       )}
       {isEditModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg max-w-md w-full">
-            <h3 className="text-xl font-semibold text-center mb-4">
-              Editar Afiliado
-            </h3>
-            <p className="text-gray-500 text-center mb-6">
-              Atualize os dados do afiliado abaixo.
-            </p>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Nome
-              </label>
-              <input
-                type="text"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Telefone
-              </label>
-              <input
-                type="text"
-                value={telefone}
-                onChange={(e) => setTelefone(e.target.value)}
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                E-mail
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Estado
-              </label>
-              <input
-                type="text"
-                value={estado}
-                onChange={(e) => setEstado(e.target.value)}
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Condições
-              </label>
-              <input
-                type="text"
-                value={condicoes}
-                onChange={(e) => setCondicoes(e.target.value)}
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">
-                Comissão
-              </label>
-              <input
-                type="text"
-                value={comissao}
-                onChange={(e) => setComissao(e.target.value)}
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
-
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700">
-                Link
-              </label>
-              <input
-                type="text"
-                value={link}
-                onChange={(e) => setLink(e.target.value)}
-                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
-              />
-            </div>
-
-            <button
-              onClick={handleCloseEditModal}
-              className="bg-green-500 text-white py-2 px-4 rounded-full w-full hover:bg-green-600 transition"
-            >
-              Atualizar Afiliado
-            </button>
-
-            <button
-              onClick={handleExcluirAfiliado}
-              className="bg-red-500 text-white py-2 px-4 rounded-full w-full mt-2 hover:bg-red-600 transition"
-            >
-              Excluir Afiliado
-            </button>
-
-            <button
-              onClick={handleCloseEditModal}
-              className="mt-2 text-gray-500 text-center w-full"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
+        <EditAfiliate
+          handleExcluirAfiliado={handleExcluirAfiliado}
+          handleCloseEditModal={handleCloseEditModal}
+          afiliado={selectedAfiliado}
+          setUsers={setUsers}
+          users={users}
+          setIsEditModalOpen={setIsEditModalOpen}
+        />
       )}
     </>
   );

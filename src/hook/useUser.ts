@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import { Stringifier } from "postcss";
 import { toast } from "sonner";
 
 export default function useUser() {
@@ -56,7 +57,7 @@ export default function useUser() {
       });
       if (response.ok) {
         toast.success("Afiliado cadastrado com sucesso!");
-        return await response.json()
+        return await response.json();
       } else {
         toast.error("Falha ao cadastrar afiliado!");
       }
@@ -86,5 +87,58 @@ export default function useUser() {
     }
   };
 
-  return { getMyUser, registerUser, registerAfiliate, getUsers };
+  const updateUser = async (id: string, body: any) => {
+    try {
+      const response = await fetch(`api/users/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user") as string).token
+          }`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        toast.success("Afiliado atualizado com sucesso!");
+      }
+    } catch (err) {
+      toast.error("Falha ao atualizar afiliado!");
+    }
+  };
+
+  const deleteUser = async (id: string) => {
+    try {
+      const response = await fetch(`api/users/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user") as string).token
+          }`,
+        },
+      });
+
+      if (response.ok) {
+        toast.success("Afiliado desativado com sucesso!");
+        return true;
+      } else {
+        toast.error("Falha ao desativas afiliado");
+        return false;
+      }
+    } catch (err) {
+      toast.error("Falha ao desativas afiliado");
+      return false;
+    }
+  };
+
+  return {
+    getMyUser,
+    registerUser,
+    registerAfiliate,
+    getUsers,
+    updateUser,
+    deleteUser,
+  };
 }
