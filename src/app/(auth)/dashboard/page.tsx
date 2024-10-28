@@ -181,7 +181,7 @@ export default function Dashboard() {
                       })}
                     </p>
                   </section>
-                  <section className="w-[340px] h-24 bg-[#202020] px-6 flex items-center justify-between rounded-xl ">
+                  {/* <section className="w-[340px] h-24 bg-[#202020] px-6 flex items-center justify-between rounded-xl ">
                     <span className="flex flex-col gap-3">
                       <p className="text-sm text-white/80">Saldo disponível</p>
                       <h4 className="text-2xl font-medium">685,156</h4>
@@ -195,7 +195,7 @@ export default function Dashboard() {
                         Histórico
                       </button>
                     </span>
-                  </section>
+                  </section> */}
                 </div>
                 <Cards data={dataUnique} />
                 <Graphic data={data} />
