@@ -1,7 +1,5 @@
 "use client";
 import Graphic, { IData, IDataUnique } from "@/components/Graphic/Graphic";
-import Loading from "@/components/Loading/Loading";
-import useData from "@/hook/useData";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BsFillBagFill, BsThreeDots } from "react-icons/bs";
@@ -10,6 +8,9 @@ import { GiShoppingBag } from "react-icons/gi";
 import { HiDownload } from "react-icons/hi";
 import { IoTimeOutline } from "react-icons/io5";
 import { MdOutlineAttachMoney } from "react-icons/md";
+
+import Loading from "@/components/Loading/Loading";
+import useData from "@/hook/useData";
 
 export default function Afiliate() {
   const params = useParams();
@@ -73,7 +74,7 @@ export default function Afiliate() {
                   })}
                 </p>
               </section>
-              <section className="w-[340px] h-24 bg-[#202020] px-6 flex items-center justify-between rounded-xl ">
+              {/* <section className="w-[340px] h-24 bg-[#202020] px-6 flex items-center justify-between rounded-xl ">
                 <span className="flex flex-col gap-3">
                   <p className="text-sm text-white/80">Saldo disponível</p>
                   <h4 className="text-2xl font-medium">685,156</h4>
@@ -87,7 +88,7 @@ export default function Afiliate() {
                     Histórico
                   </button>
                 </span>
-              </section>
+              </section> */}
             </div>
             <Cards data={dataUnique} />
             <Graphic data={data} />

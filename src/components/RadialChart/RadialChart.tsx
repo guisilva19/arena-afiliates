@@ -1,6 +1,6 @@
 "use client";
 
-import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts";
+import { RadialBar, RadialBarChart } from "recharts";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -32,52 +32,31 @@ export function RadialChartGraphic({ data }: { data: IData }) {
   return (
     <Card
       className="flex flex-col"
-      style={{ backgroundColor: "#202020", color: "white", border: "none" }}
+      style={{
+        backgroundColor: "#202020",
+        color: "white",
+        border: "none",
+      }}
     >
-      <CardHeader className="items-center pb-0">
+      <CardHeader className="items-center pb-0 ">
         <CardTitle>Visão geral</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square w-full"
+          className="mx-auto  w-full h-[472px] flex items-center justify-center"
         >
           <RadialBarChart
             data={chartData}
             endAngle={180}
-            innerRadius={180}
-            outerRadius={280}
+            innerRadius={190}
+            outerRadius={270}
           >
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            {/* <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                    return (
-                      <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle">
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) - 16}
-                          className="fill-foreground text-2xl font-bold text-white"
-                        >
-                          {totalVisitors.toLocaleString()}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 4}
-                          className="fill-muted-foreground"
-                        >
-                          Cliques, Contas ativas e contas de aposta
-                        </tspan>
-                      </text>
-                    );
-                  }
-                }}
-              />
-            </PolarRadiusAxis> */}
+
             <RadialBar
               dataKey="desktop"
               stackId="a"

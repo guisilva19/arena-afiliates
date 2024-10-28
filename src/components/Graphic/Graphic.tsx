@@ -54,8 +54,8 @@ export interface IDataUnique {
 export default function Graphic({ data }: { data: any }) {
   return (
     <>
-      <main>
-        <div className="w-full bg-[#212121] p-5 flex">
+      <main className="bg-[#212121]">
+        <div className="w-full  p-5 flex">
           <section className="w-6/12">
             <AreaChartGraphic data={data} />
           </section>
@@ -63,7 +63,7 @@ export default function Graphic({ data }: { data: any }) {
             <BarChartGraphic data={data} />
           </section>
         </div>
-        <div className="w-full bg-[#212121] p-5 flex">
+        <div className="w-full p-5 flex">
           <section className="w-6/12">
             <LineChartGraphic data={data} />
           </section>
