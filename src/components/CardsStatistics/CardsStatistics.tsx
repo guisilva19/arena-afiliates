@@ -7,7 +7,7 @@ import { PiEyeFill } from "react-icons/pi";
 import ftd from "@/assets/ftd.svg";
 import { IoMagnetSharp } from "react-icons/io5";
 import { FaFireFlameSimple } from "react-icons/fa6";
-import { GiPerspectiveDiceSixFacesOne } from "react-icons/gi";
+import { GiPerspectiveDiceSixFacesOne, GiReceiveMoney } from "react-icons/gi";
 
 export default function CardsStatistics({ dados }: { dados: any }) {
   return (
@@ -164,8 +164,8 @@ export default function CardsStatistics({ dados }: { dados: any }) {
         <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <GiPerspectiveDiceSixFacesOne size={18} color="#85FF4C" />
-              <p className="text-sm font-medium">Contas de aposta</p>
+              <GiReceiveMoney size={18} color="#85FF4C" />
+              <p className="text-sm font-medium">Receita líquida</p>
             </div>
             <button>
               <BsThreeDots />

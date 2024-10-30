@@ -13,6 +13,7 @@ import Loading from "@/components/Loading/Loading";
 import EditAfiliate from "@/components/EditAfiliate/EditAfiliate";
 import { Avatar } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Afiliates() {
   const router = useRouter();
@@ -130,7 +131,17 @@ export default function Afiliates() {
                           className="w-10 h-10 rounded-full bg-gray-500 flex-shrink-0 cursor-pointer"
                           onClick={() => router.push(`/afiliado/${item.id}`)}
                         >
-                          <Avatar name={item.nome} />
+                          {item?.foto === null ? (
+                            <Avatar name={item?.nome} />
+                          ) : (
+                            <Image
+                              src={item?.foto}
+                              alt={item?.nome}
+                              width={44}
+                              height={44}
+                              className="min-w-[44px] h-[44px] rounded-full"
+                            />
+                          )}
                         </div>
                         <div
                           onClick={() => router.push(`/afiliado/${item.id}`)}
