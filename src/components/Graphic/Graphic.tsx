@@ -51,7 +51,13 @@ export interface IDataUnique {
   depositos: number;
 }
 
-export default function Graphic({ data }: { data: any }) {
+export default function Graphic({
+  data,
+  afiliate,
+}: {
+  data: any;
+  afiliate: boolean;
+}) {
   return (
     <>
       <main className="bg-[#212121]">
@@ -63,14 +69,16 @@ export default function Graphic({ data }: { data: any }) {
             <BarChartGraphic data={data} />
           </section>
         </div>
-        <div className="w-full p-5 flex">
-          <section className="w-6/12">
-            <LineChartGraphic data={data} />
-          </section>
-          <section className="flex flex-col w-6/12">
-            <RadialChartGraphic data={data} />
-          </section>
-        </div>
+        {!afiliate && (
+          <div className="w-full p-5 flex">
+            <section className="w-6/12">
+              <LineChartGraphic data={data} />
+            </section>
+            <section className="flex flex-col w-6/12">
+              <RadialChartGraphic data={data} />
+            </section>
+          </div>
+        )}
       </main>
     </>
   );

@@ -6,11 +6,11 @@ import { BsFillBagFill, BsThreeDots } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa";
 import { GiShoppingBag } from "react-icons/gi";
 import { HiDownload } from "react-icons/hi";
-import { IoTimeOutline } from "react-icons/io5";
 import { MdOutlineAttachMoney } from "react-icons/md";
 
 import Loading from "@/components/Loading/Loading";
 import useData from "@/hook/useData";
+import CardsStatisticsAfiliate from "@/components/CardsStatisticsAfiliate/CardsStatisticsAfiliate";
 
 export default function Afiliate() {
   const params = useParams();
@@ -90,8 +90,8 @@ export default function Afiliate() {
                 </span>
               </section> */}
             </div>
-            <Cards data={dataUnique} />
-            <Graphic data={data} />
+            <CardsStatisticsAfiliate dados={dataUnique} />
+            <Graphic data={data} afiliate={true}/>
           </>
         )}
       </main>
@@ -99,77 +99,4 @@ export default function Afiliate() {
   );
 }
 
-const Cards = ({ data }: { data: IDataUnique }) => {
-  return (
-    <>
-      <ul className="flex gap-5 relative">
-        {/* Registros */}
-        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
-          <section className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <FaHeart size={18} className="text-green-primary" />
-              <p className="text-sm font-">Registros</p>
-            </div>
-            <button>
-              <BsThreeDots />
-            </button>
-          </section>
-          <span>
-            <p className="text-3xl font-semibold">{data?.registros}</p>
-          </span>
-        </li>
-        {/* Depositantes */}
-        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
-          <section className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <GiShoppingBag size={18} className="text-green-primary" />
-              <p className="text-sm font-">Depositantes</p>
-            </div>
-            <button>
-              <BsThreeDots />
-            </button>
-          </section>
-          <span>
-            <p className="text-3xl font-semibold">
-              {data?.contas_depositantes}
-            </p>
-          </span>
-        </li>
-        {/* Interação com links */}
-        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
-          <section className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <BsFillBagFill size={18} className="text-green-primary" />
-              <p className="text-sm font-">Interação com links</p>
-            </div>
-            <button>
-              <BsThreeDots />
-            </button>
-          </section>
-          <span>
-            <p className="text-3xl font-semibold">{data?.cliques}</p>
-          </span>
-        </li>
-        {/* Receita gerada */}
-        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
-          <section className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <MdOutlineAttachMoney size={20} className="text-green-primary" />
-              <p className="text-sm font-">Receita gerada</p>
-            </div>
-            <button>
-              <BsThreeDots />
-            </button>
-          </section>
-          <span>
-            <p className="text-3xl font-semibold">{data?.receita_liquida}</p>
-          </span>
-        </li>
-        <button className="absolute top-[-50px] right-0 px-3 py-2 flex text-sm text-white bg-[#212121] rounded-md gap-2 items-center">
-          <p>Exportar dados</p>
-          <HiDownload size={20} />
-        </button>
-      </ul>
-    </>
-  );
-};
+
