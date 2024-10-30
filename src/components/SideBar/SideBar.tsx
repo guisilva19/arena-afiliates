@@ -3,22 +3,22 @@ import Image from "next/image";
 import logo from "@/assets/logo.svg";
 import search from "@/assets/search.svg";
 import Link from "next/link";
-import avatar from "@/assets/avatar.svg";
 
 import { FaStar, FaUser } from "react-icons/fa";
 import { HiPuzzlePiece } from "react-icons/hi2";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { usePathname, useRouter } from "next/navigation";
 import { GoChevronRight } from "react-icons/go";
-import { IoStatsChartOutline } from "react-icons/io5";
 import { truncateText } from "@/utils/truncate";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FiLogOut } from "react-icons/fi";
 import { Avatar } from "@nextui-org/react";
+import { useGlobalContext } from "@/context/context";
 
 export default function SideBar() {
   const router = useRouter();
-  const [user, setUser] = useState<any>(null);
+
+  const { user, setUser } = useGlobalContext();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -177,12 +177,17 @@ const NavigateOptions = ({ user }: { user: any }) => {
       >
         <div className="w-full flex items-center gap-2">
           <figure className="min-w-[44px] flex justify-center rounded-full">
-            {/* <Image
-              src={avatar}
-              alt="Avatar"
-              className="min-w-[44px] h-[44px]"
-            /> */}
-            <Avatar name={user?.nome} />
+            {user?.foto === null ? (
+              <Avatar name={user?.nome} />
+            ) : (
+              <Image
+                src={user?.foto}
+                alt={user?.nome}
+                width={44}
+                height={44}
+                className="min-w-[44px] h-[44px] rounded-full"
+              />
+            )}
           </figure>
           <span className="flex flex-col w-full">
             <p className="font-medium">{truncateText(user?.nome, 20)}</p>

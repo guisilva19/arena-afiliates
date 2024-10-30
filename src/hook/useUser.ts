@@ -108,6 +108,34 @@ export default function useUser() {
     }
   };
 
+  const updateUserPassAndPicture = async (body: any) => {
+    try {
+      const response = await fetch(`api/users/password-or-picture`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("user") as string).token
+          }`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        if (body.senha) {
+          toast.success("Usuário atualizado, faça login novamente!");
+          localStorage.removeItem("user");
+          router.push("/");
+        } else {
+          toast.success("Informações atualizadas com sucesso!");
+          return await response.json();
+        }
+      }
+    } catch (err) {
+      toast.error("Falha ao atualizar afiliado!");
+    }
+  };
+
   const deleteUser = async (id: string) => {
     try {
       const response = await fetch(`api/users/${id}`, {
@@ -139,6 +167,7 @@ export default function useUser() {
     registerAfiliate,
     getUsers,
     updateUser,
+    updateUserPassAndPicture,
     deleteUser,
   };
 }

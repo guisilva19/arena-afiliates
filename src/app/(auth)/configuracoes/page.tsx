@@ -1,10 +1,52 @@
 "use client";
 
+import { useGlobalContext, User } from "@/context/context";
+import useUser from "@/hook/useUser";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { toast } from "sonner";
 
 export default function Settings() {
   const [viewPass, setViewPass] = useState(false);
+  const [senha, setSenha] = useState<string>("");
+  const [confirmSenha, setConfirmSenha] = useState<string>("");
+  const [foto, setFoto] = useState<string | null>(null);
+
+  const { updateUserPassAndPicture } = useUser();
+  const { setUser, user } = useGlobalContext();
+
+  const saveChanges = async () => {
+    if (senha.length > 0) {
+      if (senha === confirmSenha) {
+        if (senha.length < 6) {
+          toast.warning("Adicione uma senha maior");
+        } else {
+          await updateUserPassAndPicture({ foto, senha });
+          toast.success("Senha e foto atualizadas com sucesso.");
+
+          setUser((prevUser: any) => ({
+            ...(prevUser ?? {}),
+            foto: foto,
+          }));
+        }
+      } else {
+        toast.warning("As senhas digitadas não coincidem.");
+      }
+    } else {
+      const response = await updateUserPassAndPicture({ foto });
+      if (response) {
+        setUser((prevUser: any) => ({
+          ...(prevUser ?? {}),
+          foto: foto,
+        }));
+        const token = JSON.parse(localStorage.getItem("user") as string).token;
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ token, ...response })
+        );
+      }
+    }
+  };
 
   return (
     <>
@@ -20,7 +62,19 @@ export default function Settings() {
             <input
               type="file"
               id="Foto"
+              accept="image/png, image/jpeg, image/jpg"
               className="w-full px-4 py-3 outline-none rounded-xl bg-white text-black"
+              onChange={(e: any) => {
+                const file = e.target.files[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    const base64String = reader.result as string;
+                    setFoto(base64String);
+                  };
+                  reader.readAsDataURL(file);
+                }
+              }}
             />
           </fieldset>
 
@@ -33,6 +87,7 @@ export default function Settings() {
                 type={viewPass ? "text" : "password"}
                 id="Senha"
                 className="w-full outline-none py-3"
+                onChange={({ target: { value } }) => setSenha(value)}
               />
               <button type="button" onClick={() => setViewPass(!viewPass)}>
                 {viewPass ? <FaRegEyeSlash /> : <FaRegEye />}
@@ -49,6 +104,7 @@ export default function Settings() {
                 type={viewPass ? "text" : "password"}
                 id="Senha"
                 className="w-full outline-none py-3"
+                onChange={({ target: { value } }) => setConfirmSenha(value)}
               />
               <button type="button" onClick={() => setViewPass(!viewPass)}>
                 {viewPass ? <FaRegEyeSlash /> : <FaRegEye />}
@@ -57,8 +113,9 @@ export default function Settings() {
           </fieldset>
 
           <button
-            type="submit"
+            type="button"
             className=" w-full bg-[#4CFF4C] py-4 rounded-xl mt-8"
+            onClick={saveChanges}
           >
             <p className="font-semibold text-black">Salvar</p>
           </button>
