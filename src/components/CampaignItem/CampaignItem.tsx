@@ -24,9 +24,14 @@ export default function CampaignItem({
 }) {
   const [openRequest, setOpenRequest] = useState<boolean>(false);
 
+
   const alreadyRequested = Boolean(
-    requests.find((item: string) => item === campanha.id)
+    requests.find((item: string) => {
+      return item === campanha.id;
+    })
   );
+
+  console;
 
   return (
     <>

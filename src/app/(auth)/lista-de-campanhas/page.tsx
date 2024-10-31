@@ -49,7 +49,12 @@ export default function ListCampaings() {
       setIsLoading(true);
       setCampanhas(await list());
       const response = await listRequests();
-      const ids = response.map((item: any) => item.idCampaign);
+      const userStorage = JSON.parse(localStorage.getItem("user") as string);
+      const ids = response.map((item: any) => {
+        if (userStorage.id === item.usuario.id) {
+          return item.idCampaign;
+        }
+      });
       setRequests(ids);
     } finally {
       setIsLoading(false);
@@ -64,7 +69,6 @@ export default function ListCampaings() {
             Localizador de campanhas
           </h3>
           <form className="flex gap-6 items-center">
-           
             <fieldset className="w-4/12 flex relative">
               <input
                 type="text"
