@@ -90,10 +90,10 @@ export default function Afiliates() {
         ) : (
           <>
             <Cards
-              afiliados={users.afiliados_quantidade}
-              novos={users.novos_afiliados}
-              removidos={users.afiliados_removidos}
-              top={users.top_afiliados}
+              afiliados={users?.afiliados_quantidade}
+              novos={users?.novos_afiliados}
+              removidos={users?.afiliados_removidos}
+              top={users?.top_afiliados}
             />
 
             <div className="mt-8">

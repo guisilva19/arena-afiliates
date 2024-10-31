@@ -1,4 +1,5 @@
 import useUser from "@/hook/useUser";
+import { Checkbox } from "@nextui-org/react";
 import { useState } from "react";
 
 export default function EditAfiliate({
@@ -23,12 +24,14 @@ export default function EditAfiliate({
   const [email, setEmail] = useState(afiliado.email);
   const [promover, setPromover] = useState(afiliado.onde_vai_promover);
   const [link, setLink] = useState(afiliado.url_ou_canal);
+  const [top, setTop] = useState(afiliado.top_afiliado);
 
   const update = async () => {
     try {
       const body = {
         nome,
         telefone,
+        top_afiliado: top,
         onde_vai_promover: promover,
         url_ou_canal: link,
       };
@@ -38,7 +41,14 @@ export default function EditAfiliate({
         (user: any) => user.id !== afiliado.id
       );
 
-      setUsers({ ...users, afiliados: [...filtered, body] });
+      const tops = users.afiliados.filter(
+        (user: any) => user.top_afiliado
+      ).length;
+      setUsers({
+        ...users,
+        top_afiliados: tops,
+        afiliados: [...filtered, body],
+      });
 
       setIsEditModalOpen(false);
     } catch (err) {}
@@ -114,6 +124,12 @@ export default function EditAfiliate({
               onChange={(e) => setLink(e.target.value)}
               className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm"
             />
+          </div>
+
+          <div className="flex items-center mb-6">
+            <Checkbox isSelected={top} onChange={() => setTop(!top)}>
+              Top afiliado
+            </Checkbox>
           </div>
 
           <button
