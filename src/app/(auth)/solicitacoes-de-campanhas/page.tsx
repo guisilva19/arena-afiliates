@@ -1,22 +1,22 @@
 "use client";
-
-import useCampaign from "@/hook/useCampaign";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import { FaCheck, FaRegCheckCircle } from "react-icons/fa";
 import { FaCodePullRequest } from "react-icons/fa6";
 import { FiFileText, FiPercent, FiTool, FiUser } from "react-icons/fi";
-import {
-  IoSearch,
-  IoCheckmarkSharp,
-  IoSettingsSharp,
-  IoCopyOutline,
-} from "react-icons/io5";
+import { IoClose, IoSearch, IoSettingsSharp } from "react-icons/io5";
 import { MdOutlineFormatColorText } from "react-icons/md";
 import { toast } from "sonner";
+import useCampaign from "@/hook/useCampaign";
+import Image from "next/image";
+import {
+  IoIosCloseCircleOutline,
+  IoMdCheckmark,
+  IoMdCloseCircleOutline,
+} from "react-icons/io";
 
 export default function ListCampaings() {
-  const [pedidoSolicitado, setPedidoSolicitado] = useState(false);
   const [isModalLinkOpen, setIsModalLinkOpen] = useState(false);
+  const [isModalLinkOpenDelete, setIsModalLinkOpenDelete] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [campanhas, setCampanhas] = useState<any>([]);
   const [campanha, setCampanha] = useState<any>();
@@ -24,6 +24,7 @@ export default function ListCampaings() {
 
   const handleCloseModal = () => {
     setIsModalLinkOpen(false);
+    setIsModalLinkOpenDelete(false);
   };
 
   const [user, setUser] = useState<any>(null);
@@ -55,32 +56,7 @@ export default function ListCampaings() {
             Solicitações de campanhas
           </h3>
           <form className="flex gap-6 items-center">
-            <fieldset className="w-full">
-              <select
-                id="select"
-                className="block w-full py-2 pl-3 pr-10 bg-[#474747] text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="">Selecione o país</option>
-                <option value="option1">Opção 1</option>
-                <option value="option2">Opção 2</option>
-                <option value="option3">Opção 3</option>
-              </select>
-            </fieldset>
-            <fieldset className="w-full">
-              <select
-                id="select"
-                className="block w-full py-2 pl-3 pr-10 bg-[#474747] text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="">Tipo de campanha</option>
-                <option value="option1">Opção 1</option>
-                <option value="option2">Opção 2</option>
-                <option value="option3">Opção 3</option>
-              </select>
-            </fieldset>
-            <button className="min-w-[220px] text-sm h-[38px] bg-[#171717] flex items-center justify-center rounded-md">
-              Consultar campanhas
-            </button>
-            <fieldset className="w-full flex relative">
+            <fieldset className="w-4/12 flex relative">
               <input
                 type="text"
                 placeholder="Pesquisa de palavras"
@@ -147,15 +123,29 @@ export default function ListCampaings() {
                 <p className="col-span-2">{campanha?.usuario.nome}</p>
                 <p className="col-span-3">{campanha?.condicao}</p>
                 <p className="col-span-2">{campanha?.comissao}</p>
-                <div className="col-span-1 text-center">
+                <div className="col-span-1 text-center flex gap-3 items-center justify-center">
                   <button
-                    className="text-white"
+                    className="text-white rounded-full hover:bg-[#fa2222] hover:text-[#ffffff] border-2 border-[#fa2222] duration-250"
+                    onClick={() => {
+                      setIsModalLinkOpenDelete(true);
+                    }}
+                  >
+                    <IoClose
+                      className="text-[#fa2222] hover:text-[#ffffff]"
+                      size={20}
+                    />
+                  </button>
+                  <button
+                    className="text-white rounded-full hover:bg-[#15ff00] hover:text-[#ffffff] border-2 border-[#15ff00] duration-250"
                     onClick={() => {
                       setIsModalLinkOpen(true);
                       setCampanha(campanha);
                     }}
                   >
-                    <IoSettingsSharp size={20} />
+                    <IoMdCheckmark
+                      className="text-[#15ff00] hover:text-[#ffffff]"
+                      size={20}
+                    />
                   </button>
                 </div>
               </div>
@@ -171,6 +161,10 @@ export default function ListCampaings() {
           setCampanhas={setCampanhas}
           campanhas={campanhas}
         />
+      )}
+
+      {isModalLinkOpenDelete && (
+        <ModalDelete handleCloseModalDelete={handleCloseModal} />
       )}
     </>
   );
@@ -286,6 +280,45 @@ const ModalEdit = ({
             Cancelar
           </button>
         </form>
+      </div>
+    </>
+  );
+};
+
+const ModalDelete = ({
+  handleCloseModalDelete,
+}: {
+  handleCloseModalDelete: () => void;
+}) => {
+  return (
+    <>
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="w-[400px] h-48 bg-white flex rounded-lg flex-col justify-center items-center gap-6 relative">
+          <button
+            className="absolute right-3 top-3"
+            onClick={() => handleCloseModalDelete()}
+          >
+            <IoIosCloseCircleOutline size={25} color="#000" />
+          </button>
+          <h3 className="w-8/12 text-center">
+            Tem certeza que deseja recusar essa solicitação?
+          </h3>
+          <section className="flex gap-5">
+            <button
+              onClick={handleCloseModalDelete}
+              className="bg-blue-500 text-white py-2 rounded-full w-40 hover:bg-blue-600 transition"
+            >
+              Cancelar
+            </button>
+            
+            <button
+              type="submit"
+              className="bg-green-500 text-white py-2 rounded-full w-40 hover:bg-green-600 transition"
+            >
+              Concluir
+            </button>
+          </section>
+        </div>
       </div>
     </>
   );

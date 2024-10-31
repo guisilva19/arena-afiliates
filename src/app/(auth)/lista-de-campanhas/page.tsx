@@ -64,32 +64,8 @@ export default function ListCampaings() {
             Localizador de campanhas
           </h3>
           <form className="flex gap-6 items-center">
-            <fieldset className="w-full">
-              <select
-                id="select"
-                className="block w-full py-2 pl-3 pr-10 bg-[#474747] text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="">Selecione o país</option>
-                <option value="option1">Opção 1</option>
-                <option value="option2">Opção 2</option>
-                <option value="option3">Opção 3</option>
-              </select>
-            </fieldset>
-            <fieldset className="w-full">
-              <select
-                id="select"
-                className="block w-full py-2 pl-3 pr-10 bg-[#474747] text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="">Tipo de campanha</option>
-                <option value="option1">Opção 1</option>
-                <option value="option2">Opção 2</option>
-                <option value="option3">Opção 3</option>
-              </select>
-            </fieldset>
-            <button className="min-w-[220px] text-sm h-[38px] bg-[#171717] flex items-center justify-center rounded-md">
-              Consultar campanhas
-            </button>
-            <fieldset className="w-full flex relative">
+           
+            <fieldset className="w-4/12 flex relative">
               <input
                 type="text"
                 placeholder="Pesquisa de palavras"
