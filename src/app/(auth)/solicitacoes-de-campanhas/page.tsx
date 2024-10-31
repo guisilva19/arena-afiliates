@@ -1,18 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
-import { FaCheck, FaRegCheckCircle } from "react-icons/fa";
 import { FaCodePullRequest } from "react-icons/fa6";
 import { FiFileText, FiPercent, FiTool, FiUser } from "react-icons/fi";
-import { IoClose, IoSearch, IoSettingsSharp } from "react-icons/io5";
+import { IoClose, IoSearch } from "react-icons/io5";
 import { MdOutlineFormatColorText } from "react-icons/md";
 import { toast } from "sonner";
 import useCampaign from "@/hook/useCampaign";
 import Image from "next/image";
-import {
-  IoIosCloseCircleOutline,
-  IoMdCheckmark,
-  IoMdCloseCircleOutline,
-} from "react-icons/io";
+import { IoIosCloseCircleOutline, IoMdCheckmark } from "react-icons/io";
 
 export default function ListCampaings() {
   const [isModalLinkOpen, setIsModalLinkOpen] = useState(false);
@@ -128,6 +123,7 @@ export default function ListCampaings() {
                     className="text-white rounded-full hover:bg-[#fa2222] hover:text-[#ffffff] border-2 border-[#fa2222] duration-250"
                     onClick={() => {
                       setIsModalLinkOpenDelete(true);
+                      setCampanha(campanha);
                     }}
                   >
                     <IoClose
@@ -164,7 +160,12 @@ export default function ListCampaings() {
       )}
 
       {isModalLinkOpenDelete && (
-        <ModalDelete handleCloseModalDelete={handleCloseModal} />
+        <ModalDelete
+          handleCloseModalDelete={handleCloseModal}
+          setCampanhas={setCampanhas}
+          campanhas={campanhas}
+          campanha={campanha}
+        />
       )}
     </>
   );
@@ -287,9 +288,27 @@ const ModalEdit = ({
 
 const ModalDelete = ({
   handleCloseModalDelete,
+  campanhas,
+  setCampanhas,
+  campanha,
 }: {
   handleCloseModalDelete: () => void;
+  campanhas: any;
+  setCampanhas: any;
+  campanha: any;
 }) => {
+  const { deleteCampaignActive } = useCampaign();
+
+  const handleDelete = async () => {
+    const response = await deleteCampaignActive(campanha.id);
+
+    if (response) {
+      const filtered = campanhas.filter((item: any) => item.id !== campanha.id);
+      setCampanhas(filtered);
+    }
+    handleCloseModalDelete();
+  };
+
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -310,9 +329,9 @@ const ModalDelete = ({
             >
               Cancelar
             </button>
-            
+
             <button
-              type="submit"
+              onClick={handleDelete}
               className="bg-green-500 text-white py-2 rounded-full w-40 hover:bg-green-600 transition"
             >
               Concluir

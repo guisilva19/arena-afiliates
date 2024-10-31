@@ -200,6 +200,38 @@ export default function useCampaign() {
     }
   };
 
+  const deleteCampaignActive = async (id: string) => {
+    try {
+      const user = localStorage.getItem("user");
+
+      if (!user) {
+        throw new Error("Usuário não autenticado");
+      }
+
+      const token = JSON.parse(user).token;
+
+      const response = await fetch(`/api/campanha-ativa/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        toast.success("Solicitação de campanha excluida!");
+        return true;
+      } else {
+        const error = await response.text();
+        throw new Error(error);
+        return false;
+      }
+    } catch (err) {
+      toast.error("Falha ao excluir está solicitação de campanha");
+      throw err;
+    }
+  };
+
   const updateCampaign = async (id: string, body: any) => {
     try {
       const user = localStorage.getItem("user");
@@ -267,6 +299,7 @@ export default function useCampaign() {
     requestAfiliate,
     linkAfiliate,
     deleteCampaign,
+    deleteCampaignActive,
     updateCampaign,
   };
 }
