@@ -325,7 +325,7 @@ const ModalDelete = ({
           <section className="flex gap-5">
             <button
               onClick={handleCloseModalDelete}
-              className="bg-blue-500 text-white py-2 rounded-full w-40 hover:bg-blue-600 transition"
+              className="bg-red-500 text-white py-2 rounded-full w-40 hover:bg-red-600 transition"
             >
               Cancelar
             </button>

@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import AddAfiliate from "@/components/AddAfiliate/AddAfiliate";
 import CardsStatistics from "@/components/CardsStatistics/CardsStatistics";
 import Graphic, { IData, IDataUnique } from "@/components/Graphic/Graphic";
@@ -6,15 +7,8 @@ import Loading from "@/components/Loading/Loading";
 import useData from "@/hook/useData";
 import useUser from "@/hook/useUser";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { IoTimeOutline } from "react-icons/io5";
-import "react-datepicker/dist/react-datepicker.css";
-import { FaHeart } from "react-icons/fa";
-import { BsFillBagFill, BsThreeDots } from "react-icons/bs";
-import { GiShoppingBag } from "react-icons/gi";
-import { MdOutlineAttachMoney } from "react-icons/md";
-import { HiDownload } from "react-icons/hi";
 import CardsStatisticsAfiliate from "@/components/CardsStatisticsAfiliate/CardsStatisticsAfiliate";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Dashboard() {
   const [user, setUser] = useState<any>(null);

@@ -1,5 +1,6 @@
 import AreaChartGraphic from "../AreaChart/AreaChart";
 import { BarChartGraphic } from "../BarChart/BarChart";
+import { BarChartGraphicAfiliate } from "../BarChartAfiliate/BarChartAfiliate";
 import { LineChartGraphic } from "../LineChart/LineChart";
 import { RadialChartGraphic } from "../RadialChart/RadialChart";
 
@@ -29,6 +30,7 @@ export interface IDataObj {
 export interface IData {
   total_count_cpa: number;
   total_receita_liquida: number;
+  total_comissao_total: number;
   data: IDataObj[];
 }
 
@@ -66,7 +68,11 @@ export default function Graphic({
             <AreaChartGraphic data={data} />
           </section>
           <section className="flex flex-col w-6/12">
-            <BarChartGraphic data={data} />
+            {afiliate ? (
+              <BarChartGraphicAfiliate data={data} />
+            ) : (
+              <BarChartGraphic data={data} />
+            )}
           </section>
         </div>
         {!afiliate && (

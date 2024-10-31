@@ -150,10 +150,9 @@ export default function ListCampaings() {
                     </div>
                     <div className="col-span-2 text-center">
                       <span className="text-white">
-                        {item.dados.comissao_total.toLocaleString("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        })}
+                        {`$ ${item.dados.comissao_total
+                          .toFixed(2)
+                          .replace(".", ",")}`}
                       </span>
                     </div>
                     <div className="col-span-2 text-center">
@@ -169,10 +168,7 @@ export default function ListCampaings() {
                 <p className="text-[rgba(5,193,104,1)] text-lg">
                   Comissão total:{" "}
                   <span className="font-bold">
-                    {data.comissao_total.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}
+                    {`$ ${data.comissao_total.toFixed(2).replace(".", ",")}`}
                   </span>
                 </p>
               </div>
