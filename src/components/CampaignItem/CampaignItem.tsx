@@ -24,14 +24,11 @@ export default function CampaignItem({
 }) {
   const [openRequest, setOpenRequest] = useState<boolean>(false);
 
-
   const alreadyRequested = Boolean(
     requests.find((item: string) => {
       return item === campanha.id;
     })
   );
-
-  console;
 
   return (
     <>
@@ -106,6 +103,7 @@ const ModalRequestAfiliate = ({
   setOpenRequest: any;
   setRequests: any;
 }) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const { requestAfiliate } = useCampaign();
 
   return (
@@ -132,12 +130,15 @@ const ModalRequestAfiliate = ({
               <button
                 onClick={async () => {
                   try {
-                    await requestAfiliate(campanha.id);
+                    setLoading(true);
                     setOpenRequest(false);
+                    await requestAfiliate(campanha.id);
                     setRequests((prev: string[]) => [...prev, campanha.id]);
                   } finally {
+                    setLoading(false);
                   }
                 }}
+                disabled={loading}
                 className="px-4 py-2 bg-[#22d440] text-white rounded-md hover:scale-105 duration-300"
               >
                 Solicitar
