@@ -27,5 +27,50 @@ export default function useSignin() {
     }
   };
 
-  return { signin };
+  const forgot = async (body: { email: string }) => {
+    try {
+      const response = await fetch("api/users/forgot/code", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        toast.success("Codigo enviado para e-mail!");
+        return true;
+      } else {
+        toast.error("Algo deu errado, tente novamente!");
+        return false;
+      }
+    } catch (err) {
+      toast.error("Algo deu errado, tente novamente!");
+    }
+  };
+
+  const updatePass = async (body: any) => {
+    try {
+      const response = await fetch("api/users/forgot", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        toast.success("Senha atualizada com sucesso!");
+        router.push("/");
+        return true;
+      } else {
+        toast.error("Algo deu errado, tente novamente!");
+        return false;
+      }
+    } catch (err) {
+      toast.error("Algo deu errado, tente novamente!");
+    }
+  };
+
+  return { signin, forgot, updatePass };
 }

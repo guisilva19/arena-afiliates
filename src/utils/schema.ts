@@ -8,6 +8,22 @@ export const schemaLogin = yup.object().shape({
   senha: yup.string().required("Insira a senha"),
 });
 
+export const schemaForgot = yup.object().shape({
+  email: yup
+    .string()
+    .required("Insira o e-mail")
+    .email("Insira um e-mail válido"),
+});
+
+export const schemaUpdatePass = yup.object().shape({
+  codigo: yup
+    .string()
+    .required("Insira o código"),
+    senha: yup
+    .string()
+    .required("Insira a senha")
+});
+
 export const schemaRegister = yup.object().shape({
   nome: yup.string().required("Insira o nome completo"),
   telefone: yup.string().required("Insira o telefone"),

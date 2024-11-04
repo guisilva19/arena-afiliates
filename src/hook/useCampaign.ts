@@ -224,7 +224,7 @@ export default function useCampaign() {
       } else {
         const error = await response.text();
         throw new Error(error);
-        return false;
+        return false ;
       }
     } catch (err) {
       toast.error("Falha ao excluir está solicitação de campanha");
