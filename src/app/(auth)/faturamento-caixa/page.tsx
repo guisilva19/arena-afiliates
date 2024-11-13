@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { DateRangePicker, DateValue, RangeValue } from "@nextui-org/react";
 import {
@@ -66,7 +65,7 @@ export default function ListCampaings() {
       <main className="w-[calc(100vw-300px)] ml-[300px] px-8 pt-8 text-white h-screen">
         <div className="bg-[#2D2D2D] w-full h-32 px-4 py-5 flex flex-col justify-between rounded-[5px]">
           <h3 className="text-white text-xl font-medium">
-            Localizador de Campanhas
+            Período das Campanhas
           </h3>
           <form className="flex gap-6 items-center">
             <fieldset className="w-4/12">

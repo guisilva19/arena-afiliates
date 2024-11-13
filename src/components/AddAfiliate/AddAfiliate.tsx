@@ -53,8 +53,8 @@ export default function AddAfiliate({
         comissao_cpa: data.comissao_cpa === "" ? 0 : Number(data.comissao_cpa),
         comissao_revshare:
           data.comissao_revshare === "" ? 0 : Number(data.comissao_revshare),
-        comissao_total:
-          data.comissao_total === "" ? 0 : Number(data.comissao_total),
+        // comissao_total:
+        //   data.comissao_total === "" ? 0 : Number(data.comissao_total),
         contagem_cpa: data.contagem_cpa === "" ? 0 : Number(data.contagem_cpa),
         contagem_ftd: data.contagem_ftd === "" ? 0 : Number(data.contagem_ftd),
         contas_ativas:
@@ -357,7 +357,7 @@ export default function AddAfiliate({
               />
             </div>
 
-            <div className="">
+            {/* <div className="">
               <label className="block text-sm font-medium text-gray-700">
                 Comissão Total
               </label>
@@ -366,7 +366,7 @@ export default function AddAfiliate({
                 type="number"
                 className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm text-sm"
               />
-            </div>
+            </div> */}
 
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">

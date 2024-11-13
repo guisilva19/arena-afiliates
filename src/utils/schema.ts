@@ -60,6 +60,6 @@ export const schemaDados = yup.object().shape({
   receita_liquida: yup.string(),
   comissao_revshare: yup.string(),
   comissao_cpa: yup.string(),
-  comissao_total: yup.string(),
+  // comissao_total: yup.string(),
   contagem_cpa: yup.string(),
 });

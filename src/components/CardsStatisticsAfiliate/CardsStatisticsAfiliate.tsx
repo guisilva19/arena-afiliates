@@ -6,6 +6,7 @@ import { PiEyeFill } from "react-icons/pi";
 
 import ftd from "@/assets/ftd.svg";
 import { IoCashSharp, IoGameController, IoWallet } from "react-icons/io5";
+import { MdOutlineAttachMoney } from "react-icons/md";
 
 export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
   return (
@@ -63,7 +64,7 @@ export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <IoIosAddCircle size={18} color="#85FF4C" />
-              <p className="text-sm font-medium">Novos depositantes</p>
+              <p className="text-sm font-medium">Contagem CPA</p>
             </div>
             <button>
               <BsThreeDots />
@@ -71,14 +72,12 @@ export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.novos_depositantes === null
-                ? 0
-                : dados?.novos_depositantes}
+              {dados?.contagem_cpa === null ? 0 : dados?.contagem_cpa}
             </p>
           </span>
         </li>
 
-        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
+        {/* <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <FaStar size={18} color="#85FF4C" />
@@ -95,7 +94,7 @@ export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
                 : dados?.contas_depositantes}
             </p>
           </span>
-        </li>
+        </li> */}
         <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -140,7 +139,27 @@ export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.stakes === null ? 0 : `$ ${dados.stakes.toFixed(2).replace('.', ',')}`}
+              {dados?.stakes === null
+                ? 0
+                : `$ ${dados.stakes.toFixed(2).replace(".", ",")}`}
+            </p>
+          </span>
+        </li>
+        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
+          <section className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <MdOutlineAttachMoney size={18} color="#85FF4C" />
+              <p className="text-sm font-medium">Receita líquida</p>
+            </div>
+            <button>
+              <BsThreeDots />
+            </button>
+          </section>
+          <span>
+            <p className="text-3xl font-semibold">
+              {dados?.receita_liquida === null
+                ? 0
+                : `$ ${dados?.receita_liquida.toFixed(2).replace(".", ",")}`}
             </p>
           </span>
         </li>
@@ -158,7 +177,7 @@ export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
             <p className="text-3xl font-semibold">
               {dados?.comissao_revshare === null
                 ? 0
-                : `$ ${dados?.comissao_revshare.toFixed(2).replace('.', ',')}`}
+                : `$ ${dados?.comissao_revshare.toFixed(2).replace(".", ",")}`}
             </p>
           </span>
         </li>
@@ -174,7 +193,9 @@ export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.comissao_cpa === null ? 0 : `$ ${dados?.comissao_cpa.toFixed(2).replace('.', ',')}`}
+              {dados?.comissao_cpa === null
+                ? 0
+                : `$ ${dados?.comissao_cpa.toFixed(2).replace(".", ",")}`}
             </p>
           </span>
         </li>
@@ -193,7 +214,7 @@ export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
             <p className="text-3xl font-semibold">
               {dados?.comissao_total === null
                 ? 0
-                : `$ ${dados?.comissao_total.toFixed(2).replace('.', ',')}`}
+                : `$ ${dados?.comissao_total.toFixed(2).replace(".", ",")}`}
             </p>
           </span>
         </li>
