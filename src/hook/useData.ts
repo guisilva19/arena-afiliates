@@ -48,7 +48,7 @@ export default function useData() {
 
   const allDataGraphics = async () => {
     try {
-      const response = await fetch(`api/users/dados/grafico`, {
+      const response = await fetch(`api/users/dados/grafico/admin`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${

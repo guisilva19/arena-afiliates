@@ -38,14 +38,13 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (loading) {
-      get();
-    }
-  }, [loading, period]);
+    get();
+  }, [period]);
 
   const get = async () => {
     if (typeof window !== "undefined") {
       try {
+        setLoading(true);
         const storage = (await localStorage.getItem("user")) as string;
         if (JSON.parse(storage)?.tipo === 1) {
           setDados(await allData(period));
@@ -104,32 +103,48 @@ export default function Dashboard() {
         {user?.tipo === 1 && (
           <>
             <div className="flex items-center space-x-4 mt-4 justify-between">
-              <div className="flex items-center bg-[#1E1E1E] text-white rounded-md w-[350px] h-[44px]">
-                <div className="relative w-full">
-                  <div
-                    className="mt-1 p-2 block w-full rounded-lg shadow-sm text-sm cursor-pointer"
-                    onClick={() => setIsOpenAfiliate(!isOpenAfiliate)}
-                  >
-                    <span className="text-gray-500">Ver afiliado</span>
-                  </div>
-
-                  {isOpenAfiliate && (
-                    <div className="absolute bg-white w-full left-0 border border-slate-200 rounded-lg max-h-80 overflow-y-auto mt-1 z-10">
-                      <ul className="flex flex-col">
-                        {users.map((user: any) => (
-                          <Link
-                            href={`/afiliado/${user.id}`}
-                            key={user.id}
-                            className="text-black p-2 hover:bg-gray-200 text-[11px] cursor-pointer"
-                          >
-                            {user.nome} - {user.email}
-                          </Link>
-                        ))}
-                      </ul>
+              <section className="flex gap-5">
+                <div className="flex items-center bg-[#1E1E1E] text-white rounded-xl w-[350px] h-[44px]">
+                  <div className="relative w-full">
+                    <div
+                      className="mt-1 p-2 block w-full rounded-lg shadow-sm text-sm cursor-pointer"
+                      onClick={() => setIsOpenAfiliate(!isOpenAfiliate)}
+                    >
+                      <span className="text-gray-500">Ver afiliado</span>
                     </div>
-                  )}
+
+                    {isOpenAfiliate && (
+                      <div className="absolute bg-white w-full left-0 border border-slate-200 rounded-xl max-h-80 overflow-y-auto mt-1 z-10">
+                        <ul className="flex flex-col">
+                          {users.map((user: any) => (
+                            <Link
+                              href={`/afiliado/${user.id}`}
+                              key={user.id}
+                              className="text-black p-2 hover:bg-gray-200 text-[11px] cursor-pointer"
+                            >
+                              {user.nome} - {user.email}
+                            </Link>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+                <fieldset className="w-[380px]">
+                  <select
+                    onChange={(e) => setPeriod(e.target.value)}
+                    defaultValue="all"
+                    id="select"
+                    className="block w-full py-3 pl-6 pr-10 bg-[#202020] text-white rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
+                  >
+                    <option value="all">Todo periodo</option>
+                    <option value="1">Últimas 24 horas</option>
+                    <option value="7">Últimos 7 dias</option>
+                    <option value="15">Últimos 15 dias</option>
+                    <option value="30">Últimos 30 dias</option>
+                  </select>
+                </fieldset>
+              </section>
 
               <div className="flex justify-end">
                 <button
@@ -156,7 +171,7 @@ export default function Dashboard() {
               <>
                 <fieldset className="w-[380px]">
                   <select
-                    onChange={(e) => console.log(e.target.value)}
+                    onChange={(e) => setPeriod(e.target.value)}
                     defaultValue="all"
                     id="select"
                     className="block w-full py-3 pl-6 pr-10 bg-[#202020] text-white rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
