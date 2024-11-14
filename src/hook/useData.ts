@@ -27,9 +27,9 @@ export default function useData() {
     }
   };
 
-  const allData = async () => {
+  const allData = async (period: string) => {
     try {
-      const response = await fetch(`api/users/dados`, {
+      const response = await fetch(`api/users/dados/${period}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${

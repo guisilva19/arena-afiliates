@@ -14,7 +14,7 @@ export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [afiliado, setAfiliado] = useState("");
+  const [period, setPeriod] = useState("all");
   const [dados, setDados] = useState<any>([]);
   const [data, setData] = useState<IData[]>({} as IData[]);
   const [dataUnique, setDataUnique] = useState<IDataUnique>({} as IDataUnique);
@@ -41,14 +41,14 @@ export default function Dashboard() {
     if (loading) {
       get();
     }
-  }, [loading]);
+  }, [loading, period]);
 
   const get = async () => {
     if (typeof window !== "undefined") {
       try {
         const storage = (await localStorage.getItem("user")) as string;
         if (JSON.parse(storage)?.tipo === 1) {
-          setDados(await allData());
+          setDados(await allData(period));
           setData(await allDataGraphics());
         } else {
           const result = await dadosByMyUser();
@@ -156,13 +156,16 @@ export default function Dashboard() {
               <>
                 <fieldset className="w-[380px]">
                   <select
+                    onChange={(e) => console.log(e.target.value)}
+                    defaultValue="all"
                     id="select"
                     className="block w-full py-3 pl-6 pr-10 bg-[#202020] text-white rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
                   >
-                    <option value="option1">Últimas 24 horas</option>
-                    <option value="option2">Últimos 7 dias</option>
-                    <option value="option2">Últimos 15 dias</option>
-                    <option value="option2">Últimos 30 dias</option>
+                    <option value="all">Todo periodo</option>
+                    <option value="1">Últimas 24 horas</option>
+                    <option value="7">Últimos 7 dias</option>
+                    <option value="15">Últimos 15 dias</option>
+                    <option value="30">Últimos 30 dias</option>
                   </select>
                 </fieldset>
                 {/* <div className="flex gap-4">
