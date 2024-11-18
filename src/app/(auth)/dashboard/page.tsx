@@ -9,16 +9,20 @@ import useUser from "@/hook/useUser";
 import Link from "next/link";
 import CardsStatisticsAfiliate from "@/components/CardsStatisticsAfiliate/CardsStatisticsAfiliate";
 import "react-datepicker/dist/react-datepicker.css";
+import useCampaign from "@/hook/useCampaign";
 
 export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [period, setPeriod] = useState("all");
+  const [idCampaign, setIdCampaign] = useState("");
+  const [campanhas, setCampanhas] = useState<any>([]);
   const [dados, setDados] = useState<any>([]);
   const [data, setData] = useState<IData[]>({} as IData[]);
   const [dataUnique, setDataUnique] = useState<IDataUnique>({} as IDataUnique);
   const { allData, dadosByMyUser, dataGraphicsByUser } = useData();
+  const { list, listByUser } = useCampaign();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -39,7 +43,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     get();
-  }, [period]);
+  }, [period, idCampaign]);
 
   const get = async () => {
     if (typeof window !== "undefined") {
@@ -47,10 +51,12 @@ export default function Dashboard() {
         setLoading(true);
         const storage = (await localStorage.getItem("user")) as string;
         if (JSON.parse(storage)?.tipo === 1) {
-          setDados(await allData(period));
+          setDados(await allData(period, idCampaign));
           setData(await allDataGraphics());
+          setCampanhas(await list());
         } else {
-          const result = await dadosByMyUser();
+          setCampanhas(await listByUser());
+          const result = await dadosByMyUser(period, idCampaign);
           const responseGrafic = await dataGraphicsByUser(
             JSON.parse(storage)?.id
           );
@@ -144,6 +150,22 @@ export default function Dashboard() {
                     <option value="30">Últimos 30 dias</option>
                   </select>
                 </fieldset>
+
+                <fieldset className="w-[380px]">
+                  <select
+                    onChange={(e) => setIdCampaign(e.target.value)}
+                    defaultValue={idCampaign}
+                    id="select"
+                    className="block w-full py-3 pl-6 pr-10 bg-[#202020] text-white rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
+                  >
+                    <option value="">Todas campanhas</option>
+                    {campanhas.map((item: any) => (
+                      <option key={item.id} value={item.id}>
+                        {item.nome}
+                      </option>
+                    ))}
+                  </select>
+                </fieldset>
               </section>
 
               <div className="flex justify-end">
@@ -169,32 +191,39 @@ export default function Dashboard() {
               </>
             ) : (
               <>
-                <fieldset className="w-[380px]">
-                  <select
-                    onChange={(e) => setPeriod(e.target.value)}
-                    defaultValue="all"
-                    id="select"
-                    className="block w-full py-3 pl-6 pr-10 bg-[#202020] text-white rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
-                  >
-                    <option value="all">Todo periodo</option>
-                    <option value="1">Últimas 24 horas</option>
-                    <option value="7">Últimos 7 dias</option>
-                    <option value="15">Últimos 15 dias</option>
-                    <option value="30">Últimos 30 dias</option>
-                  </select>
-                </fieldset>
-                {/* <div className="flex gap-4">
-                  <section className="w-[380px] h-24 bg-[#202020] px-6 flex items-center justify-between rounded-xl ">
-                    <h4 className="text-xl font-medium">{user?.nome}</h4>
-                    <p className="text-xs text-white/60">
-                      {new Date(user?.criado_em).toLocaleDateString("pt-BR", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </section>
-                </div> */}
+                <section className="flex gap-5">
+                  <fieldset className="w-[380px]">
+                    <select
+                      onChange={(e) => setPeriod(e.target.value)}
+                      defaultValue="all"
+                      id="select"
+                      className="block w-full py-3 pl-6 pr-10 bg-[#202020] text-white rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
+                    >
+                      <option value="all">Todo periodo</option>
+                      <option value="1">Últimas 24 horas</option>
+                      <option value="7">Últimos 7 dias</option>
+                      <option value="15">Últimos 15 dias</option>
+                      <option value="30">Últimos 30 dias</option>
+                    </select>
+                  </fieldset>
+                  <fieldset className="w-[380px]">
+                    <select
+                      onChange={(e) => {
+                        setIdCampaign(e.target.value);
+                      }}
+                      defaultValue={idCampaign}
+                      id="select"
+                      className="block w-full py-3 pl-6 pr-10 bg-[#202020] text-white rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
+                    >
+                      <option value="">Todas campanhas</option>
+                      {campanhas.map((item: any) => (
+                        <option key={item.idCampaign} value={item.idCampaign}>
+                          {item.nome}
+                        </option>
+                      ))}
+                    </select>
+                  </fieldset>
+                </section>
                 <CardsStatisticsAfiliate dados={dataUnique} />
                 <Graphic data={data} afiliate={true} />
               </>

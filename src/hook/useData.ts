@@ -27,16 +27,19 @@ export default function useData() {
     }
   };
 
-  const allData = async (period: string) => {
+  const allData = async (period: string, idCampaign: string) => {
     try {
-      const response = await fetch(`api/users/dados/${period}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user") as string).token
-          }`,
-        },
-      });
+      const response = await fetch(
+        `api/users/dados/${period}?idCampaign=${idCampaign}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("user") as string).token
+            }`,
+          },
+        }
+      );
 
       if (response.ok) {
         return await response.json();
@@ -48,7 +51,7 @@ export default function useData() {
 
   const allDataGraphics = async () => {
     try {
-      const response = await fetch(`api/users/dados/grafico/admin`, {
+      const response = await fetch(`api/campanha-ativa/admin/dados/graficos`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
@@ -67,7 +70,7 @@ export default function useData() {
 
   const dataGraphicsByUser = async (id: string) => {
     try {
-      const response = await fetch(`/api/users/${id}/dados/grafico`, {
+      const response = await fetch(`/api/campanha-ativa/${id}/dados/graficos`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
@@ -128,12 +131,12 @@ export default function useData() {
     }
   };
 
-  const dadosByMyUser = async () => {
+  const dadosByMyUser = async (period: string, idCampaign: string) => {
     try {
       const response = await fetch(
         `api/users/${
           JSON.parse(localStorage.getItem("user") as string).id
-        }/dados`,
+        }/dados/${period}?idCampaign=${idCampaign}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -152,16 +155,23 @@ export default function useData() {
     }
   };
 
-  const dadosByUser = async (id: string) => {
+  const dadosByUser = async (
+    id: string,
+    period: string,
+    idCampaign: string
+  ) => {
     try {
-      const response = await fetch(`/api/users/${id}/dados`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user") as string).token
-          }`,
-        },
-      });
+      const response = await fetch(
+        `/api/users/${id}/dados/${period}?idCampaign=${idCampaign}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("user") as string).token
+            }`,
+          },
+        }
+      );
 
       if (response.ok) {
         return await response.json();

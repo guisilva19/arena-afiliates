@@ -6,7 +6,6 @@ import { PiEyeFill } from "react-icons/pi";
 
 import ftd from "@/assets/ftd.svg";
 import { IoGameController, IoMagnetSharp } from "react-icons/io5";
-import { FaFireFlameSimple } from "react-icons/fa6";
 import { GiPerspectiveDiceSixFacesOne, GiReceiveMoney } from "react-icons/gi";
 
 export default function CardsStatistics({ dados }: { dados: any }) {
@@ -25,7 +24,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.cliques === null ? 0 : dados?.cliques}
+              {dados?.cliques === undefined ? 0 : dados?.cliques}
             </p>
           </span>
         </li>
@@ -41,7 +40,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.registros === null ? 0 : dados?.registros}
+              {dados?.registros === undefined ? 0 : dados?.registros}
             </p>
           </span>
         </li>
@@ -57,7 +56,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.contagem_ftd === null ? 0 : dados?.contagem_ftd}
+              {dados?.contagem_ftd === undefined ? 0 : dados?.contagem_ftd}
             </p>
           </span>
         </li>
@@ -73,7 +72,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.contagem_cpa === null ? 0 : dados?.contagem_cpa}
+              {dados?.contagem_cpa === undefined ? 0 : dados?.contagem_cpa}
             </p>
           </span>
         </li>
@@ -89,7 +88,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.novos_depositantes === null
+              {dados?.novos_depositantes === undefined
                 ? 0
                 : dados?.novos_depositantes}
             </p>
@@ -107,7 +106,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.contas_depositantes === null
+              {dados?.contas_depositantes === undefined
                 ? 0
                 : dados?.contas_depositantes}
             </p>
@@ -125,7 +124,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.depositos === null ? 0 : dados?.depositos}
+              {dados?.depositos === undefined ? 0 : dados?.depositos}
             </p>
           </span>
         </li>
@@ -141,7 +140,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.contas_ativas === null ? 0 : dados?.contas_ativas}
+              {dados?.contas_ativas === undefined ? 0 : dados?.contas_ativas}
             </p>
           </span>
         </li>
@@ -157,7 +156,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.contas_de_aposta === null ? 0 : dados?.contas_de_aposta}
+              {dados?.contas_de_aposta === undefined ? 0 : dados?.contas_de_aposta}
             </p>
           </span>
         </li>
@@ -173,7 +172,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.stakes === null
+              {dados?.stakes === undefined
                 ? 0
                 : `$ ${dados.stakes.toFixed(2).replace(".", ",")}`}
             </p>
@@ -191,7 +190,7 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.receita_liquida === null
+              {dados?.receita_liquida === undefined
                 ? 0
                 : `$ ${dados.receita_liquida.toFixed(2).replace(".", ",")}`}
             </p>
