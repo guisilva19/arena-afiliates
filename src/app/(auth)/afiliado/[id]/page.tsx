@@ -2,15 +2,11 @@
 import Graphic, { IData, IDataUnique } from "@/components/Graphic/Graphic";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { BsFillBagFill, BsThreeDots } from "react-icons/bs";
-import { FaHeart } from "react-icons/fa";
-import { GiShoppingBag } from "react-icons/gi";
-import { HiDownload } from "react-icons/hi";
-import { MdOutlineAttachMoney } from "react-icons/md";
 
 import Loading from "@/components/Loading/Loading";
 import useData from "@/hook/useData";
 import CardsStatisticsAfiliate from "@/components/CardsStatisticsAfiliate/CardsStatisticsAfiliate";
+import useCampaign from "@/hook/useCampaign";
 
 export default function Afiliate() {
   const params = useParams();
@@ -24,6 +20,11 @@ export default function Afiliate() {
   const [data, setData] = useState<IData[]>({} as IData[]);
   const [user, setUser] = useState<any>({});
 
+  const [period, setPeriod] = useState("all");
+  const [idCampaign, setIdCampaign] = useState("");
+  const [campanhas, setCampanhas] = useState<any>([]);
+  const { listByUser } = useCampaign();
+
   useEffect(() => {
     if (!id || typeof id === "undefined") {
       router.push("/dashboard");
@@ -35,7 +36,7 @@ export default function Afiliate() {
   const getDados = async () => {
     try {
       setLoading(true);
-      const result = await dadosByUser(String(id));
+      const result = await dadosByUser(String(id), period, idCampaign);
       const responseGrafic = await dataGraphicsByUser(String(id));
       setDataUnique(result.dados);
       setUser(result.usuario);
@@ -45,20 +46,51 @@ export default function Afiliate() {
     }
   };
 
+  useEffect(() => {
+    getCampanhasActiver();
+  }, []);
+
+  const getCampanhasActiver = async () => {
+    setCampanhas(await listByUser());
+  };
+
   return (
     <>
       <main className="w-[calc(100vw-300px)] ml-[300px] h-max min-h-screen px-8 pt-8 text-white flex flex-col gap-4 bg-black">
-        <fieldset className="w-[380px]">
-          <select
-            id="select"
-            className="block w-full py-3 pl-6 pr-10 bg-[#202020] text-white rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
-          >
-            <option value="option1">Últimas 24 horas</option>
-            <option value="option2">Últimos 7 dias</option>
-            <option value="option2">Últimos 15 dias</option>
-            <option value="option2">Últimos 30 dias</option>
-          </select>
-        </fieldset>
+        <section className="flex gap-5">
+          <fieldset className="w-[380px]">
+            <select
+              onChange={(e) => setPeriod(e.target.value)}
+              defaultValue="all"
+              id="select"
+              className="block w-full py-3 pl-6 pr-10 bg-[#202020] text-white rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
+            >
+              <option value="all">Todo periodo</option>
+              <option value="1">Últimas 24 horas</option>
+              <option value="7">Últimos 7 dias</option>
+              <option value="15">Últimos 15 dias</option>
+              <option value="30">Últimos 30 dias</option>
+            </select>
+          </fieldset>
+
+          <fieldset className="w-[380px]">
+            <select
+              onChange={(e) => {
+                setIdCampaign(e.target.value);
+              }}
+              defaultValue={idCampaign}
+              id="select"
+              className="block w-full py-3 pl-6 pr-10 bg-[#202020] text-white rounded-xl shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
+            >
+              <option value="">Todas campanhas</option>
+              {campanhas.map((item: any) => (
+                <option key={item.idCampaign} value={item.idCampaign}>
+                  {item.nome}
+                </option>
+              ))}
+            </select>
+          </fieldset>
+        </section>
         {loading ? (
           <Loading />
         ) : (
@@ -91,12 +123,10 @@ export default function Afiliate() {
               </section> */}
             </div>
             <CardsStatisticsAfiliate dados={dataUnique} />
-            <Graphic data={data} afiliate={true}/>
+            <Graphic data={data} afiliate={true} />
           </>
         )}
       </main>
     </>
   );
 }
-
-
