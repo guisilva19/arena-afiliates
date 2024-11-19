@@ -2,7 +2,6 @@ import AreaChartGraphic from "../AreaChart/AreaChart";
 import { BarChartGraphic } from "../BarChart/BarChart";
 import { BarChartGraphicAfiliate } from "../BarChartAfiliate/BarChartAfiliate";
 import { LineChartGraphic } from "../LineChart/LineChart";
-import { RadialChartGraphic } from "../RadialChart/RadialChart";
 
 export interface IDataObj {
   month: string;
@@ -80,9 +79,9 @@ export default function Graphic({
             <section className="w-6/12">
               <LineChartGraphic data={data} />
             </section>
-            <section className="flex flex-col w-6/12">
+            {/* <section className="flex flex-col w-6/12">
               <RadialChartGraphic data={data} />
-            </section>
+            </section> */}
           </div>
         )}
       </main>

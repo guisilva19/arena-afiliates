@@ -212,9 +212,12 @@ export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.comissao_total === undefined
+              {dados?.comissao_revshare === undefined ||
+              dados?.comissao_cpa === undefined
                 ? 0
-                : `$ ${dados?.comissao_total.toFixed(2).replace(".", ",")}`}
+                : `$ ${(dados.comissao_revshare + dados.comissao_cpa)
+                    .toFixed(2)
+                    .replace(".", ",")}`}
             </p>
           </span>
         </li>
