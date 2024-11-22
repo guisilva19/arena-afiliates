@@ -8,7 +8,7 @@ export default function useCampaign() {
     logo: File;
   }) => {
     try {
-      const user = localStorage.getItem("user");
+      const user = sessionStorage.getItem("user");
 
       if (!user) {
         throw new Error("Usuário não autenticado");
@@ -24,7 +24,7 @@ export default function useCampaign() {
         method: "POST",
         headers: {
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user") as string).token
+            JSON.parse(sessionStorage.getItem("user") as string).token
           }`,
         },
         body: formData,
@@ -44,7 +44,7 @@ export default function useCampaign() {
 
   const list = async () => {
     try {
-      const user = localStorage.getItem("user");
+      const user = sessionStorage.getItem("user");
 
       if (!user) {
         throw new Error("Usuário não autenticado");
@@ -73,7 +73,7 @@ export default function useCampaign() {
 
   const listRequests = async () => {
     try {
-      const user = localStorage.getItem("user");
+      const user = sessionStorage.getItem("user");
 
       if (!user) {
         throw new Error("Usuário não autenticado");
@@ -109,7 +109,7 @@ export default function useCampaign() {
     }
   ) => {
     try {
-      const user = localStorage.getItem("user");
+      const user = sessionStorage.getItem("user");
 
       if (!user) {
         throw new Error("Usuário não autenticado");
@@ -141,7 +141,7 @@ export default function useCampaign() {
 
   const requestAfiliate = async (id: string) => {
     try {
-      const user = localStorage.getItem("user");
+      const user = sessionStorage.getItem("user");
 
       if (!user) {
         throw new Error("Usuário não autenticado");
@@ -172,7 +172,7 @@ export default function useCampaign() {
 
   const deleteCampaign = async (id: string) => {
     try {
-      const user = localStorage.getItem("user");
+      const user = sessionStorage.getItem("user");
 
       if (!user) {
         throw new Error("Usuário não autenticado");
@@ -202,7 +202,7 @@ export default function useCampaign() {
 
   const deleteCampaignActive = async (id: string) => {
     try {
-      const user = localStorage.getItem("user");
+      const user = sessionStorage.getItem("user");
 
       if (!user) {
         throw new Error("Usuário não autenticado");
@@ -234,7 +234,7 @@ export default function useCampaign() {
 
   const updateCampaign = async (id: string, body: any) => {
     try {
-      const user = localStorage.getItem("user");
+      const user = sessionStorage.getItem("user");
 
       if (!user) {
         throw new Error("Usuário não autenticado");
@@ -265,7 +265,7 @@ export default function useCampaign() {
 
   const listByUser = async () => {
     try {
-      const user = localStorage.getItem("user");
+      const user = sessionStorage.getItem("user");
 
       if (!user) {
         throw new Error("Usuário não autenticado");

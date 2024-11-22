@@ -16,7 +16,7 @@ export default function useSignin() {
 
       if (response.ok) {
         const result = await response.json();
-        localStorage.setItem("user", JSON.stringify(result));
+        sessionStorage.setItem("user", JSON.stringify(result));
         toast.success("Login feito com sucesso!");
         router.push("/dashboard");
       } else {

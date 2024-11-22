@@ -39,8 +39,8 @@ export default function Settings() {
           ...(prevUser ?? {}),
           foto: foto,
         }));
-        const token = JSON.parse(localStorage.getItem("user") as string).token;
-        localStorage.setItem(
+        const token = JSON.parse(sessionStorage.getItem("user") as string).token;
+        sessionStorage.setItem(
           "user",
           JSON.stringify({ token, ...response })
         );

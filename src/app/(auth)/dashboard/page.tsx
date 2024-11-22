@@ -26,7 +26,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storage = localStorage.getItem("user");
+      const storage = sessionStorage.getItem("user");
       if (storage) {
         setUser(JSON.parse(storage));
       }
@@ -49,7 +49,7 @@ export default function Dashboard() {
     if (typeof window !== "undefined") {
       try {
         setLoading(true);
-        const storage = (await localStorage.getItem("user")) as string;
+        const storage = (await sessionStorage.getItem("user")) as string;
         if (JSON.parse(storage)?.tipo === 1) {
           setDados(await allData(period, idCampaign));
           setData(await allDataGraphics());
@@ -77,7 +77,7 @@ export default function Dashboard() {
 
   const getUsersAll = async () => {
     if (typeof window !== "undefined") {
-      const storage = (await localStorage.getItem("user")) as string;
+      const storage = (await sessionStorage.getItem("user")) as string;
 
       if (JSON.parse(storage)?.tipo === 1) {
         const { afiliados } = await getUsers();

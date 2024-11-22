@@ -36,7 +36,7 @@ export default function ListCampaings() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storage = localStorage.getItem("user");
+      const storage = sessionStorage.getItem("user");
       if (storage) {
         setUser(JSON.parse(storage));
       }
@@ -49,7 +49,7 @@ export default function ListCampaings() {
       setIsLoading(true);
       setCampanhas(await list());
       const response = await listRequests();
-      const userStorage = JSON.parse(localStorage.getItem("user") as string);
+      const userStorage = JSON.parse(sessionStorage.getItem("user") as string);
       const ids = response.map((item: any) => {
         if (userStorage.id === item.usuario.id) {
           return item.idCampaign;

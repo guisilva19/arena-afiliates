@@ -11,7 +11,7 @@ export default function useUser() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
       });
 
@@ -73,7 +73,7 @@ export default function useUser() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user") as string).token
+            JSON.parse(sessionStorage.getItem("user") as string).token
           }`,
         },
       });
@@ -94,7 +94,7 @@ export default function useUser() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user") as string).token
+            JSON.parse(sessionStorage.getItem("user") as string).token
           }`,
         },
         body: JSON.stringify(body),
@@ -115,7 +115,7 @@ export default function useUser() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user") as string).token
+            JSON.parse(sessionStorage.getItem("user") as string).token
           }`,
         },
         body: JSON.stringify(body),
@@ -124,7 +124,7 @@ export default function useUser() {
       if (response.ok) {
         if (body.senha) {
           toast.success("Usuário atualizado, faça login novamente!");
-          localStorage.removeItem("user");
+          sessionStorage.removeItem("user");
           router.push("/");
         } else {
           toast.success("Informações atualizadas com sucesso!");
@@ -143,7 +143,7 @@ export default function useUser() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user") as string).token
+            JSON.parse(sessionStorage.getItem("user") as string).token
           }`,
         },
       });

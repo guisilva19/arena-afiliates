@@ -28,7 +28,7 @@ export default function Home() {
   }, []);
 
   const get = async () => {
-    const user = localStorage.getItem("user");
+    const user = sessionStorage.getItem("user");
 
     if (user) {
       router.push("/dashboard");

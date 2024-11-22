@@ -8,7 +8,7 @@ export default function useData() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user") as string).token
+            JSON.parse(sessionStorage.getItem("user") as string).token
           }`,
         },
         body: JSON.stringify(body),
@@ -35,7 +35,7 @@ export default function useData() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("user") as string).token
+              JSON.parse(sessionStorage.getItem("user") as string).token
             }`,
           },
         }
@@ -55,7 +55,7 @@ export default function useData() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user") as string).token
+            JSON.parse(sessionStorage.getItem("user") as string).token
           }`,
         },
       });
@@ -74,7 +74,7 @@ export default function useData() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("user") as string).token
+            JSON.parse(sessionStorage.getItem("user") as string).token
           }`,
         },
       });
@@ -95,7 +95,7 @@ export default function useData() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("user") as string).token
+              JSON.parse(sessionStorage.getItem("user") as string).token
             }`,
           },
         }
@@ -117,7 +117,7 @@ export default function useData() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("user") as string).token
+              JSON.parse(sessionStorage.getItem("user") as string).token
             }`,
           },
         }
@@ -135,13 +135,13 @@ export default function useData() {
     try {
       const response = await fetch(
         `api/users/${
-          JSON.parse(localStorage.getItem("user") as string).id
+          JSON.parse(sessionStorage.getItem("user") as string).id
         }/dados/${period}?idCampaign=${idCampaign}`,
         {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("user") as string).token
+              JSON.parse(sessionStorage.getItem("user") as string).token
             }`,
           },
         }
@@ -167,7 +167,7 @@ export default function useData() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${
-              JSON.parse(localStorage.getItem("user") as string).token
+              JSON.parse(sessionStorage.getItem("user") as string).token
             }`,
           },
         }

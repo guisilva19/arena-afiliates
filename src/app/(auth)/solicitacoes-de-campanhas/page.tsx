@@ -26,7 +26,7 @@ export default function ListCampaings() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storage = localStorage.getItem("user");
+      const storage = sessionStorage.getItem("user");
       if (storage) {
         setUser(JSON.parse(storage));
       }

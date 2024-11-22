@@ -13,7 +13,8 @@ export default function RootLayout({
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const user = localStorage.getItem("user");
+      const user = sessionStorage.getItem("user");
+      localStorage.removeItem('user')
 
       if (!user) {
         router.push("/");

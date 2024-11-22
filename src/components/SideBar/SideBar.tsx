@@ -22,7 +22,7 @@ export default function SideBar() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storage = localStorage.getItem("user");
+      const storage = sessionStorage.getItem("user");
       if (storage) {
         setUser(JSON.parse(storage));
       }
@@ -53,7 +53,7 @@ export default function SideBar() {
       </div>
       <button
         onClick={() => {
-          localStorage.removeItem("user");
+          sessionStorage.removeItem("user");
           router.push("/");
         }}
         className="flex h-12 w-10/12 items-center px-3 gap-2 text-white rounded-xl mx-auto mb-2 hover:bg-[#ffffff17] duration-400"

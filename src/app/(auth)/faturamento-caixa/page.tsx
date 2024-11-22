@@ -46,7 +46,7 @@ export default function ListCampaings() {
   const get = async () => {
     try {
       setIsLoading(true);
-      if (JSON.parse(localStorage.getItem("user") as string).tipo === 1) {
+      if (JSON.parse(sessionStorage.getItem("user") as string).tipo === 1) {
         const response = await allInvoice(startDate, endDate);
         setData(response);
         setCampaigns(response.campanhas);
