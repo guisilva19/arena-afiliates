@@ -99,7 +99,7 @@ export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <BsFire size={18} color="#85FF4C" />
-              <p className="text-sm font-medium">Depósitos</p>
+              <p className="text-sm font-medium">Contagem Depósitos</p>
             </div>
             <button>
               <BsThreeDots />
