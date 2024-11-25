@@ -23,7 +23,7 @@ export default function Afiliate() {
   const [period, setPeriod] = useState("all");
   const [idCampaign, setIdCampaign] = useState("");
   const [campanhas, setCampanhas] = useState<any>([]);
-  const { listByUser } = useCampaign();
+  const { listByAfiliate } = useCampaign();
 
   useEffect(() => {
     if (!id || typeof id === "undefined") {
@@ -31,7 +31,7 @@ export default function Afiliate() {
     } else {
       getDados();
     }
-  }, [id]);
+  }, [id, period, idCampaign]);
 
   const getDados = async () => {
     try {
@@ -51,7 +51,7 @@ export default function Afiliate() {
   }, []);
 
   const getCampanhasActiver = async () => {
-    setCampanhas(await listByUser());
+    setCampanhas(await listByAfiliate(String(id)));
   };
 
   return (
@@ -72,7 +72,6 @@ export default function Afiliate() {
               <option value="30">Últimos 30 dias</option>
             </select>
           </fieldset>
-
           <fieldset className="w-[380px]">
             <select
               onChange={(e) => {

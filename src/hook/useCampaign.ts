@@ -224,7 +224,7 @@ export default function useCampaign() {
       } else {
         const error = await response.text();
         throw new Error(error);
-        return false ;
+        return false;
       }
     } catch (err) {
       toast.error("Falha ao excluir está solicitação de campanha");
@@ -291,10 +291,38 @@ export default function useCampaign() {
     }
   };
 
+  const listByAfiliate = async (id: string) => {
+    try {
+      const user = sessionStorage.getItem("user");
+
+      if (!user) {
+        throw new Error("Usuário não autenticado");
+      }
+
+      const token = JSON.parse(user).token;
+
+      const response = await fetch(`/api/campanha-ativa/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        return await response.json();
+      } else {
+        return [];
+      }
+    } catch (err) {
+      return [];
+    }
+  };
+
   return {
     create,
     list,
     listByUser,
+    listByAfiliate,
     listRequests,
     requestAfiliate,
     linkAfiliate,
