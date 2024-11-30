@@ -7,6 +7,7 @@ import { PiEyeFill } from "react-icons/pi";
 import ftd from "@/assets/ftd.svg";
 import { IoCashSharp, IoGameController, IoWallet } from "react-icons/io5";
 import { MdOutlineAttachMoney } from "react-icons/md";
+import { LiaCashRegisterSolid } from "react-icons/lia";
 
 export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
   return (
@@ -108,6 +109,24 @@ export default function CardsStatisticsAfiliate({ dados }: { dados: any }) {
           <span>
             <p className="text-3xl font-semibold">
               {dados?.depositos === undefined ? 0 : dados?.depositos}
+            </p>
+          </span>
+        </li>
+        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
+          <section className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <LiaCashRegisterSolid size={18} color="#85FF4C" />
+              <p className="text-sm font-medium">Valor de Depósitos</p>
+            </div>
+            <button>
+              <BsThreeDots />
+            </button>
+          </section>
+          <span>
+            <p className="text-3xl font-semibold">
+              {dados?.valor_de_depositos === undefined
+                ? 0
+                : `$ ${dados.valor_de_depositos.toFixed(2).replace(".", ",")}`}
             </p>
           </span>
         </li>

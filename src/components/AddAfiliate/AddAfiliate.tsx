@@ -44,35 +44,31 @@ export default function AddAfiliate({
   };
 
   const handleRegisterDados = async (data: any) => {
-    if (selectedUser && selectedCampaign && startDate.length > 0 && endDate.length > 0) {
+    if (
+      selectedUser &&
+      selectedCampaign &&
+      startDate.length > 0 &&
+      endDate.length > 0
+    ) {
       const newBody = {
         start_date: startDate,
         end_date: endDate,
         chargebacks: data.chargebacks === "" ? 0 : Number(data.chargebacks),
         cliques: data.cliques === "" ? 0 : Number(data.cliques),
         comissao_cpa: data.comissao_cpa === "" ? 0 : Number(data.comissao_cpa),
-        comissao_revshare:
-          data.comissao_revshare === "" ? 0 : Number(data.comissao_revshare),
-        // comissao_total:
-        //   data.comissao_total === "" ? 0 : Number(data.comissao_total),
+        comissao_revshare: data.comissao_revshare === "" ? 0 : Number(data.comissao_revshare),
         contagem_cpa: data.contagem_cpa === "" ? 0 : Number(data.contagem_cpa),
         contagem_ftd: data.contagem_ftd === "" ? 0 : Number(data.contagem_ftd),
-        contas_ativas:
-          data.contas_ativas === "" ? 0 : Number(data.contas_ativas),
-        contas_de_aposta:
-          data.contas_de_aposta === "" ? 0 : Number(data.contas_de_aposta),
-        contas_depositantes:
-          data.contas_depositantes === ""
-            ? 0
-            : Number(data.contas_depositantes),
+        contas_ativas: data.contas_ativas === "" ? 0 : Number(data.contas_ativas),
+        contas_de_aposta: data.contas_de_aposta === "" ? 0 : Number(data.contas_de_aposta),
+        contas_depositantes: data.contas_depositantes === "" ? 0 : Number(data.contas_depositantes),
         depositos: data.depositos === "" ? 0 : Number(data.depositos),
         net_player: data.net_player === "" ? 0 : Number(data.net_player),
-        novos_depositantes:
-          data.novos_depositantes === "" ? 0 : Number(data.novos_depositantes),
-        receita_liquida:
-          data.receita_liquida === "" ? 0 : Number(data.receita_liquida),
+        novos_depositantes: data.novos_depositantes === "" ? 0 : Number(data.novos_depositantes),
+        receita_liquida: data.receita_liquida === "" ? 0 : Number(data.receita_liquida),
         registros: data.registros === "" ? 0 : Number(data.registros),
         stakes: data.stakes === "" ? 0 : Number(data.stakes),
+        valor_de_depositos: data.valor_de_depositos === "" ? 0 : Number(data.valor_de_depositos),
       };
       await addData(newBody, selectedUser.id, selectedCampaign.id);
       setLoading(true);
@@ -297,6 +293,17 @@ export default function AddAfiliate({
               </label>
               <input
                 {...register("depositos")}
+                type="number"
+                className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm text-sm"
+              />
+            </div>
+
+            <div className="">
+              <label className="block text-sm font-medium text-gray-700">
+                Valor de Depósitos
+              </label>
+              <input
+                {...register("valor_de_depositos")}
                 type="number"
                 className="mt-1 p-2 block w-full rounded-lg border border-gray-300 shadow-sm text-sm"
               />

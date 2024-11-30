@@ -59,6 +59,8 @@ export default function Graphic({
   data: any;
   afiliate: boolean;
 }) {
+  console.log("area", data);
+
   return (
     <>
       <main className="bg-[#212121]">
