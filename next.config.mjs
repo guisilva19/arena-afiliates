@@ -4,8 +4,8 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        // destination: `http://localhost:8000/:path*`,
-        destination: `https://backend-production-8a06.up.railway.app/:path*`,
+        destination: `http://localhost:8000/:path*`,
+        // destination: `https://backend-production-8a06.up.railway.app/:path*`,
       },
     ];
   },

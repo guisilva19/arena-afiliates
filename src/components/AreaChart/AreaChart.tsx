@@ -16,6 +16,7 @@ import {
 import { IData } from "../Graphic/Graphic";
 
 export default function AreaChartGraphic({ data }: { data: IData }) {
+
   return (
     <>
       <Card

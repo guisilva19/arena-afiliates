@@ -3,6 +3,7 @@ import { BsFire, BsThreeDots } from "react-icons/bs";
 import { FaStar, FaUser, FaWifi } from "react-icons/fa";
 import { IoIosAddCircle } from "react-icons/io";
 import { PiEyeFill } from "react-icons/pi";
+import { LiaCashRegisterSolid } from "react-icons/lia";
 
 import ftd from "@/assets/ftd.svg";
 import { IoGameController, IoMagnetSharp } from "react-icons/io5";
@@ -131,6 +132,24 @@ export default function CardsStatistics({ dados }: { dados: any }) {
         <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
           <section className="flex items-center justify-between">
             <div className="flex items-center gap-2">
+              <LiaCashRegisterSolid size={18} color="#85FF4C" />
+              <p className="text-sm font-medium">Valor de Depósitos</p>
+            </div>
+            <button>
+              <BsThreeDots />
+            </button>
+          </section>
+          <span>
+            <p className="text-3xl font-semibold">
+              {dados?.valor_de_depositos === undefined
+                ? 0
+                : `$ ${dados.valor_de_depositos.toFixed(2).replace(".", ",")}`}
+            </p>
+          </span>
+        </li>
+        <li className="w-full h-32 bg-[#212121] rounded-lg flex flex-col justify-between p-5">
+          <section className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
               <FaWifi size={18} color="#85FF4C" />
               <p className="text-sm font-medium">Contas ativas</p>
             </div>
@@ -156,7 +175,9 @@ export default function CardsStatistics({ dados }: { dados: any }) {
           </section>
           <span>
             <p className="text-3xl font-semibold">
-              {dados?.contas_de_aposta === undefined ? 0 : dados?.contas_de_aposta}
+              {dados?.contas_de_aposta === undefined
+                ? 0
+                : dados?.contas_de_aposta}
             </p>
           </span>
         </li>

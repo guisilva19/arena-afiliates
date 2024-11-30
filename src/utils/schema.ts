@@ -16,12 +16,8 @@ export const schemaForgot = yup.object().shape({
 });
 
 export const schemaUpdatePass = yup.object().shape({
-  codigo: yup
-    .string()
-    .required("Insira o código"),
-    senha: yup
-    .string()
-    .required("Insira a senha")
+  codigo: yup.string().required("Insira o código"),
+  senha: yup.string().required("Insira a senha"),
 });
 
 export const schemaRegister = yup.object().shape({
@@ -62,4 +58,5 @@ export const schemaDados = yup.object().shape({
   comissao_cpa: yup.string(),
   // comissao_total: yup.string(),
   contagem_cpa: yup.string(),
+  valor_de_depositos: yup.string(),
 });
